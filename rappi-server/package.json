@@ -1,0 +1,29 @@
+{
+  "name": "rappi-server",
+  "version": "1.0.0",
+  "description": "Server Rappi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "standard",
+    "start": "node index.js",
+    "start-dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoraHol/Rappi.git"
+  },
+  "author": "Alexis Holguin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MoraHol/Rappi/issues"
+  },
+  "homepage": "https://github.com/MoraHol/Rappi#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10",
+    "standard": "^12.0.1"
+  }
+}
