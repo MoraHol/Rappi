@@ -12,6 +12,10 @@ body {
     background-color: #f7f7f7;
 }
 
+.title--theme-alt {
+    padding-left: 40px;
+}
+
 #login {
     min-width: 320px;
     width: 35%;
