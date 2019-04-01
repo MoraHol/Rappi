@@ -38,7 +38,6 @@ body {
 }
 
 .form-login {
-    margin: 8%;
     height: 100%;
     display: flex;
     justify-content: center;
@@ -70,4 +69,48 @@ body {
 
 .country {
     padding: 14px;
+}
+
+.adress {
+    margin: 10px 25px;
+}
+
+.adress label {
+    color: #1EC69F;
+    font-family: 'CircularStd Book';
+    font-size: 12px;
+}
+
+.adress input {
+    font-size: 12px;
+}
+
+.form-adress {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'CircularStd Book';
+}
+
+.form-adress .btn {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+/*
+.signup__field .btn {
+    background-color: transparent;
+}
+.signup__field .btn-outline-info {
+    color: #17a2b8;
+    font-size: 1.5em;
+    border-color: #17a2b8;
+}
+.signup__field .btn-outline-primary {
+    color: #007bff;
+    font-size: 1.5em;
+    border-color: #007bff;
+}*/
+.signup__field .btn {
+    font-size: 15px;
 }
