@@ -3,6 +3,7 @@
 const express = require('express')
 const path = require('path')
 const router = express.Router()
+const passport = require('./passport-config')
 
 router.get('/login', (req, res) => {
   res.type('html')
@@ -24,5 +25,14 @@ router.get('/formRT', (req, res) => {
 router.get('/', (req, res) => {
   res.send('')
 })
+router.get('/login/auth/google', passport.authenticate('google', {
+  scope: ['profile']
+}))
+router.get('/login/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/login'
+  }), (req, res) => {
+    res.json(req.user)
+  })
 
 module.exports = router

@@ -20,7 +20,12 @@
   },
   "homepage": "https://github.com/MoraHol/Rappi#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-session": "^1.15.6",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.10",
