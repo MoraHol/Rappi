@@ -30,7 +30,9 @@ router.get('/', (req, res) => {
 // autenticacion de boton
 router.get('/login/auth/google', passport.authenticate('google', {
   scope: ['profile']
-}))
+}), () => {
+  process.env.CB_AUTH_GOOGLE = '/login/auth/google/callback'
+})
 // calback con informacion de usuario en google
 router.get('/login/auth/google/callback',
   passport.authenticate('google', {
@@ -43,7 +45,9 @@ router.get('/login/auth/google/callback',
 
 router.get('/soyrappi/auth/google', passport.authenticate('google', {
   scope: ['profile']
-}))
+}), () => {
+  process.env.CB_AUTH_GOOGLE = '/soyrappi/auth/google/callback'
+})
 
 router.get('/soyrappi/auth/google/callback',
   passport.authenticate('google', {
