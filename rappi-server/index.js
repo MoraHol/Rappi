@@ -1,6 +1,7 @@
 'use strict'
 
-//modulos para montaje del servidor
+// modulos para montaje del servidor
+
 const express = require('express')
 const app = express()
 const router = require('./routes')
@@ -8,6 +9,11 @@ const passport = require('./passport-config')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
+const path = require('path')
+// motor de plantillas ejs
+
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 
 // los necesitaremos mas adelante para el tema de sesiones
 app.use(cookieParser())

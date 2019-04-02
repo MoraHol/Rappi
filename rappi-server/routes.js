@@ -1,7 +1,6 @@
 'use strcit'
 
 const express = require('express')
-const path = require('path')
 const router = express.Router()
 const passport = require('./passport-config')
 
@@ -10,20 +9,20 @@ const passport = require('./passport-config')
 
 router.get('/login', (req, res) => {
   res.type('html')
-  res.sendFile(path.resolve(`${__dirname}/public/loginClient.html`))
+  res.render('pages/loginClient')
 })
 
 router.get('/soyrappi', (req, res) => {
   res.type('html')
-  res.sendFile(path.resolve(`${__dirname}/public/loginRT.html`))
+  res.render('pages/login-rt')
 })
 router.get('/formClient', (req, res) => {
   res.type('html')
-  res.sendFile(path.resolve(`${__dirname}/public/formClient.html`))
+  res.render('pages/form-client')
 })
 router.get('/formRT', (req, res) => {
   res.type('html')
-  res.sendFile(path.resolve(`${__dirname}/public/formRT.html`))
+  res.render('pages/form-rt')
 })
 router.get('/', (req, res) => {
   res.send('')
@@ -37,7 +36,23 @@ router.get('/login/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/login'
   }), (req, res) => {
-    res.json(req.user)
+    res.render('pages/form-client', {
+      user: req.user
+    })
+  })
+
+router.get('/soyrappi/auth/google', passport.authenticate('google', {
+  scope: ['profile']
+}))
+
+router.get('/soyrappi/auth/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: '/soyrappi'
+  }), (req, res) => {
+    console.log(req)
+    res.render('pages/form-rt', {
+      user: req.user
+    })
   })
 
 module.exports = router
