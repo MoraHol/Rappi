@@ -5,6 +5,9 @@ const path = require('path')
 const router = express.Router()
 const passport = require('./passport-config')
 
+// definicion de rutas (por ahora de pruba)
+// los archivos html pueden ser modificados para un motor de plantillas
+
 router.get('/login', (req, res) => {
   res.type('html')
   res.sendFile(path.resolve(`${__dirname}/public/loginClient.html`))
@@ -25,9 +28,11 @@ router.get('/formRT', (req, res) => {
 router.get('/', (req, res) => {
   res.send('')
 })
+// autenticacion de boton
 router.get('/login/auth/google', passport.authenticate('google', {
   scope: ['profile']
 }))
+// calback con informacion de usuario en google
 router.get('/login/auth/google/callback',
   passport.authenticate('google', {
     failureRedirect: '/login'
