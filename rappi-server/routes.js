@@ -25,7 +25,7 @@ router.get('/formRT', (req, res) => {
   res.render('pages/form-rt')
 })
 router.get('/', (req, res) => {
-  res.send('')
+  res.render('pages/index-page')
 })
 // autenticacion de boton
 router.get('/login/auth/google', passport.authenticate('google', {
