@@ -1,3 +1,4 @@
+var db = require('./db/api');
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const FacebokStrategy = require('passport-facebook').Strategy
@@ -16,13 +17,29 @@ passport.use('googleClient', new GoogleStrategy(
     // la configuracion es de prueba
     clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
     clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
-    callbackURL: '/login/auth/google/callback'
+    callbackURL: '/login/auth/google/callback',
+    passReqToCallback: true
   },
-  (accessToken, refreshToken, profile, done) => {
+  (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
     // por ahora solo mostrara información
-    console.log(profile)
-    return done(null, profile)
+    db.findUserById(profile).then(function(id) 
+    {
+      if (id) 
+      {
+        req.session.newuser = false;
+        return done(null, profile);
+      } 
+      else 
+      {
+        db.createUser(profile)
+          .then(function(id) 
+          {
+            req.session.newuser = true;
+            return done(null, profile);
+          });
+      }
+    });
   }
 ))
 // configuracion de modulo passport para el logeo con google de RappiTendero
