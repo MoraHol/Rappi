@@ -1,0 +1,116 @@
+@font-face {
+    font-family: 'CircularStd Book';
+    src: url('../fonts/CircularStd-Book.woff2');
+}
+
+@font-face {
+    font-family: 'CircularStd Bold';
+    src: url('../fonts/CircularStd-Bold.woff2');
+}
+
+body {
+    background-color: #f7f7f7;
+}
+
+.title--theme-alt {
+    padding-left: 40px;
+}
+
+#login {
+    min-width: 320px;
+    width: 35%;
+}
+
+.text-welcome {
+    text-align: center;
+    font-family: 'CircularStd Book';
+    margin: 20px;
+}
+
+.text-welcome p {
+    color: #7D7D7D;
+    font-size: 14px;
+    margin: 2px;
+}
+
+.text-welcome h2 {
+    font-size: 24px;
+}
+
+.form-login {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'CircularStd Book';
+}
+
+.login-division {
+    position: relative;
+    border-top: 1px solid #e5edef;
+    padding-bottom: 15px;
+}
+
+.login-division p {
+    position: absolute;
+    width: 100px;
+    margin: auto;
+    top: -12px;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    font-size: 12px;
+    font-family: CircularStd Book;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.country {
+    padding: 14px;
+}
+
+.adress {
+    margin: 10px 25px;
+}
+
+.adress label {
+    color: #1EC69F;
+    font-family: 'CircularStd Book';
+    font-size: 12px;
+}
+
+.adress input {
+    font-size: 12px;
+}
+
+.form-adress {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'CircularStd Book';
+}
+
+.form-adress .btn {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+/*
+.signup__field .btn {
+    background-color: transparent;
+}
+.signup__field .btn-outline-info {
+    color: #17a2b8;
+    font-size: 1.5em;
+    border-color: #17a2b8;
+}
+.signup__field .btn-outline-primary {
+    color: #007bff;
+    font-size: 1.5em;
+    border-color: #007bff;
+}*/
+.signup__field .btn {
+    font-size: 15px;
+}

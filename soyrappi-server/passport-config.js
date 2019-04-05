@@ -15,12 +15,12 @@ passport.use(new GoogleStrategy(
     // la configuracion es de prueba
     clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
     clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
-    callbackURL: '/login/auth/google/callback'
+    callbackURL: '/soyrappi/auth/google/callback'
   },
   (accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
     // por ahora solo mostrara información
-    // console.log(profile)
+    console.log(profile)
     return done(null, profile)
   }
 ))

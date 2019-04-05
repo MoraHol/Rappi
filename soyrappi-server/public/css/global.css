@@ -1,0 +1,54 @@
+::-moz-focus-inner {
+    border: 0;
+  }
+  
+  :focus {
+    outline: none;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    margin-top: 0;
+    font-weight: 700;
+  }
+  
+  p {
+    margin-top: 0;
+    line-height: 1.8;
+  }
+  
+  ol, ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  li {
+    list-style: none;
+  }
+  
+  fieldset {
+    padding: 0;
+    border: none;
+  }
+  
+  button {
+    padding: 0;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+  
+  dd {
+    margin: 0;
+  }
+  
+  select::-ms-expand {
+    display: none;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  b {
+      font-weight: 700;
+  }
