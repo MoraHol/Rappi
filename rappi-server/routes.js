@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 })
 // autenticacion de boton
 router.get('/login/auth/google', passport.authenticate('client', {
-  scope: ['profile']
+  scope: ['profile','email']
 }), () => {
 })
 // calback con informacion de usuario en google
@@ -37,7 +37,6 @@ router.get('/login/auth/google/callback',
   passport.authenticate('client', {
     failureRedirect: '/login'
   }), (req, res) => {
-    console.log(req)
     res.render('pages/form-client', {
       user: req.user
     })
@@ -50,7 +49,6 @@ router.get('/login/auth/google/callback',
     passport.authenticate('soyrappi', {
       failureRedirect: '/soyrappi'
     }), (req, res) => {
-      console.log(req)
       res.render('pages/form-rt', {
         user: req.user
       })

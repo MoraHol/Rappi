@@ -1,3 +1,4 @@
+var db = require('./db/api');
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 
@@ -20,6 +21,18 @@ passport.use('client', new GoogleStrategy(
   (accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
     // por ahora solo mostrara información
+
+    db.findUserById(profile).then(function(id) {
+      if (id) {
+        return done(null, profile);
+      } else {
+        db.createUser(profile)
+          .then(function(id) {
+            return done(null, profile);
+          });
+      }
+    });
+
     console.log(profile)
     return done(null, profile)
   }
