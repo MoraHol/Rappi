@@ -28,13 +28,13 @@ router.get('/', (req, res) => {
   res.render('pages/index-page')
 })
 // autenticacion de boton
-router.get('/login/auth/google', passport.authenticate('google', {
+router.get('/login/auth/google', passport.authenticate('client', {
   scope: ['profile']
 }), () => {
 })
 // calback con informacion de usuario en google
 router.get('/login/auth/google/callback',
-  passport.authenticate('google', {
+  passport.authenticate('client', {
     failureRedirect: '/login'
   }), (req, res) => {
     console.log(req)
@@ -42,5 +42,18 @@ router.get('/login/auth/google/callback',
       user: req.user
     })
   })
+  router.get('/soyrappi/auth/google', passport.authenticate('soyrappi', {
+    scope: ['profile']
+  }), () => {})
+  
+  router.get('/soyrappi/auth/google/callback',
+    passport.authenticate('soyrappi', {
+      failureRedirect: '/soyrappi'
+    }), (req, res) => {
+      console.log(req)
+      res.render('pages/form-rt', {
+        user: req.user
+      })
+    })
 
 module.exports = router
