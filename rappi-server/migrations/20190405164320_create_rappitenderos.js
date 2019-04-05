@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
     return Promise.all([
-        knex.schema.createTable('users', table => {
+        knex.schema.createTable('rappitendero', table => {
           table.increments('id').primary()
           table.string('email')
           table.string('first_name')
@@ -9,13 +9,15 @@ exports.up = function(knex, Promise) {
           table.string('googleid')
           table.string('facebookid')
           table.string('address')
-          table.string('address_details')
+          table.boolean ('is_valid_for_work')
+          table.boolean ('phone_number')
+          table.boolean ('personal_id')
         })
       ])
 };
 
 exports.down = function(knex, Promise) {
     return Promise.all([
-        knex.schema.dropTable('users')
+        knex.schema.dropTable('rappitendero')
       ])
 };
