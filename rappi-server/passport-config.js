@@ -16,25 +16,29 @@ passport.use('client', new GoogleStrategy(
     // la configuracion es de prueba
     clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
     clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
-    callbackURL: '/login/auth/google/callback'
+    callbackURL: '/login/auth/google/callback',
+    passReqToCallback: true
   },
-  (accessToken, refreshToken, profile, done) => {
+  (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
     // por ahora solo mostrara información
-
-    db.findUserById(profile).then(function(id) {
-      if (id) {
+    db.findUserById(profile).then(function(id) 
+    {
+      if (id) 
+      {
+        req.session.newuser = false;
         return done(null, profile);
-      } else {
+      } 
+      else 
+      {
         db.createUser(profile)
-          .then(function(id) {
+          .then(function(id) 
+          {
+            req.session.newuser = true;
             return done(null, profile);
           });
       }
     });
-
-    console.log(profile)
-    return done(null, profile)
   }
 ))
 passport.use('soyrappi',new GoogleStrategy(

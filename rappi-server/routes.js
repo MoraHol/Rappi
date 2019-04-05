@@ -33,14 +33,16 @@ router.get('/login/auth/google', passport.authenticate('client', {
 }), () => {
 })
 // calback con informacion de usuario en google
-router.get('/login/auth/google/callback',
-  passport.authenticate('client', {
+router.get('/login/auth/google/callback',  passport.authenticate('client', {
     failureRedirect: '/login'
   }), (req, res) => {
-    res.render('pages/form-client', {
-      user: req.user
-    })
+    if (req.session.newuser) {
+      res.render('pages/form-client', {user: req.user})
+    } else {
+      res.render('pages/index-page', {user: req.user})
+    }
   })
+
   router.get('/soyrappi/auth/google', passport.authenticate('soyrappi', {
     scope: ['profile']
   }), () => {})
