@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <% include ../partials/head-boostrap%>
+    </head>
+    <body>
+    <div class="header-login">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
+            src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
+        <form class="form-inline my-2 my-lg-0" action="/">
+          <button class="btn btn-outline-danger my-2 my-sm-0"
+            type="submit">Volver</button>
+        </form>
+      </nav>
+    </div>
+    <h1><strong>Ingreso Administrativo</strong></h1>
+
+    <div class="container">
+           <table class="table table-striped">
+              <tbody>
+                 <tr>
+                    <td colspan="1">
+                       <form class="well form-horizontal" action="/admin/home" method="post">
+                          <fieldset>
+                             <div class="form-group"><!--NOMBRE-->
+                                <label class="col-md-4 control-label">Nombre de usuario:</label>
+                                <div class="col-md-8 inputGroupContainer">
+                                   <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span><input id="username" name="username" placeholder="Ingrese su usuario" class="form-control" required="true" value="" type="text"></div>
+                                </div>
+                             </div>
+                             <div class="form-group"><!--DESC-->
+                                <label class="col-md-4 control-label">Password:</label>
+                                <div class="col-md-8 inputGroupContainer">
+                                   <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-list"></i></span><input id="password" name="password" placeholder="Ingrese su contraseña" class="form-control" required="true" value="" type="password"></div>
+                                </div>
+                             </div>                 
+                          </fieldset>
+                          <span class="input-group-btn" style="text-align:center">
+                          <input type="submit" class="btn btn-default" value="Crear">
+                       </form>
+                    </td>
+                 </tr>
+              </tbody>
+           </table> 
+    </div>
+    </body>
+</html>
