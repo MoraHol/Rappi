@@ -22,12 +22,12 @@ passport.use('googleClient', new GoogleStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.findUserById(profile).then((id) => {
+    db.findUserByIdGoogleStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.createUser(profile)
+        db.createUserGoogleStrategy(profile)
           .then(function (id) {
             req.session.newuser = true
             return done(null, profile)
@@ -58,13 +58,23 @@ passport.use('facebookClient', new FacebokStrategy(
     clientSecret: '880d835b71c05dae172cde96ed7eeefb',
     callbackURL: '/login/auth/facebook/callback',
     enableProof: true,
-    profileFields: ['id', 'displayName', 'photos', 'email', 'address', 'friends']
+    profileFields: ['id', 'displayName', 'photos', 'email', 'address', 'friends'],
+    passReqToCallback: true
   },
-  (accessToken, refreshToken, profile, done) => {
+  (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    // por ahora solo mostrara información
-    console.log(profile)
-    return done(null, profile)
+    db.findUserByIdFacebookStrategy(profile).then((id) => {
+      if (id) {
+        req.session.newuser = false
+        return done(null, profile)
+      } else {
+        db.createUserFacebookStrategy(profile)
+          .then(function (id) {
+            req.session.newuser = true
+            return done(null, profile)
+          })
+      }
+    })
   }))
 // configuracion de modulo passport para el logeo con facebook de Rappitendero
 passport.use('facebookRT', new FacebokStrategy(

@@ -42,7 +42,7 @@ router.get('/login/auth/google/callback', passport.authenticate('googleClient', 
   if (req.session.newuser) {
     res.render('pages/form-client', { user: req.user })
   } else {
-    await db.findUserById(req.user).then((row) => {
+    await db.findUserByIdGoogleStrategy(req.user).then((row) => {
       req.session.user = row
     })
     res.redirect('/')
@@ -69,10 +69,17 @@ router.get('/login/auth/facebook', passport.authenticate('facebookClient', { sco
 router.get('/login/auth/facebook/callback',
   passport.authenticate('facebookClient', {
     failureRedirect: '/login'
-  }), (req, res) => {
-    res.render('pages/form-client', {
-      user: req.user
-    })
+  }), async (req, res) => {
+    if (req.session.newuser) {
+      res.render('pages/form-client', {
+        user: req.user
+      })
+    } else {
+      await db.findUserByIdFacebookStrategy(req.user).then((row) => {
+        req.session.user = row
+      })
+      res.redirect('/')
+    }
   })
 // autenticacion de boton de google para usuario
 router.get('/soyrappi/auth/facebook', passport.authenticate('facebookRT', {
@@ -99,11 +106,21 @@ router.post('/admin/home', (req, res, next) => {
   res.json(user)
   next(req)
 })
-router.post('/login/auth/google/post', async (req, res, next) => {
+router.post('/login/auth/google/post', async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
-  await db.registerAdress(req.user).then()
-  await db.findUserById(req.user).then((user) => {
+  await db.registerAdressGoogleStrategy(req.user).then()
+  await db.findUserByIdGoogleStrategy(req.user).then((user) => {
+    req.session.user = user
+  })
+  res.redirect('/')
+})
+
+router.post('/login/auth/facebook/post', async (req, res) => {
+  req.user.address = req.body.address
+  req.user.address_details = req.body.address_details
+  await db.registerAdressFacebookStrategy(req.user).then()
+  await db.findUserByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
   })
   res.redirect('/')
