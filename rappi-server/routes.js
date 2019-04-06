@@ -3,7 +3,7 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('./passport-config')
-const db = require('./db/api')
+const db = require('./db')
 
 // definicion de rutas (por ahora de pruba)
 // los archivos html pueden ser modificados para un motor de plantillas
@@ -42,7 +42,7 @@ router.get('/login/auth/google/callback', passport.authenticate('googleClient', 
   if (req.session.newuser) {
     res.render('pages/form-client', { user: req.user })
   } else {
-    await db.findUserByIdGoogleStrategy(req.user).then((row) => {
+    await db.user.findUserByIdGoogleStrategy(req.user).then((row) => {
       req.session.user = row
     })
     res.redirect('/')
@@ -50,17 +50,24 @@ router.get('/login/auth/google/callback', passport.authenticate('googleClient', 
 })
 
 router.get('/soyrappi/auth/google', passport.authenticate('googleSoyRappi', {
-  scope: ['profile']
+  scope: ['profile', 'email']
 }), () => {
 })
 
 router.get('/soyrappi/auth/google/callback',
   passport.authenticate('googleSoyRappi', {
     failureRedirect: '/soyrappi'
-  }), (req, res) => {
-    res.render('pages/form-rt', {
-      user: req.user
-    })
+  }), async (req, res) => {
+    if (req.session.newuser) {
+      res.render('pages/form-rt', {
+        user: req.user
+      })
+    } else {
+      await db.rappiTendero.findRappiTenderoByIdGoogleStrategy(req.user).then((row) => {
+        req.session.user = row
+      })
+      res.redirect('/')
+    }
   })
 
 // autenticacion de boton de google para usuario
@@ -75,7 +82,7 @@ router.get('/login/auth/facebook/callback',
         user: req.user
       })
     } else {
-      await db.findUserByIdFacebookStrategy(req.user).then((row) => {
+      await db.user.findUserByIdFacebookStrategy(req.user).then((row) => {
         req.session.user = row
       })
       res.redirect('/')
@@ -109,8 +116,8 @@ router.post('/admin/home', (req, res, next) => {
 router.post('/login/auth/google/post', async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
-  await db.registerAdressGoogleStrategy(req.user).then()
-  await db.findUserByIdGoogleStrategy(req.user).then((user) => {
+  await db.user.registerAdressGoogleStrategy(req.user).then()
+  await db.user.findUserByIdGoogleStrategy(req.user).then((user) => {
     req.session.user = user
   })
   res.redirect('/')
@@ -119,9 +126,18 @@ router.post('/login/auth/google/post', async (req, res) => {
 router.post('/login/auth/facebook/post', async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
-  await db.registerAdressFacebookStrategy(req.user).then()
-  await db.findUserByIdFacebookStrategy(req.user).then((user) => {
+  await db.user.registerAdressFacebookStrategy(req.user).then()
+  await db.user.findUserByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
+  })
+  res.redirect('/')
+})
+router.post('/soyrappi/auth/google/post', async (req, res) => {
+  req.user.personal_id = req.body.personal_id
+  req.user.phone_number = req.body.phone_number
+  await db.rappiTendero.registerAdditionalDataGoogleStrategy(req.user).then()
+  await db.rappiTendero.findRappiTenderoByIdGoogleStrategy(req.user).then((rappiTendero) => {
+    req.session.user = rappiTendero
   })
   res.redirect('/')
 })

@@ -1,4 +1,4 @@
-var db = require('./db/api')
+var db = require('./db')
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const FacebokStrategy = require('passport-facebook').Strategy
@@ -22,12 +22,12 @@ passport.use('googleClient', new GoogleStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.findUserByIdGoogleStrategy(profile).then((id) => {
+    db.user.findUserByIdGoogleStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.createUserGoogleStrategy(profile)
+        db.user.createUserGoogleStrategy(profile)
           .then(function (id) {
             req.session.newuser = true
             return done(null, profile)
@@ -42,13 +42,22 @@ passport.use('googleSoyRappi', new GoogleStrategy(
     // la configuracion es de prueba
     clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
     clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
-    callbackURL: '/soyrappi/auth/google/callback'
+    callbackURL: '/soyrappi/auth/google/callback',
+    passReqToCallback: true
   },
-  (accessToken, refreshToken, profile, done) => {
+  (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    // por ahora solo mostrara información
-    console.log(profile)
-    return done(null, profile)
+    db.rappiTendero.findRappiTenderoByIdGoogleStrategy(profile).then((id) => {
+      if (id) {
+        req.session.newuser = false
+        return done(null, profile)
+      } else {
+        db.rappiTendero.createRappiTenderoGoogleStrategy(profile).then((id) => {
+          req.session.newuser = true
+          return done(null, profile)
+        })
+      }
+    })
   }
 ))
 // configuracion de modulo passport para el logeo con facebook de cliente
@@ -63,12 +72,12 @@ passport.use('facebookClient', new FacebokStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.findUserByIdFacebookStrategy(profile).then((id) => {
+    db.user.findUserByIdFacebookStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.createUserFacebookStrategy(profile)
+        db.user.createUserFacebookStrategy(profile)
           .then(function (id) {
             req.session.newuser = true
             return done(null, profile)

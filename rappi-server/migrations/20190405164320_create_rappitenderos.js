@@ -3,15 +3,15 @@ exports.up = function (knex, Promise) {
   return Promise.all([
     knex.schema.createTable('rappitendero', table => {
       table.increments('id').primary()
-      table.string('email')
-      table.string('first_name')
+      table.string('email').notNullable()
+      table.string('first_name').notNullable()
       table.string('last_name')
       table.string('googleid')
       table.string('facebookid')
-      table.string('address')
-      table.boolean('is_valid_for_work')
-      table.boolean('phone_number')
-      table.boolean('personal_id')
+      table.boolean('is_valid_for_work').defaultTo(false)
+      table.string('phone_number')
+      table.string('personal_id')
+      table.string('photo')
     })
   ])
 }
