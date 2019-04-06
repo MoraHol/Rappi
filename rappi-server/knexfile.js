@@ -14,8 +14,8 @@ module.exports = {
     client: 'pg',
     connection: {
       database: 'RappiApp',
-      user:     'NodeTest',
+      user: 'NodeTest',
       password: 'JSBC1807'
     }
   }
-};
+}

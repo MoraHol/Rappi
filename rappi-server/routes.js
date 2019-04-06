@@ -30,34 +30,34 @@ router.get('/', (req, res) => {
 
 // autenticacion de boton
 router.get('/login/auth/google', passport.authenticate('googleClient', {
-  scope: ['profile','email']
+  scope: ['profile', 'email']
 }), () => {})
 // calback con informacion de usuario en google
-router.get('/login/auth/google/callback',  passport.authenticate('googleClient', {
-    failureRedirect: '/login'
+router.get('/login/auth/google/callback', passport.authenticate('googleClient', {
+  failureRedirect: '/login'
+}), (req, res) => {
+  if (req.session.newuser) {
+    res.render('pages/form-client', { user: req.user })
+  } else {
+    res.render('pages/index-page', { user: req.user })
+  }
+})
+
+router.get('/soyrappi/auth/google', passport.authenticate('googleSoyRappi', {
+  scope: ['profile']
+}), () => {})
+
+router.get('/soyrappi/auth/google/callback',
+  passport.authenticate('googleSoyRappi', {
+    failureRedirect: '/soyrappi'
   }), (req, res) => {
-    if (req.session.newuser) {
-      res.render('pages/form-client', {user: req.user})
-    } else {
-      res.render('pages/index-page', {user: req.user})
-    }
+    res.render('pages/form-rt', {
+      user: req.user
+    })
   })
 
-  router.get('/soyrappi/auth/google', passport.authenticate('googleSoyRappi', {
-    scope: ['profile']
-  }), () => {})
-  
-  router.get('/soyrappi/auth/google/callback',
-    passport.authenticate('googleSoyRappi', {
-      failureRedirect: '/soyrappi'
-    }), (req, res) => {
-      res.render('pages/form-rt', {
-        user: req.user
-      })
-    })
-  
-  // autenticacion de boton de google para usuario
-router.get('/login/auth/facebook', passport.authenticate('facebookClient', {scope: ['user_friends', 'manage_pages']})
+// autenticacion de boton de google para usuario
+router.get('/login/auth/facebook', passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages'] })
 )
 router.get('/login/auth/facebook/callback',
   passport.authenticate('facebookClient', {
@@ -65,7 +65,7 @@ router.get('/login/auth/facebook/callback',
   }), (req, res) => {
     res.render('pages/form-client', {
       user: req.user
-      })
+    })
   })
 // autenticacion de boton de google para usuario
 router.get('/soyrappi/auth/facebook', passport.authenticate('facebookRT', {
