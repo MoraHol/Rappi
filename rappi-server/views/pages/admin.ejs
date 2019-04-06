@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title></title>
+        <title>Rappi | Admmistradores</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <% include ../partials/head-boostrap%>
+        <link rel="icon" href="/img/rappi_favicon.png">
+        <link rel="stylesheet" href="/css/admin.css">
     </head>
     <body>
     <div class="header-login">
@@ -17,35 +19,31 @@
         </form>
       </nav>
     </div>
-    <h1><strong>Ingreso Administrativo</strong></h1>
-
-    <div class="container">
-           <table class="table table-striped">
-              <tbody>
-                 <tr>
-                    <td colspan="1">
-                       <form class="well form-horizontal" action="/admin/home" method="post">
-                          <fieldset>
-                             <div class="form-group"><!--NOMBRE-->
-                                <label class="col-md-4 control-label">Nombre de usuario:</label>
-                                <div class="col-md-8 inputGroupContainer">
-                                   <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span><input id="username" name="username" placeholder="Ingrese su usuario" class="form-control" required="true" value="" type="text"></div>
-                                </div>
-                             </div>
-                             <div class="form-group"><!--DESC-->
-                                <label class="col-md-4 control-label">Password:</label>
-                                <div class="col-md-8 inputGroupContainer">
-                                   <div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon glyphicon-list"></i></span><input id="password" name="password" placeholder="Ingrese su contraseña" class="form-control" required="true" value="" type="password"></div>
-                                </div>
-                             </div>                 
-                          </fieldset>
-                          <span class="input-group-btn" style="text-align:center">
-                          <input type="submit" class="btn btn-default" value="Crear">
-                       </form>
-                    </td>
-                 </tr>
-              </tbody>
-           </table> 
+    <div style="text-align: center;">
+    <h2 style="font-size: 40px;">Ingreso Administrativo</h2>
     </div>
+    <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="/img/com.rappi.shopper-w130.png" id="icon" alt="User Icon" style="width: 70px;heigth:70px;"/>
+    </div>
+
+    <!-- Login Form -->
+    <form  action="/admin/home" method="post">
+      <input type="text" id="login" class="fadeIn second" name="username" placeholder="nombre de usuario">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="contraseña">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
     </body>
 </html>
