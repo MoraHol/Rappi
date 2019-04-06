@@ -22,8 +22,7 @@ passport.use('googleClient', new GoogleStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    // por ahora solo mostrara información
-    db.findUserById(profile).then(function (id) {
+    db.findUserById(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)

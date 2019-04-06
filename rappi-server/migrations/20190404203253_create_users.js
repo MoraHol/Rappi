@@ -10,6 +10,7 @@ exports.up = function (knex, Promise) {
       table.string('facebookid')
       table.string('address')
       table.string('address_details')
+      table.string('photo')
     })
   ])
 }

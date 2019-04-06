@@ -19,17 +19,17 @@
     <div class="card" style="max-width: 600px; min-width:320px;">
       <h2 class="text-center" style="font-size: 20px;">información de dirección</h2>
       <h3 class="text-center" style="font-size: 16px;"><%= user.displayName%> </h3>
-      <form action="post">
+      <form action="post" method="post">
         <div class="card adress">
           <div class="form-group">
-            <label for="adress">Dirección:</label>
-            <input type="text" class="form-control" name="adress" placeholder="Ingresa tu direccion">
+            <label for="address">Dirección:</label>
+            <input type="text" class="form-control" name="address" placeholder="Ingresa tu direccion">
           </div>
         </div>
         <div class="card adress">
           <div class="form-group">
-            <label for="adress-details">Piso / Oficina / Apto / Depto</label>
-            <input type="text" class="form-control" name="adress-details"
+            <label for="address-details">Piso / Oficina / Apto / Depto</label>
+            <input type="text" class="form-control" name="address_details"
               placeholder="Descipción de la dirección (ej. apto, torre)">
           </div>
         </div>
