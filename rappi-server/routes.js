@@ -105,13 +105,8 @@ router.get('/soyrappi/auth/facebook/callback',
 router.get('/admin', (req, res) => {
   res.render('pages/admin')
 })
-router.post('/admin/home', (req, res, next) => {
-  const user = {
-    username: req.body.username,
-    password: req.body.password
-  }
-  res.json(user)
-  next(req)
+router.post('/admin/home', passport.authenticate('admin', { failureFlash: true }), (req, res) => {
+  res.send('hola administrador ' + req.user.user_name)
 })
 router.post('/login/auth/google/post', async (req, res) => {
   req.user.address = req.body.address

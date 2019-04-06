@@ -2,6 +2,7 @@ var db = require('./db')
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 const FacebokStrategy = require('passport-facebook').Strategy
+const LocalStrategy = require('passport-local').Strategy
 
 passport.serializeUser(function (user, done) {
   done(null, user)
@@ -100,4 +101,18 @@ passport.use('facebookRT', new FacebokStrategy(
     console.log(profile)
     return done(null, profile)
   }))
+
+passport.use('admin', new LocalStrategy(async (username, password, done) => {
+  await db.admin.findOne(username).then((admin) => {
+    if (admin) {
+      if (admin.password === password) {
+        return done(null, admin)
+      } else {
+        return done(null, false)
+      }
+    } else {
+      return done(null, false)
+    }
+  })
+}))
 module.exports = passport
