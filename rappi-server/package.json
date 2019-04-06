@@ -8,7 +8,7 @@
     "lint": "standard",
     "start": "node index.js",
     "start-dev": "nodemon index.js",
-    "migrate": "knex migrate:latest",
+    "migrate": "knex migrate:latest && knex seed:run",
     "migrate-rollback": "knex migrate:rollback"
   },
   "repository": {
