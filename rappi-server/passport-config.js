@@ -93,13 +93,21 @@ passport.use('facebookRT', new FacebokStrategy(
     clientSecret: '880d835b71c05dae172cde96ed7eeefb',
     callbackURL: '/soyrappi/auth/facebook/callback',
     enableProof: true,
-    profileFields: ['id', 'displayName', 'photos', 'email', 'address', 'friends']
+    profileFields: ['id', 'displayName', 'photos', 'email', 'address', 'friends'],
+    passReqToCallback: true
   },
-  (accessToken, refreshToken, profile, done) => {
-    // aqui se define el guardado o busqueda en la base de datos de este usuario
-    // por ahora solo mostrara información
-    console.log(profile)
-    return done(null, profile)
+  (req, accessToken, refreshToken, profile, done) => {
+    db.rappiTendero.findRappiTenderoByIdFacebookStrategy(profile).then((id) => {
+      if (id) {
+        req.session.newuser = false
+        return done(null, profile)
+      } else {
+        db.rappiTendero.createRappiTenderoFacebookStrategy(profile).then((id) => {
+          req.session.newuser = true
+          return done(null, profile)
+        })
+      }
+    })
   }))
 
 passport.use('admin', new LocalStrategy(async (username, password, done) => {

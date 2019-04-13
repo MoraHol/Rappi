@@ -26,7 +26,6 @@ router.get('/formRT', (req, res) => {
   res.render('pages/form-rt')
 })
 router.get('/', (req, res) => {
-  console.log(req.session.user)
   res.render('pages/index-page', { user: req.session.user })
 })
 
@@ -96,11 +95,17 @@ router.get('/soyrappi/auth/facebook', passport.authenticate('facebookRT', {
 router.get('/soyrappi/auth/facebook/callback',
   passport.authenticate('facebookRT', {
     failureRedirect: '/soyrappi'
-  }), (req, res) => {
-    // res.json(req.user)
-    res.render('pages/form-rt', {
-      user: req.user
-    })
+  }), async (req, res) => {
+    if (req.session.newuser) {
+      res.render('pages/form-rt', {
+        user: req.user
+      })
+    } else {
+      await db.rappiTendero.findRappiTenderoByIdFacebookStrategy(req.user).then((row) => {
+        req.session.user = row
+      })
+      res.redirect('/')
+    }
   })
 router.get('/admin', (req, res) => {
   res.render('pages/admin')
@@ -133,6 +138,17 @@ router.post('/soyrappi/auth/google/post', async (req, res) => {
   await db.rappiTendero.registerAdditionalDataGoogleStrategy(req.user).then()
   await db.rappiTendero.findRappiTenderoByIdGoogleStrategy(req.user).then((rappiTendero) => {
     req.session.user = rappiTendero
+  })
+  res.redirect('/')
+})
+router.post('/soyrappi/auth/facebook/post', async (req, res) => {
+  console.log(req.body)
+  req.user.personal_id = req.body.personal_id
+  req.user.phone_number = req.body.phone_number
+  console.log(req.user)
+  await db.rappiTendero.registerAdditionalDataFacebookStrategy(req.user).then()
+  await db.rappiTendero.findRappiTenderoByIdFacebookStrategy(req.user).then((user) => {
+    req.session.user = user
   })
   res.redirect('/')
 })
