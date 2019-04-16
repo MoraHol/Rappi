@@ -70,7 +70,7 @@ router.get('/soyrappi/auth/google/callback',
   })
 
 // autenticacion de boton de google para usuario
-router.get('/login/auth/facebook', passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages'] })
+router.get('/login/auth/facebook', passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages', 'email'] })
 )
 router.get('/login/auth/facebook/callback',
   passport.authenticate('facebookClient', {
@@ -89,7 +89,7 @@ router.get('/login/auth/facebook/callback',
   })
 // autenticacion de boton de google para usuario
 router.get('/soyrappi/auth/facebook', passport.authenticate('facebookRT', {
-  scope: ['user_friends', 'manage_pages']
+  scope: ['user_friends', 'manage_pages', 'email']
 })
 )
 router.get('/soyrappi/auth/facebook/callback',
@@ -142,10 +142,8 @@ router.post('/soyrappi/auth/google/post', async (req, res) => {
   res.redirect('/')
 })
 router.post('/soyrappi/auth/facebook/post', async (req, res) => {
-  console.log(req.body)
   req.user.personal_id = req.body.personal_id
   req.user.phone_number = req.body.phone_number
-  console.log(req.user)
   await db.rappiTendero.registerAdditionalDataFacebookStrategy(req.user).then()
   await db.rappiTendero.findRappiTenderoByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
