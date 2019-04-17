@@ -4,6 +4,7 @@ const express = require('express')
 const router = express.Router()
 const passport = require('./passport-config')
 const db = require('./db')
+const clientController = require('./controllers/clients')
 
 // definicion de rutas (por ahora de pruba)
 // los archivos html pueden ser modificados para un motor de plantillas
@@ -30,23 +31,15 @@ router.get('/', (req, res) => {
 })
 
 // autenticacion de boton
-router.get('/login/auth/google', passport.authenticate('googleClient', {
-  scope: ['profile', 'email']
-}), () => {
-})
+router.get('/login/auth/google',
+  passport.authenticate('googleClient', { scope: ['profile', 'email'] }),
+  () => {}
+)
 // calback con informacion de usuario en google
-router.get('/login/auth/google/callback', passport.authenticate('googleClient', {
-  failureRedirect: '/login'
-}), async (req, res) => {
-  if (req.session.newuser) {
-    res.render('pages/form-client', { user: req.user })
-  } else {
-    await db.user.findUserByIdGoogleStrategy(req.user).then((row) => {
-      req.session.user = row
-    })
-    res.redirect('/')
-  }
-})
+router.get('/login/auth/google/callback',
+  passport.authenticate('googleClient', { failureRedirect: '/login' }),
+  async (req, res) => { clientController.login_process(req, res) }
+)
 
 router.get('/soyrappi/auth/google', passport.authenticate('googleSoyRappi', {
   scope: ['profile', 'email']
@@ -67,7 +60,8 @@ router.get('/soyrappi/auth/google/callback',
       })
       res.redirect('/')
     }
-  })
+  }
+)
 
 // autenticacion de boton de google para usuario
 router.get('/login/auth/facebook', passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages', 'email'] })

@@ -15,7 +15,7 @@ exports.up = function (knex, Promise) {
       table.float('longitude')
       table.string('photo')
     })
-  ]).then(() => {normalization.addTimeStamps(knex,'clients')})
+  ]).then(() => { normalization.addTimeStamps(knex, 'clients') })
 }
 
 exports.down = function (knex, Promise) {

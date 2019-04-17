@@ -1,12 +1,12 @@
 'use strict'
 module.exports = {
-    addTimeStamps: (knex, name) => {
-        return knex.schema.alterTable(name, table => {
-          table.timestamp('created_at').defaultTo(knex.fn.now())
-          table.timestamp('updated_at').defaultTo(knex.fn.now())
-        })
-          .then(() => {
-            return knex.raw(`
+  addTimeStamps: (knex, name) => {
+    return knex.schema.alterTable(name, table => {
+      table.timestamp('created_at').defaultTo(knex.fn.now())
+      table.timestamp('updated_at').defaultTo(knex.fn.now())
+    })
+      .then(() => {
+        return knex.raw(`
               CREATE OR REPLACE FUNCTION update_modified_column()
               RETURNS TRIGGER AS $$
               BEGIN
@@ -20,6 +20,6 @@ module.exports = {
               FOR EACH ROW
               EXECUTE PROCEDURE update_modified_column();
             `)
-          })
-      }
+      })
+  }
 }

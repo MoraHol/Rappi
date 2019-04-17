@@ -14,7 +14,7 @@ exports.up = function (knex, Promise) {
       table.string('personal_id')
       table.string('photo')
     })
-  ]).then(() => {normalization.addTimeStamps(knex,'delivery_persons')})
+  ]).then(() => { normalization.addTimeStamps(knex, 'delivery_persons') })
 }
 
 exports.down = function (knex, Promise) {

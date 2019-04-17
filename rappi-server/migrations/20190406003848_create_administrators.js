@@ -7,7 +7,7 @@ exports.up = function (knex, Promise) {
       table.string('user_name')
       table.string('password')
     })
-  ]).then(() => {normalization.addTimeStamps(knex,'administrators')})
+  ]).then(() => { normalization.addTimeStamps(knex, 'administrators') })
 }
 
 exports.down = function (knex, Promise) {
