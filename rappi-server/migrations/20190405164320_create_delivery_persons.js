@@ -1,3 +1,4 @@
+const normalization = require('../db/normalization')
 
 exports.up = function (knex, Promise) {
   return Promise.all([
@@ -13,7 +14,7 @@ exports.up = function (knex, Promise) {
       table.string('personal_id')
       table.string('photo')
     })
-  ])
+  ]).then(() => {normalization.addTimeStamps(knex,'delivery_persons')})
 }
 
 exports.down = function (knex, Promise) {

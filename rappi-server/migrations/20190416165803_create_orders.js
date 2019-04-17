@@ -1,3 +1,4 @@
+const normalization = require('../db/normalization')
 
 exports.up = function(knex, Promise) {
     return Promise.all([
@@ -7,9 +8,8 @@ exports.up = function(knex, Promise) {
           table.foreign('client_id').references('id').inTable('clients')
           table.integer('delivery_person_id').unsigned()
           table.foreign('delivery_person_id').references('id').inTable('delivery_persons')
-          //falta created at
         })
-      ])
+      ]).then(() => {normalization.addTimeStamps(knex,'orders')})
 };
 
 exports.down = function(knex, Promise) {

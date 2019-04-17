@@ -1,3 +1,5 @@
+const normalization = require('../db/normalization')
+
 exports.up = function (knex, Promise) {
   return Promise.all([
     knex.schema.createTable('administrators', table => {
@@ -5,7 +7,7 @@ exports.up = function (knex, Promise) {
       table.string('user_name')
       table.string('password')
     })
-  ])
+  ]).then(() => {normalization.addTimeStamps(knex,'administrators')})
 }
 
 exports.down = function (knex, Promise) {

@@ -1,3 +1,4 @@
+const normalization = require('../db/normalization')
 
 exports.up = function(knex, Promise) {
     return Promise.all([
@@ -9,7 +10,7 @@ exports.up = function(knex, Promise) {
           table.foreign('product_id').references('id').inTable('products')
           table.integer('quantity').unsigned().notNullable()
         })
-      ])
+      ]).then(() => {normalization.addTimeStamps(knex,'products_in_stores')})
 };
 
 exports.down = function(knex, Promise) {
