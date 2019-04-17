@@ -10,7 +10,6 @@ exports.up = function(knex, Promise) {
           table.string('address_details')
           table.float('latitude')
           table.float('longitude')
-          table.string('photo')
         })
       ]).then(() => {normalization.addTimeStamps(knex,'stores')})
 };
