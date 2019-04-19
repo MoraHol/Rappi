@@ -26,6 +26,7 @@ router.get('/formRT', (req, res) => {
   res.render('pages/form-rt')
 })
 router.get('/', (req, res) => {
+  console.log(req.session.user)
   res.render('pages/index-page', { user: req.session.user })
 })
 
@@ -151,6 +152,9 @@ router.post('/soyrappi/auth/facebook/post', async (req, res) => {
     req.session.user = user
   })
   res.redirect('/')
+})
+router.get('/test', (req, res) => {
+  res.render('pages/test')
 })
 
 module.exports = router

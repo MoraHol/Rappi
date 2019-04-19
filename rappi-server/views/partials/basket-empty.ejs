@@ -4,15 +4,21 @@
         <div class="basket-head">
             <div class="basket-head-title"><small>Tu orden en</small>
                 <p class="basket-head-rappi">Rappi</p>
-                <!---->
-                <p class="hidden-mobile ng-star-inserted">Dirección de envío <span></span></p>
+                <!-- si el usuario esta registaradoo mostrara la dirección de entrega-->
+                  <%
+    try{
+    if(user){%>
+    <p class="hidden-mobile ng-star-inserted">Dirección de envío <span><%= user.address%></span></p>
+  <%}else{%>
+    <p class="hidden-mobile ng-star-inserted">Dirección de envío <span></span></p>
+  <%}}catch(e){}%>
             </div>
             <div>
                 <div class="close-basket"><i class="iconf-cancel hidden-mobile"></i><span>Cerrar</span></div>
             </div>
         </div>
         <div class="basket-body">
-            <!---->
+            <!-- -->
             <div class="content-basket-empty ng-star-inserted">
                 <div><i class="iconf-car-2-icon"></i>
                     <p><strong>Tu canasta está vacía</strong></p>
