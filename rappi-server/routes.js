@@ -35,7 +35,7 @@ router.get('/login/auth/google',
 // calback con informacion de usuario en google
 router.get('/login/auth/google/callback',
   passport.authenticate('googleClient', { failureRedirect: '/login' }),
-  clientController.login_process
+  clientController.loginRedirect
 )
 
 router.get('/soyrappi/auth/google', passport.authenticate('googleSoyRappi', {

@@ -1,7 +1,7 @@
 'use strict'
 const db = require('../db')
 
-exports.login_process = async (req, res) => {
+exports.loginRedirect = async (req, res) => {
   if (req.session.newuser) {
     res.render('pages/form-client', { user: req.user })
   } else {
@@ -10,4 +10,19 @@ exports.login_process = async (req, res) => {
     })
     res.redirect('/')
   }
+}
+
+exports.authenticateByGoogleStrategy = (req, accessToken, refreshToken, profile, done) => {
+  db.client.findByIdGoogleStrategy(profile).then((id) => {
+    if (id) {
+      req.session.newuser = false
+      return done(null, profile)
+    } else {
+      db.client.createUsingGoogleStrategy(profile)
+        .then(function (id) {
+          req.session.newuser = true
+          return done(null, profile)
+        })
+    }
+  })
 }

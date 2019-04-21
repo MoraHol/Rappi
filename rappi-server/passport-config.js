@@ -1,8 +1,9 @@
 var db = require('./db')
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
-const FacebokStrategy = require('passport-facebook').Strategy
-const LocalStrategy = require('passport-local').Strategy
+var FacebokStrategy = require('passport-facebook').Strategy
+var LocalStrategy = require('passport-local').Strategy
+var clientController = require('./controllers/clients')
 
 passport.serializeUser(function (user, done) {
   done(null, user)
@@ -13,30 +14,17 @@ passport.deserializeUser(function (obj, done) {
 })
 
 // configuracion de modulo passport para el logeo con google de cliente
-passport.use('googleClient', new GoogleStrategy(
-  {
-    // la configuracion es de prueba
-    clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
-    clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
-    callbackURL: '/login/auth/google/callback',
-    passReqToCallback: true
-  },
-  (req, accessToken, refreshToken, profile, done) => {
-    // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.client.findByIdGoogleStrategy(profile).then((id) => {
-      if (id) {
-        req.session.newuser = false
-        return done(null, profile)
-      } else {
-        db.client.createUsingGoogleStrategy(profile)
-          .then(function (id) {
-            req.session.newuser = true
-            return done(null, profile)
-          })
-      }
-    })
-  }
-))
+passport.use('googleClient',
+  new GoogleStrategy(
+    {
+      clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
+      clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
+      callbackURL: '/login/auth/google/callback',
+      passReqToCallback: true
+    },
+    clientController.authenticateByGoogleStrategy
+  )
+)
 // configuracion de modulo passport para el logeo con google de RappiTendero
 passport.use('googleSoyRappi', new GoogleStrategy(
   {
