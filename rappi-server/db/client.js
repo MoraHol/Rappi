@@ -1,13 +1,13 @@
 var knex = require('./knex')
 
 module.exports = {
-  findUserByIdGoogleStrategy: (profile) => {
+  findByIdGoogleStrategy: (profile) => {
     return knex('clients')
       .select()
       .where({ googleid: profile._json.sub })
       .first()
   },
-  createUserGoogleStrategy: (profile) => {
+  createUsingGoogleStrategy: (profile) => {
     return knex('clients')
       .insert({
         googleid: profile._json.sub,
@@ -17,7 +17,7 @@ module.exports = {
         photo: profile._json.picture
       })
   },
-  registerAdressGoogleStrategy: (profile) => {
+  registerAdressUsingGoogleStrategy: (profile) => {
     return knex('clients').update({
       address: profile.address,
       address_details: profile.address_details
@@ -25,13 +25,13 @@ module.exports = {
       googleid: profile._json.sub
     })
   },
-  findUserByIdFacebookStrategy: (profile) => {
+  findByIdFacebookStrategy: (profile) => {
     return knex('clients')
       .select()
       .where({ facebookid: profile.id })
       .first()
   },
-  registerAdressFacebookStrategy: (profile) => {
+  registerAdressUsingFacebookStrategy: (profile) => {
     return knex('clients').update({
       address: profile.address,
       address_details: profile.address_details
@@ -39,7 +39,7 @@ module.exports = {
       facebookid: profile._json.id
     })
   },
-  createUserFacebookStrategy: (profile) => {
+  createUsingFacebookStrategy: (profile) => {
     let name = profile._json.name.split(' ')
     const givenName = name[0]
     const familyName = name[1]

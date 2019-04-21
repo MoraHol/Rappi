@@ -23,12 +23,12 @@ passport.use('googleClient', new GoogleStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.user.findUserByIdGoogleStrategy(profile).then((id) => {
+    db.client.findByIdGoogleStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.user.createUserGoogleStrategy(profile)
+        db.client.createUsingGoogleStrategy(profile)
           .then(function (id) {
             req.session.newuser = true
             return done(null, profile)
@@ -48,12 +48,12 @@ passport.use('googleSoyRappi', new GoogleStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.rappiTendero.findRappiTenderoByIdGoogleStrategy(profile).then((id) => {
+    db.deliveryPerson.findByIdGoogleStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.rappiTendero.createRappiTenderoGoogleStrategy(profile).then((id) => {
+        db.deliveryPerson.createUsingGoogleStrategy(profile).then((id) => {
           req.session.newuser = true
           return done(null, profile)
         })
@@ -73,12 +73,12 @@ passport.use('facebookClient', new FacebokStrategy(
   },
   (req, accessToken, refreshToken, profile, done) => {
     // aqui se define el guardado o busqueda en la base de datos de este usuario
-    db.user.findUserByIdFacebookStrategy(profile).then((id) => {
+    db.client.findByIdFacebookStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.user.createUserFacebookStrategy(profile)
+        db.client.createUsingFacebookStrategy(profile)
           .then(function (id) {
             req.session.newuser = true
             return done(null, profile)
@@ -97,12 +97,12 @@ passport.use('facebookRT', new FacebokStrategy(
     passReqToCallback: true
   },
   (req, accessToken, refreshToken, profile, done) => {
-    db.rappiTendero.findRappiTenderoByIdFacebookStrategy(profile).then((id) => {
+    db.deliveryPerson.findByIdFacebookStrategy(profile).then((id) => {
       if (id) {
         req.session.newuser = false
         return done(null, profile)
       } else {
-        db.rappiTendero.createRappiTenderoFacebookStrategy(profile).then((id) => {
+        db.deliveryPerson.createUsingFacebookStrategy(profile).then((id) => {
           req.session.newuser = true
           return done(null, profile)
         })

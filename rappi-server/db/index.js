@@ -1,10 +1,10 @@
 'use strict'
 
-const user = require('./user')
-const rappiTendero = require('./rappitendero')
+const client = require('./client')
+const deliveryPerson = require('./delivery_person')
 const admin = require('./admin')
 module.exports = {
-  user,
-  rappiTendero,
+  client,
+  deliveryPerson,
   admin
 }
