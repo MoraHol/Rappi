@@ -33,7 +33,8 @@
               placeholder="Descipción de la dirección (ej. apto, torre)" required>
           </div>
         </div>
-        <button class="btn" type="submit">Enviar</button>
+        <!-- <button class="btn" type="submit">Enviar</button> -->
+        <button onclick="start()">Enviar</button>
       </form>
     </div>
   </div>
@@ -41,3 +42,16 @@
 </body>
 
 </html>
+<script>
+
+  function start(){
+    console.log("dddd")
+  }
+//   function getCoordinates(zipcode) {
+// 	https.request({
+// 		host: 'maps.googleapis.com',
+// 		path: '/maps/api/geocode/json?address=' + zipcode + '&key=[YOUR API KEY]',
+// 		method: 'GET'},
+// 		CoordinateResponse).end();
+// }
+</script>

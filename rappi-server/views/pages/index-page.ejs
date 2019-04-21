@@ -20,19 +20,36 @@
       <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
           src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
           <%
-    try{
-    if(user){%>
-  <a class="btn">
-    <span><%= user.first_name%>   </span>
-    <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
-  </a>
-  <%}else{%>
-    <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
-  <%}
-}catch(e){
-}%>
+            try{
+              if(user){%>
+                <a class="row">
+                  <div class="col-sm-6">
+                    <span><%= user.first_name%>   </span>
+                  </div>
+                  <div class="col-sm-6">
+                    <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
+                  </div>                  
+                  <div class="col-sm-4">
+                    <div class="header-address ng-star-inserted">
+                        <div>
+                          <div class="address-select"> 
+                            <div class="address ng-star-inserted"> 
+                                <a href="/formClient"><%= user.address%> </a>
+                            </div>
+                          </div>
+                        </div>
+
+                    </div>
+                      <!-- <span href="/soyrappi"><%= user.address%>   </span> -->
+                      <!-- <a href="/soyrappi" class="btn btn-outline-danger">Quiero ser Rappi</a> -->
+                  </div>
+                </a>
+              <%}else{%>
+                <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
+              <%}
+            }catch(e){
+            }%>
       <a href="/soyrappi" class="btn btn-outline-danger">Quiero ser Rappi</a>
-      
       <a href="/admin" class="btn btn-outline-danger">Administrador</a>
       <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png"
           alt=""></a>

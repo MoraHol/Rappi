@@ -4,6 +4,12 @@ const express = require('express')
 const router = express.Router()
 const passport = require('./passport-config')
 const db = require('./db')
+const googleMapsClient = require('@google/maps').createClient({
+  key: 'AIzaSyAz40j48Ql1H4uBNznBmLV4vEBHXy2elfA'
+});
+
+
+const util = require('util')
 
 // definicion de rutas (por ahora de pruba)
 // los archivos html pueden ser modificados para un motor de plantillas
@@ -18,8 +24,22 @@ router.get('/soyrappi', (req, res) => {
   res.render('pages/login-rt')
 })
 router.get('/formClient', (req, res) => {
+
+//   if (req.user) {
+//     // logged in
+// } else {
+//     // not logged in
+// }
   res.type('html')
-  res.render('pages/form-client')
+  res.render('pages/form-client', { user: req.user })
+  console.log(req.user)
+  console.log("aaaaa")
+  console.log(req.session)
+  console.log("user")
+  console.log(req.session.user)
+  console.log("address")
+  console.log(req.session.user.address)
+  
 })
 router.get('/formRT', (req, res) => {
   res.type('html')
@@ -77,6 +97,7 @@ router.get('/login/auth/facebook/callback',
     failureRedirect: '/login'
   }), async (req, res) => {
     if (req.session.newuser) {
+
       res.render('pages/form-client', {
         user: req.user
       })
@@ -126,9 +147,22 @@ router.post('/login/auth/google/post', async (req, res) => {
 router.post('/login/auth/facebook/post', async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
+
+  // Geocode an address.
+  googleMapsClient.geocode({address: req.session.passport.user.address},function(err, response) {
+    if (!err) {
+      console.log(util.inspect(response.json.results,false,null,true));
+      console.log(response.json.results[0].geometry.location.lng);
+      console.log(response.json.results[0].geometry.location.lat);
+      req.user.latitude=response.json.results[0].geometry.location.lat
+      req.user.longitude=response.json.results[0].geometry.location.lng;
+    }
+  });
+
   await db.user.registerAdressFacebookStrategy(req.user).then()
   await db.user.findUserByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
+    
   })
   res.redirect('/')
 })
