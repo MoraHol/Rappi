@@ -72,7 +72,7 @@ router.get('/login/auth/facebook/callback',
         user: req.user
       })
     } else {
-      await db.client.findUserByIdFacebookStrategy(req.user).then((row) => {
+      await db.client.findByIdFacebookStrategy(req.user).then((row) => {
         req.session.user = row
       })
       res.redirect('/')
