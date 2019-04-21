@@ -5,7 +5,7 @@ const router = express.Router()
 const passport = require('./passport-config')
 const db = require('./db')
 const googleMapsClient = require('@google/maps').createClient({
-  key: 'AIzaSyAz40j48Ql1H4uBNznBmLV4vEBHXy2elfA'
+  key: 'API-KEY'
 });
 
 
