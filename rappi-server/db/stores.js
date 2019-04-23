@@ -11,6 +11,18 @@ module.exports = {
             ) AS working_hours
         FROM stores`
     ).then(result => { return result.rows })
+  },
+
+  getProductsFromOne: (store) => {
+    return knex('products_in_stores')
+      .where ({store_id: store.id})
+      .join('products', {'products_in_stores.product_id': 'products.id'})
+      .columns({products_in_stores_id: 'products_in_stores.id'},
+               {store_id: 'products_in_stores.store_id'},
+               {product_id: 'products.id'},
+               'products.name','products.image',
+               'products.price',
+               'products_in_stores.quantity')
   }
 
 }
