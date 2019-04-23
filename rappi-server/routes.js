@@ -5,6 +5,7 @@ const router = express.Router()
 const passport = require('./passport-config')
 const clientController = require('./controllers/clients')
 const deliveryPersonController = require('./controllers/delivery_person')
+const storesController = require('./controllers/stores')
 
 router.get('/login', (req, res) => {
   res.type('html')
@@ -27,6 +28,10 @@ router.get('/', (req, res) => {
   console.log(req.session.user)
   res.render('pages/index-page', { user: req.session.user })
 })
+
+// TEST
+router.get('/stores', storesController.getFromDistance)
+//
 
 // Clients
 router.get('/login/auth/google',
