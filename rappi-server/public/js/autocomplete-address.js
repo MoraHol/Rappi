@@ -33,8 +33,8 @@ document.body.onload = () => {
     marker.setPosition(place.geometry.location)
     marker.setVisible(true)
     document.getElementById('lat').value = marker.getPosition().lat()
-      document.getElementById('lng').value = marker.getPosition().lng()
-    marker.addListener('dragend', ()=>{
+    document.getElementById('lng').value = marker.getPosition().lng()
+    marker.addListener('dragend', () => {
       document.getElementById('lat').value = marker.getPosition().lat()
       document.getElementById('lng').value = marker.getPosition().lng()
     })

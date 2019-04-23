@@ -17,7 +17,7 @@ function isOpen (store, today) {
 }
 
 exports.opened = () => {
-    db.stores.getAll().then(stores => {
+  db.stores.getAll().then(stores => {
     var today = new Date()
     console.log(today)
     var opened = stores.filter(stores => isOpen(stores, today))

@@ -56,6 +56,8 @@ exports.loginRedirectFacebookStrategy = async (req, res) => {
 exports.setAddressGoogleStrategy = async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
+  req.user.latitude = req.body.lat
+  req.user.longitude = req.body.lng
   await db.client.registerAdressUsingGoogleStrategy(req.user).then()
   await db.client.findByIdGoogleStrategy(req.user).then((user) => {
     req.session.user = user
@@ -66,6 +68,8 @@ exports.setAddressGoogleStrategy = async (req, res) => {
 exports.setAddressFacebookStrategy = async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
+  req.user.latitude = req.body.lat
+  req.user.longitude = req.body.lng
   await db.client.registerAdressUsingFacebookStrategy(req.user).then()
   await db.client.findByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
