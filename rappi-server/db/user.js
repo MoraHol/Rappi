@@ -20,7 +20,9 @@ module.exports = {
   registerAdressGoogleStrategy: (profile) => {
     return knex('clients').update({
       address: profile.address,
-      address_details: profile.address_details
+      address_details: profile.address_details,
+      latitude: profile.latitude,
+      longitude: profile.longitude
     }).where({
       googleid: profile._json.sub
     })
@@ -34,7 +36,9 @@ module.exports = {
   registerAdressFacebookStrategy: (profile) => {
     return knex('clients').update({
       address: profile.address,
-      address_details: profile.address_details
+      address_details: profile.address_details,
+      latitude: profile.latitude,
+      longitude: profile.longitude
     }).where({
       facebookid: profile._json.id
     })

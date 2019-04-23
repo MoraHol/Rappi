@@ -117,6 +117,8 @@ router.post('/admin/home', passport.authenticate('admin', { failureFlash: true }
 router.post('/login/auth/google/post', async (req, res) => {
   req.user.address = req.body.address
   req.user.address_details = req.body.address_details
+  req.user.latitude = req.body.lat
+  req.user.longitude = req.body.lng
   await db.user.registerAdressGoogleStrategy(req.user).then()
   await db.user.findUserByIdGoogleStrategy(req.user).then((user) => {
     req.session.user = user
