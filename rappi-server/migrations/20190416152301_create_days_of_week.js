@@ -7,13 +7,13 @@ exports.up = function (knex, Promise) {
     })
   ]).then(function () {
     return knex('days_of_week').insert([
+      { day_name: 'Sunday' },
       { day_name: 'Monday' },
       { day_name: 'Tuesday' },
       { day_name: 'Wednesday' },
       { day_name: 'Thursday' },
       { day_name: 'Friday' },
-      { day_name: 'Saturday' },
-      { day_name: 'Sunday' }
+      { day_name: 'Saturday' }
     ])
   })
 }
