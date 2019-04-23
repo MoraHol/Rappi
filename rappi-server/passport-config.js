@@ -40,19 +40,19 @@ passport.use('facebookClient',
   )
 )
 
-passport.use('googleSoyRappi', 
+passport.use('googleSoyRappi',
   new GoogleStrategy(
     {
       clientID: '211157800680-e3eaf3b2fjrq8iga50n240k980prniil.apps.googleusercontent.com',
       clientSecret: 'XGF0o_67kmQQlOIUdFQHCtL1',
       callbackURL: '/soyrappi/auth/google/callback',
       passReqToCallback: true
-    }, 
+    },
     deliveryPersonController.authenticateByGoogleStrategy
   )
 )
 
-passport.use('facebookRT', 
+passport.use('facebookRT',
   new FacebokStrategy(
     {
       clientID: '763631774020039',
@@ -61,7 +61,7 @@ passport.use('facebookRT',
       enableProof: true,
       profileFields: ['id', 'displayName', 'photos', 'email', 'address', 'friends'],
       passReqToCallback: true
-    }, 
+    },
     deliveryPersonController.authenticateByFacebookStrategy
   )
 )
