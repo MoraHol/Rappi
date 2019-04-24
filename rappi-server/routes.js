@@ -30,7 +30,7 @@ router.get('/', (req, res) => {
 })
 
 // TEST
-router.get('/stores', storesController.getFromDistance)
+router.get('/stores', storesController.getOpenByDistance)
 //
 
 // Clients

@@ -34,7 +34,7 @@ exports.isOpen = (store, today) => {
   return true
 }
 
-exports.getFromDistance = async (req, res) => {
+exports.getOpenByDistance = async (req, res) => {
   var stores = await db.stores.getAll()
   const today = new Date()
   var opened = stores.filter(stores => exports.isOpen(stores, today))
