@@ -5,7 +5,7 @@ exports.up = function (knex, Promise) {
     knex.schema.createTable('products', table => {
       table.increments('id').primary()
       table.string('name').notNullable()
-      table.text('image')
+      table.string('photo')
       table.integer('price').notNullable()
     })
   ]).then(() => { normalization.addTimeStamps(knex, 'products') })
