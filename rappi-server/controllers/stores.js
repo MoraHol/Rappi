@@ -1,7 +1,25 @@
 'use strict'
 const db = require('../db')
 
-function isOpen (store, today) {
+function getDistanceFromLatLonInKm (lat1, lon1, lat2, lon2) {
+  var R = 6371 // Radius of the earth in km
+  var dLat = deg2rad(lat2 - lat1) // deg2rad below
+  var dLon = deg2rad(lon2 - lon1)
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2)
+
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  var d = R * c // Distance in km
+  return d
+}
+
+function deg2rad (deg) {
+  return deg * (Math.PI / 180)
+}
+
+exports.isOpen = (store, today) => {
   var dayNumber = today.getDay() + 1
   var workingDay = store.working_hours.find(workingHour => workingHour.day_id === dayNumber)
   if (workingDay == null) {
@@ -16,45 +34,29 @@ function isOpen (store, today) {
   return true
 }
 
-function getDistanceFromLatLonInKm(lat1,lon1,lat2,lon2) {
-  var R = 6371; // Radius of the earth in km
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lon2-lon1); 
-  var a = 
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    Math.sin(dLon/2) * Math.sin(dLon/2)
-    ; 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-  var d = R * c; // Distance in km
-  return d;
-}
-
-function deg2rad(deg) {
-  return deg * (Math.PI/180)
-}
-
-exports.getFromDistance = async (req,res) => {
-  await db.stores.getAll().then(stores => {
-    const today = new Date()
-    var opened = stores.filter(stores => isOpen(stores, today))
-    for (let i = 0; i < opened.length; i++) {
-      var store = opened[i]
-      store.distance = getDistanceFromLatLonInKm(store.latitude,store.longitude, req.session.user.latitude, req.session.user.longitude)
-      opened[i] = store
+exports.getFromDistance = async (req, res) => {
+  var stores = await db.stores.getAll()
+  const today = new Date()
+  var opened = stores.filter(stores => exports.isOpen(stores, today))
+  for (let i = 0; i < opened.length; i++) {
+    var store = opened[i]
+    store.distance = getDistanceFromLatLonInKm(store.latitude, store.longitude, req.session.user.latitude, req.session.user.longitude)
+    opened[i] = store
+  }
+  opened.sort((a, b) => {
+    if (a.distance > b.distance) {
+      return 1
     }
-    opened.sort((a, b)=>{
-      if (a.distance > b.distance) {
-        return 1;
-      }
-      if (a.distance < b.distance) {
-        return -1;
-      }
-      return 0;
-    })
-    req.session.stores = opened
+    if (a.distance < b.distance) {
+      return -1
+    }
+    return 0
   })
-  res.json(req.session.stores)
+  res.json(opened)
 }
 
-
+exports.updateProductQuantities = (productsToBuy) => {
+  productsToBuy.forEach(async product => {
+    await db.stores.updateQuantityOfProduct(product)
+  })
+}

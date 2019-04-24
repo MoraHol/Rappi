@@ -1,5 +1,6 @@
 'use strict'
 const db = require('../db')
+const storesController = require('./stores')
 
 exports.authenticateByGoogleStrategy = (req, accessToken, refreshToken, profile, done) => {
   db.client.findByIdGoogleStrategy(profile).then((id) => {
@@ -75,4 +76,24 @@ exports.setAddressFacebookStrategy = async (req, res) => {
     req.session.user = user
   })
   res.redirect('/')
+}
+
+exports.createOrder = async (req, res) => {
+  const today = new Date()
+  if (!storesController.isOpen(req.params.cart.store, today)) {
+    // La tienda esta cerrada
+  }
+
+  var productsInStore = await db.stores.getProductsFromOne(req.params.cart.store)
+  req.params.cart.products.forEach(productInCart => {
+    var actualProductInStore = productsInStore.find(productInStock =>
+      productInStock.products_in_stores_id === productInCart.products_in_stores_id)
+    if (actualProductInStore.quantity < productInCart.quantity) {
+      // no hay la cantidad de producto solicitada
+    }
+  })
+
+  db.client.createOrder(req.params.user, req.params.cart).then(
+    storesController.updateProductQuantities(req.params.cart.products)
+  )
 }
