@@ -25,12 +25,12 @@ router.get('/formRT', (req, res) => {
   res.render('pages/form-rt')
 })
 router.get('/', (req, res) => {
-  console.log(req.session.user)
   res.render('pages/index-page', { user: req.session.user })
 })
 
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
+
 //
 
 // Clients

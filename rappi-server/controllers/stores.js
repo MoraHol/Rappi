@@ -41,6 +41,9 @@ exports.getOpenByDistance = async (req, res) => {
   for (let i = 0; i < opened.length; i++) {
     var store = opened[i]
     store.distance = getDistanceFromLatLonInKm(store.latitude, store.longitude, req.session.user.latitude, req.session.user.longitude)
+    store.distance = Math.round( store.distance * 10 ) / 10 
+    store.deliveryTime = 20 + (Math.round(store.distance) * 3) //tiempo es 20 minutos mas 3 minutos por kilometro
+    store.deliveryPrice = store.deliveryTime * 100 //precio es 100 pesos por minuto
     opened[i] = store
   }
   opened.sort((a, b) => {
@@ -52,7 +55,7 @@ exports.getOpenByDistance = async (req, res) => {
     }
     return 0
   })
-  res.json(opened)
+  res.render('pages/stores', { user: req.session.user, stores: opened })
 }
 
 exports.updateProductQuantities = (productsToBuy) => {

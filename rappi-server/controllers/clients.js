@@ -39,7 +39,7 @@ exports.loginRedirectGoogleStrategy = async (req, res) => {
     await db.client.findByIdGoogleStrategy(req.user).then((row) => {
       req.session.user = row
     })
-    res.redirect('/')
+    res.redirect('/stores')
   }
 }
 
@@ -50,7 +50,7 @@ exports.loginRedirectFacebookStrategy = async (req, res) => {
     await db.client.findByIdFacebookStrategy(req.user).then((row) => {
       req.session.user = row
     })
-    res.redirect('/')
+    res.redirect('/stores')
   }
 }
 
@@ -63,7 +63,7 @@ exports.setAddressGoogleStrategy = async (req, res) => {
   await db.client.findByIdGoogleStrategy(req.user).then((user) => {
     req.session.user = user
   })
-  res.redirect('/')
+  res.redirect('/stores')
 }
 
 exports.setAddressFacebookStrategy = async (req, res) => {
@@ -75,7 +75,7 @@ exports.setAddressFacebookStrategy = async (req, res) => {
   await db.client.findByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
   })
-  res.redirect('/')
+  res.redirect('/stores')
 }
 
 exports.createOrder = async (req, res) => {
