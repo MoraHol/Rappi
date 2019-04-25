@@ -22,36 +22,7 @@
 
 <body class="page">
   <% include ../partials/header-simple%>
-  <div class="form-adress">
-    <div class="card" style="max-width: 600px; min-width:320px;">
-      <h2 class="text-center" style="font-size: 20px;">información de dirección</h2>
-      <h3 class="text-center" style="font-size: 16px;"><%= user.displayName%> </h3>
-      <form action="post" method="post">
-        <div class="card adress">
-          <div class="form-group">
-            <label for="address">Dirección:</label>
-            <input type="text" class="form-control" name="address" placeholder="Ingresa tu direccion" required id="autocomplete">
-          </div>
-        </div>
-        <div class="card adress">
-          <div class="form-group">
-            <label for="address_details">Piso / Oficina / Apto / Depto</label>
-            <input type="text" class="form-control" name="address_details"
-              placeholder="Descipción de la dirección (ej. apto, torre)" required>
-          </div>
-        </div>
-        <div class="container" id="map">
-          
-        </div>
-        <button class="btn" type="submit">Enviar</button>
-        <input type="text" name="lat" id="lat" style="display:none">
-        <input type="text" name="lng" id="lng" style="display:none">
-      </form>
-    </div>
-  </div>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBsxH7FaWLwfr3g6TbFBtczdb2x-X3prkw&libraries=places"></script>
-<script src="/js/autocomplete-address.js">
-</script>
+  <%include ../partials/change-address%>
 </body>
 
 </html>

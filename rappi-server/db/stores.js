@@ -10,7 +10,9 @@ module.exports = {
                 FROM (SELECT day_id, time_open, time_closed FROM stores_working_hours WHERE store_id = stores.id) AS working_hours_table
             ) AS working_hours
         FROM stores`
-    ).then(result => { return result.rows })
+    ).then(result => {
+      return result.rows
+    })
   },
 
   getProductsFromOne: (store) => {
@@ -29,6 +31,10 @@ module.exports = {
     return knex('products_in_stores')
       .where({ id: product.products_in_stores_id })
       .decrement({ quantity: product.quantity })
+  },
+
+  findStoreById: (id) => {
+    return knex('stores').where({ id: id }).first()
   }
 
 }

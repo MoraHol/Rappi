@@ -30,13 +30,14 @@ router.get('/', (req, res) => {
 
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
-
+router.get('/stores/:id', storesController.getStore)
 //
 
 // Clients
 router.get('/login/auth/google',
   passport.authenticate('googleClient', { scope: ['profile', 'email'] }),
-  () => {}
+  () => {
+  }
 )
 
 router.get('/login/auth/google/callback',
@@ -46,7 +47,8 @@ router.get('/login/auth/google/callback',
 
 router.get('/login/auth/facebook',
   passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages', 'email'] }),
-  () => {}
+  () => {
+  }
 )
 
 router.get('/login/auth/facebook/callback',
@@ -65,7 +67,8 @@ router.post('/login/auth/facebook/post',
 // Delivery persons
 router.get('/soyrappi/auth/google',
   passport.authenticate('googleSoyRappi', { scope: ['profile', 'email'] }),
-  () => {}
+  () => {
+  }
 )
 
 router.get('/soyrappi/auth/google/callback',
@@ -75,7 +78,8 @@ router.get('/soyrappi/auth/google/callback',
 
 router.get('/soyrappi/auth/facebook',
   passport.authenticate('facebookRT', { scope: ['user_friends', 'manage_pages', 'email'] }),
-  () => {}
+  () => {
+  }
 )
 
 router.get('/soyrappi/auth/facebook/callback',
@@ -98,7 +102,9 @@ router.get('/admin', (req, res) => {
 
 router.post('/admin/home',
   passport.authenticate('admin', { failureFlash: true }),
-  (req, res) => { res.send('hola administrador ' + req.user.user_name) }
+  (req, res) => {
+    res.send('hola administrador ' + req.user.user_name)
+  }
 )
 
 module.exports = router

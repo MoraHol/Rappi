@@ -87,7 +87,8 @@
       if(stores){ %>
     <div class="by-stores">
       <div class="by-stores-breadcrumbs ng-star-inserted">
-        <h1><span>Restaurantes</span><span class="ng-star-inserted"><span class="ng-star-inserted"> en tu zona</span></span></h1>
+        <h1><span>Restaurantes</span><span class="ng-star-inserted"><span class="ng-star-inserted"> en tu
+              zona</span></span></h1>
       </div>
       <app-store-list>
         <div class="store-list-boxes">
@@ -95,14 +96,16 @@
           <div class="ng-star-inserted">
             <div class="store-item-box">
               <app-store-item>
-                <a class="store-item ng-star-inserted" id="<%= store.id%>">
+                <a class="store-item ng-star-inserted" id="<%= store.id%>" href="/stores/<%= store.id%>">
                   <span class="store-background ng-star-inserted">
-                    <img class="logo-store"  src="<%= store.photo%>"></span>
+                    <img class="logo-store" src="<%= store.photo%>"></span>
                   <span class="store-info ng-star-inserted">
                     <span class="store-name"><%= store.name%></span>
                     <span class="store-tags"> <%= store.distance%> Kilometros </span>
-                    <span class="store-filters"><span class="price ng-star-inserted"> $&nbsp;<%= store.deliveryPrice %> </span>
-                      <span class="store-eta ng-star-inserted"><span class="separator">●</span> <%= store.deliveryTime %> min </span>
+                    <span class="store-filters"><span class="price ng-star-inserted"> $&nbsp;<%= store.deliveryPrice %>
+                      </span>
+                      <span class="store-eta ng-star-inserted"><span class="separator">●</span>
+                        <%= store.deliveryTime %> min </span>
                     </span>
                   </span>
                 </a>
@@ -118,10 +121,6 @@
     <%}
       }catch(e){
     }%>
-
-
-
-
 
     <div class="head-footer" id="head-footer">
       <div>
@@ -145,7 +144,7 @@
     </div>
   </div>
   <% include ../partials/basket-empty%>
-  
+
 </body>
 
 </html>
