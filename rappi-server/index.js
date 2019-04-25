@@ -36,8 +36,8 @@ app.use(express.static('public'))
 // agregador de rutas al server
 app.use('/', router)
 
-app.listen(process.env.PORT || 3000, (err) => {
-  console.log(process.env.PORT)
+let port = process.env.PORT || 3000
+app.listen(port, (err) => {
   if (err) throw err
-  console.log('server runnig  http://localhost:3000/')
+  console.log(`server runnig  http://localhost:/${port}`)
 })

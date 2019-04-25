@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "standard",
     "start": "node index.js",
-    "start-dev": "nodemon index.js"
+    "start-dev": "nodemon index.js",
+    "migrate": "knex migrate:latest && knex seed:run",
+    "migrate-rollback": "knex migrate:rollback"
   },
   "repository": {
     "type": "git",
@@ -25,8 +27,12 @@
     "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
+    "knex": "^0.16.3",
     "passport": "^0.4.0",
-    "passport-google-oauth": "^2.0.0"
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.9.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.10",
