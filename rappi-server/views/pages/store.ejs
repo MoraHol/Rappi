@@ -2,55 +2,260 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <% include ../partials/head-boostrap%>
-    <title><%= store.name%></title>
-    <link rel="icon" href="https://images.rappi.com/web/rappi_favicon.png">
-    <link rel="stylesheet" type="text/css" href="/css/index-page.css">
-    <link rel="stylesheet" type="text/css" href="/css/shopping_car.css">
-    <link rel="stylesheet" type="text/css" href="/css/products-basket.css">
-    <link rel="stylesheet" type="text/css" href="/css/products.css">
-    <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
-    <link rel="stylesheet" type="text/css" href="/css/stores.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <% include ../partials/head-boostrap%>
+  <title><%= store.name%></title>
+  <link rel="icon" href="https://images.rappi.com/web/rappi_favicon.png">
+  <link rel="stylesheet" type="text/css" href="/css/index-page.css">
+  <link rel="stylesheet" type="text/css" href="/css/shopping_car.css">
+  <link rel="stylesheet" type="text/css" href="/css/products-basket.css">
+  <link rel="stylesheet" type="text/css" href="/css/products.css">
+  <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
+  <link rel="stylesheet" type="text/css" href="/css/stores.css">
 </head>
 
 <body>
-    <div class="header-login">
-        <nav class="navbar navbar-light bg-bg-2">
-            <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
-                    src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
-            <%
+  <div class="header-login">
+    <nav class="navbar navbar-light bg-bg-2">
+      <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
+          src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
+      <%
         try{
         if(user){%>
-            <a class="btn">
-                <span><%= user.first_name%> </span>
-                <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
-            </a>
-            <%}else{%>
-            <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
-            <%}
+      <a class="btn">
+        <span><%= user.first_name%> </span>
+        <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
+      </a>
+      <% }else{ %>
+      <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
+      <% }
     }catch(e){
-    }%>
-            <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""></a>
-            <hr>
-        </nav>
-    </div>
-    <div class="container">
-        <% products.forEach(product => { %>
-        <div  class="card" style="width:200px;float: left; margin:10px;" >
-            <img src="<%= product.photo%>?d=200x200&e=png" alt="<%= product.name%>" style="max-width: 100%; height: 200px; margin: 0 auto;">
-            <div class="card-body">
-                <div class="card-title"><%= product.name%></div>
-                <div class="card-text">$ <%= product.price%><br>
-                    <a class="btn btn-primary">Comprar</a>
-                </div>
-            </div>
-        </div>
-        <%})%>
-    </div>
-    <% include ../partials/basket-empty%>
+    } %>
+      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""></a>
+      <hr>
+    </nav>
+  </div>
+  <div class="container">
+    <% products.forEach(product => { %>
+    <%- include('../partials/product',{product})%>
+    <% }) %>
+  </div>
+  <div id="products_object" hidden><%= JSON.stringify(products)%></div>
+  <% include ../partials/basket-empty%>
+  <script>
+    let storeId = <%= store.id%>
+    let products = JSON.parse($('#products_object').html())
 
+    let stores
+    let store
+    $("document").ready(() => {
+      $(".btn-buy").click(function () {
+        addProduct($(this).attr('id'))
+      })
+      renderShoppingCar()
+    })
+
+    function addProduct(id) {
+      store = findStoreLocalStorage()
+      if ($.isEmptyObject(store)) {
+        store.id = storeId
+        store.basket = []
+        store.basket.push({
+          quantity: 1,
+          id_product: parseInt(id)
+        })
+        stores.push(store)
+      } else {
+        let flag = false
+        store.basket.forEach((productData) => {
+          if (productData.id_product === parseInt(id)) {
+            productData.quantity += 1
+            flag = true
+          }
+        })
+        if (!flag) {
+          store.basket.push({
+            quantity: 1,
+            id_product: parseInt(id)
+          })
+        }
+      }
+      saveLocalStorage(store)
+    }
+
+
+    function calculateTotal() {
+      let total = 0
+      let product
+      store = findStoreLocalStorage()
+      if (!$.isEmptyObject(store)) {
+        store.basket.forEach((productData) => {
+          product = findProductById(productData.id_product)
+          total += productData.quantity * product.price
+        })
+      }
+      return total
+    }
+
+    function renderShoppingCar() {
+      let car = `<li class="ng-star-inserted">
+                        <div class="cont-product-header ng-star-inserted">
+                            <div class="store-basket-header">
+                                <!---->
+                                <div class="cont-img ng-star-inserted"><img
+                                        src="<%= store.photo%>?d=100x100&amp;e=webp"
+                                        alt="<%=store.name%>"></div>
+                                <div class="cont-info">
+                                    <p><b><%=store.name%></b><strong>$&nbsp;<span class="currency">${calculateTotal()}</span></strong></p>
+                                </div>
+                            </div>
+                            <app-higher-purchases>
+                                <!---->
+                                <!---->
+                            </app-higher-purchases>
+                            <div class="store-basket-products">
+                            
+                            </div>
+                        </div>
+                        <div class="border-space"></div>
+                    </li>`
+      let basketEmpty = ` <div class="content-basket-empty ng-star-inserted">
+                <div><i class="iconf-car-2-icon"></i>
+                    <p><strong>Tu canasta está vacía</strong></p>
+                    <p>Te invitamos a volver a nuestras tiendas y agregar productos a tu canasta</p>
+                </div>
+            </div>`
+      store = findStoreLocalStorage()
+      if (!$.isEmptyObject(store)) {
+        $('.price-description .currency').text(calculateTotal())
+        $('.btn-go-checkout button').attr('disabled', false)
+        $('div.basket-body').empty()
+        if (store.basket.length === 0) {
+          $('div.basket-body').append(basketEmpty)
+          return
+        }
+        $('div').remove('.content-basket-empty')
+        $('div.basket-body').append('<div class="cont-products-basket"><ul></ul></div>')
+        $('ul:first').append(car)
+        store.basket.forEach(productData => {
+          let product = findProductById(productData.id_product)
+          let productHtml = `<div class="ng-star-inserted">
+                                    <app-product-basket>
+                                        <div class="item-basket hover-calculator">
+                                            <div class="cont-img">
+                                                <div class="width-img"><img
+                                                        src="${product.photo}?d=200x200&amp;e=webp">
+                                                </div>
+                                            </div>
+                                            <div class="product-basket-stores">
+                                                <div class="align-content">
+                                                    <div class="cont-info-item ng-star-inserted"><strong>${product.name}</strong>
+                                                        <p class="description-product"></p><span
+                                                            class="topping-product"></span>
+                                                        <!----><span class="delete" id="${productData.id_product}">Eliminar</span>
+                                                    </div>
+                                                    <div class="cont-calculator ng-star-inserted">
+                                                        <app-counter-product>
+                                                            <div class="calculator"><button class="subtract"
+                                                                    type="button" id="${productData.id_product}">
+                                                                    <div><span class="ng-star-inserted"><i
+                                                                                class="iconf-delete"></i></span></div>
+                                                                </button>
+                                                                <div>${productData.quantity}</div><button id="${productData.id_product}" class="plus" type="button">
+                                                                    <div>+</div>
+                                                                </button>
+                                                            </div>
+                                                        </app-counter-product>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="price-item"><span>$&nbsp;</span><span class="currency">${product.price * productData.quantity}</span></div>
+                                        </div>
+                                    </app-product-basket>
+                                </div>`
+          $('div.store-basket-products').append(productHtml)
+          $('.price-description .currency').text(calculateTotal())
+          $('.currency').toNumber({
+            decimalSymbol: ','
+          }).formatCurrency({
+            roundToDecimalPlace: 0,
+            symbol: '',
+            digitGroupSymbol: '.'
+          })
+        })
+        $('button.subtract').click(function () {
+          deleteProduct($(this).attr('id'))
+
+        })
+        $('button.plus').click(function () {
+          addProduct($(this).attr('id'))
+
+        })
+        $('span.delete').click(function () {
+          deleteAllStockProduct($(this).attr('id'))
+        })
+      }
+    }
+
+    function deleteProduct(id) {
+      let store = findStoreLocalStorage()
+      store.basket.forEach((productData) => {
+        if (productData.id_product === parseInt(id)) {
+          if (productData.quantity - 1 <= 0) {
+            let pos = store.basket.indexOf(productData)
+            store.basket.splice(pos, 1)
+          } else {
+            productData.quantity -= 1
+          }
+        }
+      })
+      saveLocalStorage(store)
+    }
+
+    function deleteAllStockProduct(id) {
+      let store = findStoreLocalStorage()
+      store.basket.forEach((productData) => {
+        if (productData.id_product === parseInt(id)) {
+          let pos = store.basket.indexOf(productData)
+          store.basket.splice(pos, 1)
+        }
+      })
+      saveLocalStorage(store)
+    }
+
+    function saveLocalStorage(store) {
+      stores.forEach(storeData => {
+        if (storeData.id === storeId) {
+          storeData = store
+        }
+      })
+      window.localStorage.setItem('stores', JSON.stringify(stores))
+      renderShoppingCar()
+    }
+
+    function findProductById(id) {
+      let productResult
+      products.forEach((product) => {
+        if (product.products_in_stores_id === id) {
+          productResult = product
+        }
+      })
+      return productResult
+    }
+
+    function findStoreLocalStorage() {
+      let store = {}
+      stores = JSON.parse(window.localStorage.getItem('stores')) == null ? [] : JSON.parse(window.localStorage
+        .getItem('stores'))
+      stores.forEach(storeData => {
+        if (storeData.id === storeId) {
+          store = storeData
+        }
+      })
+      return store
+    }
+  </script>
 </body>
 
 </html>
