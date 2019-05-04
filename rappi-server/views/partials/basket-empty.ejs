@@ -1,0 +1,46 @@
+<div class="basket-container">
+    <div class="global-overlay-popup"></div>
+    <div class="basket-box">
+        <div class="basket-head">
+            <div class="basket-head-title"><small>Tu orden en</small>
+                <p class="basket-head-rappi">Rappi</p>
+                <!-- si el usuario esta registaradoo mostrara la dirección de entrega-->
+                  <%
+    try{
+    if(user){%>
+    <p class="hidden-mobile ng-star-inserted">Dirección de envío <span><%= user.address%></span></p>
+  <%}else{%>
+    <p class="hidden-mobile ng-star-inserted">Dirección de envío <span></span></p>
+  <%}}catch(e){}%>
+            </div>
+            <div>
+                <div class="close-basket"><i class="iconf-cancel hidden-mobile"></i><span>Cerrar</span></div>
+            </div>
+        </div>
+        <div class="basket-body">
+            <!-- -->
+            <div class="content-basket-empty ng-star-inserted">
+                <div><i class="iconf-car-2-icon"></i>
+                    <p><strong>Tu canasta está vacía</strong></p>
+                    <p>Te invitamos a volver a nuestras tiendas y agregar productos a tu canasta</p>
+                </div>
+            </div>
+        </div>
+        <div class="basket-footer">
+            <div class="border-space"></div>
+            <div class="cont-footer-header">
+                <div class="cont-total">
+                    <ul>
+                        <li class="total">
+                            <p class="item-description">Subtotal:</p>
+                            <p class="price-description">$&nbsp;<span class="currency">0</span></p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="btn-go-checkout"><button type="button" disabled="">Continuar</button></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/basket.js"></script>
+<script src="/js/lib/jquery.formatCurrency-1.4.0.min.js"></script>

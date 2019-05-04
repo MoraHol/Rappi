@@ -1,0 +1,119 @@
+.calculator {
+    font-size: 0;
+    position: relative
+}
+
+.calculator::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 34px;
+    background: #fff;
+    z-index: 1;
+    box-shadow: rgba(51, 51, 51, .15) 0 0 0;
+    border-radius: 4px;
+    transition: .3s;
+    width: 40px
+}
+
+.calculator button,
+.calculator>div {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+    width: 54px;
+    text-transform: lowercase;
+    height: 34px;
+    font-size: 14px;
+    text-align: center
+}
+
+.calculator>div {
+    border: 1px solid #e5edef;
+    border-radius: 4px;
+    font-weight: 700;
+    position: relative;
+    z-index: 3;
+    line-height: 34px;
+    transition: .3s
+}
+
+.calculator button {
+    background: #fff;
+    top: 0;
+    position: absolute;
+    color: #1ec69f;
+    z-index: -1;
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s
+}
+
+.calculator button div {
+    margin: 3px;
+    border-radius: 4px;
+    height: 28px;
+    line-height: 28px;
+    font-weight: 700;
+    width: 30px
+}
+
+.calculator button.subtract .iconf-delete {
+    font-size: 20px;
+    line-height: 28px
+}
+
+.calculator button.subtract div {
+    float: left
+}
+
+.calculator button.plus div {
+    float: right
+}
+
+.calculator button:hover {
+    color: #fff
+}
+
+.calculator button:hover div {
+    background: #1ec69f
+}
+
+.calculator button.subtract {
+    left: 0;
+    border-radius: 4px 0 0 4px
+}
+
+.calculator button.plus {
+    right: 0;
+    border-radius: 0 4px 4px 0
+}
+
+@media only screen and (max-width:1024px),
+screen and (orientation:portrait) {
+
+    .calculator button,
+    .calculator::after,
+    .calculator>div {
+        height: 30px
+    }
+
+    .calculator>div {
+        line-height: 30px
+    }
+
+    .calculator button {
+        width: 34px
+    }
+
+    .calculator button.subtract .iconf-delete {
+        line-height: 25px
+    }
+
+    .calculator button div {
+        width: 27px;
+        line-height: 24px;
+        height: 24px
+    }
+}

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <% include ../partials/head-boostrap%>
+  <title>Rappi 24/7</title>
+  <link rel="icon" href="https://images.rappi.com/web/rappi_favicon.png">
+  <link rel="stylesheet" type="text/css" href="/css/index-page.css">
+  <link rel="stylesheet" type="text/css" href="/css/shopping_car.css">
+  <link rel="stylesheet" type="text/css" href="/css/products-basket.css">
+  <link rel="stylesheet" type="text/css" href="/css/products.css">
+  <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
+  <link rel="stylesheet" type="text/css" href="/css/stores.css">
+</head>
+
+<body>
+  <div class="header-login">
+    <nav class="navbar navbar-light bg-bg-2">
+      <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
+          src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
+      <%
+    try{
+    if(user){%>
+      <a class="btn">
+        <span><%= user.first_name%> </span>
+        <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
+      </a>
+      <%}else{%>
+      <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
+      <%}
+}catch(e){
+}%>
+      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""></a>
+      <hr>
+    </nav>
+  </div>
+  <div class="bd-example">
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+        <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="/img/slide-1.jpg" class="d-block w-100" alt="..." style="height:300px;">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="/img/slide-2.jpg" class="d-block w-100" alt="..." style="height:300px;">
+          <div class="carousel-caption d-none d-md-block">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- rappi lemas -->
+    <div class="cont-values ng-star-inserted">
+      <ul class="value-propositions">
+        <li>
+          <div class="icon-img"><img alt="" src="https://images.rappi.com/web/ico-tiempo.png?e=webp"></div>
+          <div class="text-value"><span>Ahorra tiempo</span>
+            <p>Recibe tu mercado en menos de 1 hora</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon-img"><img alt="" src="https://images.rappi.com/web/ico-amor.png?e=webp"></div>
+          <div class="text-value"><span>En manos expertas</span>
+            <p>Un shopper selecciona tus productos con amor</p>
+          </div>
+        </li>
+        <li>
+          <div class="icon-img"><img alt="" src="https://images.rappi.com/web/ico-calidad.png?e=webp"></div>
+          <div class="text-value"><span>Calidad 100%</span>
+            <p>Si no te gusta el estado de un producto, ¡no lo pagas!</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+
+
+    <%
+    try{
+      if(stores){ %>
+    <div class="by-stores">
+      <div class="by-stores-breadcrumbs ng-star-inserted">
+        <h1><span>Restaurantes</span><span class="ng-star-inserted"><span class="ng-star-inserted"> en tu
+              zona</span></span></h1>
+      </div>
+      <app-store-list>
+        <div class="store-list-boxes">
+          <% stores.forEach(store => { %>
+          <div class="ng-star-inserted">
+            <div class="store-item-box">
+              <app-store-item>
+                <a class="store-item ng-star-inserted" id="<%= store.id%>" href="/stores/<%= store.id%>">
+                  <span class="store-background ng-star-inserted">
+                    <img class="logo-store" src="<%= store.photo%>"></span>
+                  <span class="store-info ng-star-inserted">
+                    <span class="store-name"><%= store.name%></span>
+                    <span class="store-tags"> <%= store.distance%> Kilometros </span>
+                    <span class="store-filters"><span class="price ng-star-inserted"> $&nbsp;<%= store.deliveryPrice %>
+                      </span>
+                      <span class="store-eta ng-star-inserted"><span class="separator">●</span>
+                        <%= store.deliveryTime %> min </span>
+                    </span>
+                  </span>
+                </a>
+              </app-store-item>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </app-store-list>
+    </div>
+    <%}else{%>
+
+    <%}
+      }catch(e){
+    }%>
+
+    <div class="head-footer" id="head-footer">
+      <div>
+        <div class="cont-img"><i class="iconf-ico-entrega"></i></div>
+        <div class="cont-text">
+          <p>Entregas inmediatas con seguimiento en vivo</p>
+        </div>
+      </div>
+      <div>
+        <div class="cont-img"><i class="iconf-ico-pagos"></i></div>
+        <div class="cont-text">
+          <p>Paga en efectivo o tarjeta, sin mínimo de compra.</p>
+        </div>
+      </div>
+      <div>
+        <div class="cont-img"><i class="iconf-ico-felices"></i></div>
+        <div class="cont-text">
+          <p>Más de 5 millones de pedidos entregados</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% include ../partials/basket-empty%>
+
+</body>
+
+</html>

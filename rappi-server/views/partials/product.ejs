@@ -1,0 +1,10 @@
+<div class="card" style="width:200px;float: left; margin:10px;">
+            <img src="<%= product.photo%>?d=200x200&e=png" alt="<%= product.name%>"
+                style="max-width: 100%; height: 200px; margin: 0 auto;">
+            <div class="card-body">
+                <div class="card-title"><%= product.name%></div>
+                <div class="card-text">$ <%= product.price%><br>
+                    <a class="btn btn-primary btn-buy" id="<%= product.products_in_stores_id%>">Comprar</a>
+                </div>
+            </div>
+        </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Rappi | Admmistradores</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <% include ../partials/head-boostrap%>
+        <link rel="icon" href="/img/rappi_favicon.png">
+        <link rel="stylesheet" href="/css/admin.css">
+    </head>
+    <body>
+    <div class="header-login">
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
+            src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
+        <form class="form-inline my-2 my-lg-0" action="/">
+          <button class="btn btn-outline-danger my-2 my-sm-0"
+            type="submit">Volver</button>
+        </form>
+      </nav>
+    </div>
+    <div style="text-align: center;">
+    <h2 style="font-size: 40px;">Ingreso Administrativo</h2>
+    </div>
+    <div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <img src="/img/com.rappi.shopper-w130.png" id="icon" alt="User Icon" style="width: 70px;heigth:70px;"/>
+    </div>
+
+    <!-- Login Form -->
+    <form  action="/admin/home" method="post">
+      <input type="text" id="login" class="fadeIn second" name="username" placeholder="nombre de usuario">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="contraseña">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" href="#">Forgot Password?</a>
+    </div>
+
+  </div>
+</div>
+    </body>
+</html>
