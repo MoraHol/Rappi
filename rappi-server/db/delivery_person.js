@@ -1,20 +1,20 @@
 'use strict'
 const knex = require('./knex')
 module.exports = {
-  findRappiTenderoByIdGoogleStrategy: (profile) => {
-    return knex('rappitendero')
+  findByIdGoogleStrategy: (profile) => {
+    return knex('delivery_persons')
       .select()
       .where({ googleid: profile._json.sub })
       .first()
   },
-  findRappiTenderoByIdFacebookStrategy: (profile) => {
-    return knex('rappitendero')
+  findByIdFacebookStrategy: (profile) => {
+    return knex('delivery_persons')
       .select()
       .where({ facebookid: profile._json.id })
       .first()
   },
-  createRappiTenderoGoogleStrategy: (profile) => {
-    return knex('rappitendero')
+  createUsingGoogleStrategy: (profile) => {
+    return knex('delivery_persons')
       .insert({
         googleid: profile._json.sub,
         email: profile._json.email,
@@ -23,9 +23,9 @@ module.exports = {
         photo: profile._json.picture
       })
   },
-  createRappiTenderoFacebookStrategy: (profile) => {
+  createUsingFacebookStrategy: (profile) => {
     let name = profile._json.name.split(' ')
-    return knex('rappitendero').insert({
+    return knex('delivery_persons').insert({
       facebookid: profile._json.id,
       email: profile._json.email,
       first_name: name[0],
@@ -33,16 +33,16 @@ module.exports = {
       photo: profile.photos[0].value
     })
   },
-  registerAdditionalDataGoogleStrategy: (profile) => {
-    return knex('rappitendero').update({
+  registerAdditionalDataUsingGoogleStrategy: (profile) => {
+    return knex('delivery_persons').update({
       personal_id: profile.personal_id,
       phone_number: profile.phone_number
     }).where({
       googleid: profile._json.sub
     })
   },
-  registerAdditionalDataFacebookStrategy: (profile) => {
-    return knex('rappitendero').update({
+  registerAdditionalDataUsingFacebookStrategy: (profile) => {
+    return knex('delivery_persons').update({
       personal_id: profile.personal_id,
       phone_number: profile.phone_number
     }).where({
