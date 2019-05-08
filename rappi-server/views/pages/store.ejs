@@ -32,7 +32,7 @@
       <% }
     }catch(e){
     } %>
-      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""><img id="news" src="/img/checked_77955.png" width="12px" height="12px"></a>
+    <div class="basket-header ng-star-inserted"><app-header-basket><div class="view-basket"><button class="basket-icon" id="btn-basket"><i class="iconf-car-2-icon"></i><!----><small class="ng-star-inserted" id="counter-cart">1</small></button><!----><button class="coupon-icon ng-star-inserted"><i class="iconf-coupon-icon"></i></button></div></app-header-basket></div>
       <hr>
     </nav>
   </div>
@@ -128,6 +128,7 @@
                     <p>Te invitamos a volver a nuestras tiendas y agregar productos a tu canasta</p>
                 </div>
             </div>`
+           
       store = findStoreLocalStorage()
       if (!$.isEmptyObject(store)) {
         $('.price-description .currency').text(calculateTotal())
@@ -198,6 +199,7 @@
         $('span.delete').click(function () {
           deleteAllStockProduct($(this).attr('id'))
         })
+        $('#counter-cart').html(store.basket.length)
       }
     }
 
