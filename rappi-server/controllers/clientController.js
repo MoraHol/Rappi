@@ -1,14 +1,14 @@
 'use strict'
 const db = require('../db')
-const storesController = require('./stores')
+const storesController = require('./storeController')
 
 exports.authenticateByGoogleStrategy = (req, accessToken, refreshToken, profile, done) => {
-  db.client.findByIdGoogleStrategy(profile).then((id) => {
+  db.clientRepository.findByIdGoogleStrategy(profile).then((id) => {
     if (id) {
       req.session.newuser = false
       return done(null, profile)
     } else {
-      db.client.createUsingGoogleStrategy(profile)
+      db.clientRepository.createUsingGoogleStrategy(profile)
         .then(function (id) {
           req.session.newuser = true
           return done(null, profile)
@@ -18,7 +18,7 @@ exports.authenticateByGoogleStrategy = (req, accessToken, refreshToken, profile,
 }
 
 exports.authenticateByFacebookStrategy = (req, accessToken, refreshToken, profile, done) => {
-  db.client.findByIdFacebookStrategy(profile).then((id) => {
+  db.clientRepository.findByIdFacebookStrategy(profile).then((id) => {
     if (id) {
       req.session.newuser = false
       return done(null, profile)
@@ -36,7 +36,7 @@ exports.loginRedirectGoogleStrategy = async (req, res) => {
   if (req.session.newuser) {
     res.render('pages/form-client', { user: req.user })
   } else {
-    await db.client.findByIdGoogleStrategy(req.user).then((row) => {
+    await db.clientRepository.findByIdGoogleStrategy(req.user).then((row) => {
       req.session.user = row
     })
     res.redirect('/stores')
@@ -47,7 +47,7 @@ exports.loginRedirectFacebookStrategy = async (req, res) => {
   if (req.session.newuser) {
     res.render('pages/form-client', { user: req.user })
   } else {
-    await db.client.findByIdFacebookStrategy(req.user).then((row) => {
+    await db.clientRepository.findByIdFacebookStrategy(req.user).then((row) => {
       req.session.user = row
     })
     res.redirect('/stores')
@@ -59,8 +59,8 @@ exports.setAddressGoogleStrategy = async (req, res) => {
   req.user.address_details = req.body.address_details
   req.user.latitude = req.body.lat
   req.user.longitude = req.body.lng
-  await db.client.registerAdressUsingGoogleStrategy(req.user).then()
-  await db.client.findByIdGoogleStrategy(req.user).then((user) => {
+  await db.clientRepository.registerAdressUsingGoogleStrategy(req.user).then()
+  await db.clientRepository.findByIdGoogleStrategy(req.user).then((user) => {
     req.session.user = user
   })
   res.redirect('/stores')
@@ -71,29 +71,41 @@ exports.setAddressFacebookStrategy = async (req, res) => {
   req.user.address_details = req.body.address_details
   req.user.latitude = req.body.lat
   req.user.longitude = req.body.lng
-  await db.client.registerAdressUsingFacebookStrategy(req.user).then()
-  await db.client.findByIdFacebookStrategy(req.user).then((user) => {
+  await db.clientRepository.registerAdressUsingFacebookStrategy(req.user).then()
+  await db.clientRepository.findByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
   })
   res.redirect('/stores')
 }
 
 exports.createOrder = async (req, res) => {
-  const today = new Date()
-  if (!storesController.isOpen(req.params.cart.store, today)) {
-    // La tienda esta cerrada
+  let cart = JSON.parse(req.body.cart)
+  let store = await db.storeRepository.findStoreById(cart.id)
+  let response = {
+    sucess: false,
+    message: ''
   }
-
-  var productsInStore = await db.stores.getProductsFromOne(req.params.cart.store)
-  req.params.cart.products.forEach(productInCart => {
-    var actualProductInStore = productsInStore.find(productInStock =>
-      productInStock.products_in_stores_id === productInCart.products_in_stores_id)
-    if (actualProductInStore.quantity < productInCart.quantity) {
-      // no hay la cantidad de producto solicitada
-    }
-  })
-
-  db.client.createOrder(req.params.user, req.params.cart).then(
-    storesController.updateProductQuantities(req.params.cart.products)
-  )
+  if (!store.isOpened()) {
+    response.sucess = false
+    response.message = 'Lo sentimos la tienda se encuentra cerrada'
+    res.json(response)
+    return
+  }
+  // req.params.cart.products.forEach(productInCart => {
+  //   var actualProductInStore = productsInStore.find(productInStock =>
+  //     productInStock.products_in_stores_id === productInCart.products_in_stores_id)
+  //   if (actualProductInStore.quantity < productInCart.quantity) {
+  //     // no hay la cantidad de producto solicitada
+  //   }
+  // })
+  console.log(cart)
+  if (req.session.user) {
+    await db.orderRepository.createOrder(req.session.user, cart)
+    response.sucess = true
+    response.message = 'El producto se ha creado satisfactoriamete'
+  } else {
+    response.sucess = false
+    response.message = 'Por favor inicia sesion para comprar'
+  }
+  res.json(response)
 }

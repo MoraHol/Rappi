@@ -3,13 +3,17 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('./passport-config')
-const clientController = require('./controllers/clients')
-const deliveryPersonController = require('./controllers/delivery_person')
-const storesController = require('./controllers/stores')
+const clientController = require('./controllers/clientController')
+const deliveryPersonController = require('./controllers/deliveryPersonController')
+const storesController = require('./controllers/storeController')
 
 router.get('/login', (req, res) => {
-  res.type('html')
-  res.render('pages/loginClient')
+  if (req.statusCode === 303) {
+    res.render('pages/loginClient', { message: 'Por favor inicie sesion' })
+  } else {
+    res.type('html')
+    res.render('pages/loginClient')
+  }
 })
 
 router.get('/soyrappi', (req, res) => {
@@ -106,5 +110,6 @@ router.post('/admin/home',
     res.send('hola administrador ' + req.user.user_name)
   }
 )
+router.post('/api/createOrder', clientController.createOrder)
 
 module.exports = router

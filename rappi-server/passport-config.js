@@ -3,8 +3,8 @@ var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var FacebokStrategy = require('passport-facebook').Strategy
 var LocalStrategy = require('passport-local').Strategy
-var clientController = require('./controllers/clients')
-var deliveryPersonController = require('./controllers/delivery_person')
+var clientController = require('./controllers/clientController')
+var deliveryPersonController = require('./controllers/deliveryPersonController')
 
 passport.serializeUser(function (user, done) {
   done(null, user)

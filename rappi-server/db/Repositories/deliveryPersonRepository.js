@@ -1,5 +1,5 @@
 'use strict'
-const knex = require('./knex')
+const knex = require('../knex')
 module.exports = {
   findByIdGoogleStrategy: (profile) => {
     return knex('delivery_persons')

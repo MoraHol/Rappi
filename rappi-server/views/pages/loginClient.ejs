@@ -20,6 +20,12 @@
         </form>
       </nav>
     </div>
+    <%try{
+  if(message){%>
+    <div class="alert alert-primary" role="alert">
+<%= message%>
+</div>
+<%}}catch(e){}%>
     <div class="container form-login">
       <div class="card" id="login">
         <article class="card-body">

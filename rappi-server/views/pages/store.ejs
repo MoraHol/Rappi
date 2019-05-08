@@ -32,7 +32,7 @@
       <% }
     }catch(e){
     } %>
-      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""></a>
+      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""><img id="news" src="/img/checked_77955.png" width="12px" height="12px"></a>
       <hr>
     </nav>
   </div>
@@ -44,14 +44,16 @@
   <div id="products_object" hidden><%= JSON.stringify(products)%></div>
   <% include ../partials/basket-empty%>
   <script>
-    let storeId = <%= store.id%>
-    let products = JSON.parse($('#products_object').html())
+    let storeId = <%= store.id %>
+      let products = JSON.parse($('#products_object').html())
 
     let stores
     let store
     $("document").ready(() => {
+      $('#news').hide()
       $(".btn-buy").click(function () {
         addProduct($(this).attr('id'))
+        notify()
       })
       renderShoppingCar()
     })
@@ -133,6 +135,7 @@
         $('div.basket-body').empty()
         if (store.basket.length === 0) {
           $('div.basket-body').append(basketEmpty)
+          $('.btn-go-checkout button').attr('disabled', true)
           return
         }
         $('div').remove('.content-basket-empty')
@@ -254,6 +257,26 @@
         }
       })
       return store
+    }
+    $('#submit-order').click(() => {
+      $.post('/api/createOrder',{ cart: JSON.stringify(findStoreLocalStorage())}, (data, status) => {        
+        if(data.success){
+          alert(data.message)
+        }else{
+          alert(data.message)
+        }
+      }).done(()=>{
+        let store = findStoreLocalStorage()
+          store.basket= []
+          saveLocalStorage(store)
+      })
+    })
+    function notify() {
+      for (let i = 0; i < 10; i++) {
+        $('#news').fadeOut()
+        $('#news').fadeIn()
+      }
+      $('#news').fadeOut()
     }
   </script>
 </body>
