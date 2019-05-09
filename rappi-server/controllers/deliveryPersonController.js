@@ -36,7 +36,7 @@ module.exports = {
       await db.deliveryPersonRepository.findByIdGoogleStrategy(req.user).then((row) => {
         req.session.user = row
       })
-      res.redirect('/')
+      res.redirect('/delivery')
     }
   },
 
@@ -47,7 +47,7 @@ module.exports = {
       await db.deliveryPersonRepository.findByIdFacebookStrategy(req.user).then((row) => {
         req.session.user = row
       })
-      res.redirect('/')
+      res.redirect('/delivery')
     }
   },
 
@@ -58,7 +58,7 @@ module.exports = {
     await db.deliveryPersonRepository.findByIdGoogleStrategy(req.user).then((rappiTendero) => {
       req.session.user = rappiTendero
     })
-    res.redirect('/')
+    res.redirect('/delivery')
   },
 
   setAdditionalDataFacebookStrategy: async (req, res) => {
@@ -68,6 +68,6 @@ module.exports = {
     await db.deliveryPersonRepository.findByIdFacebookStrategy(req.user).then((user) => {
       req.session.user = user
     })
-    res.redirect('/')
+    res.redirect('/delivery')
   }
 }

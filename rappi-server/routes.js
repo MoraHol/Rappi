@@ -6,6 +6,7 @@ const passport = require('./passport-config')
 const clientController = require('./controllers/clientController')
 const deliveryPersonController = require('./controllers/deliveryPersonController')
 const storesController = require('./controllers/storeController')
+const deliveryController = require('./controllers/deliveryController')
 
 router.get('/login', (req, res) => {
   if (req.statusCode === 303) {
@@ -35,6 +36,8 @@ router.get('/', (req, res) => {
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
 router.get('/stores/:id', storesController.getStore)
+router.get('/delivery', deliveryController.checkIfValidPerson)
+router.get('/goforproducts', deliveryController.checkIfValidPerson)
 //
 
 // Clients

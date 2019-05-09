@@ -4,7 +4,8 @@ module.exports = {
   createOrder: async (user, cart) => {
     let id = await knex('orders')
       .insert({
-        client_id: user.id
+        client_id: user.id,
+        status_id: 1
       })
       .returning('id')
       id = id[0]
