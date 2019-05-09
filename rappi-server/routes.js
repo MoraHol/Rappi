@@ -22,7 +22,7 @@ router.get('/soyrappi', (req, res) => {
 })
 router.get('/formClient', (req, res) => {
   res.type('html')
-  res.render('pages/form-client')
+  res.render('pages/form-client',{ user: req.session.user })
 })
 router.get('/formRT', (req, res) => {
   res.type('html')
@@ -66,6 +66,11 @@ router.post('/login/auth/google/post',
 
 router.post('/login/auth/facebook/post',
   clientController.setAddressFacebookStrategy
+)
+
+//añadido para cambio de direccion
+router.post('/post',
+  clientController.setAddress
 )
 
 // Delivery persons

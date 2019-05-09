@@ -23,7 +23,7 @@ exports.authenticateByFacebookStrategy = (req, accessToken, refreshToken, profil
       req.session.newuser = false
       return done(null, profile)
     } else {
-      db.client.createUsingFacebookStrategy(profile)
+      db.clientRepository.createUsingFacebookStrategy(profile)
         .then(function (id) {
           req.session.newuser = true
           return done(null, profile)
@@ -75,6 +75,19 @@ exports.setAddressFacebookStrategy = async (req, res) => {
   await db.clientRepository.findByIdFacebookStrategy(req.user).then((user) => {
     req.session.user = user
   })
+  res.redirect('/stores')
+}
+
+//añadido para cambio de direccion
+exports.setAddress = async (req, res) => {
+  req.user.address = req.body.address
+  req.user.address_details = req.body.address_details
+  req.user.latitude = req.body.lat
+  req.user.longitude = req.body.lng
+  // await db.clientRepository.registerAdressUsingFacebookStrategy(req.user).then()
+  // await db.clientRepository.findByIdFacebookStrategy(req.user).then((user) => {
+  //   req.session.user = user
+  // })
   res.redirect('/stores')
 }
 

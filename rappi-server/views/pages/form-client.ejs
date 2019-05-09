@@ -20,9 +20,25 @@
     </style>
 </head>
 
+<!-- 
+<%
+    try{
+    if(user){%>
+<body class="page">
+  <p>test si hay user</p>
+</body>
+<%}else{%>
 <body class="page">
   <% include ../partials/header-simple%>
   <%include ../partials/change-address%>
+</body>
+<%}
+}catch(e){
+  console.log(e)
+}%> -->
+<body class="page">
+    <% include ../partials/header-simple%>
+    <%include ../partials/change-address%>
 </body>
 
 </html>

@@ -23,9 +23,30 @@
       <%
     try{
     if(user){%>
-      <a class="btn">
+      <!-- <a class="btn">
         <span><%= user.first_name%> </span>
         <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
+      </a> -->
+      <a class="row">
+        <div class="col-sm-6">
+          <span><%= user.first_name%>   </span>
+        </div>
+        <div class="col-sm-6">
+          <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
+        </div>                  
+        <div class="col-sm-4">
+          <div class="header-address ng-star-inserted">
+              <div>
+                <div class="address-select"> 
+                  <div class="address ng-star-inserted"> 
+                      <a href="/formClient"><%= user.address%> </a>
+                  </div>
+                </div>
+              </div>
+          </div>
+            <!-- <span href="/soyrappi"><%= user.address%>   </span> -->
+            <!-- <a href="/soyrappi" class="btn btn-outline-danger">Quiero ser Rappi</a> -->
+        </div>
       </a>
       <%}else{%>
       <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
