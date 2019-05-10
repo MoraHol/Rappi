@@ -1,5 +1,6 @@
 'use strict'
 const knex = require('../knex')
+const clientModel = require('../Models/clientModel')
 
 module.exports = {
   findByIdGoogleStrategy: (profile) => {
@@ -8,6 +9,17 @@ module.exports = {
       .where({ googleid: profile._json.sub })
       .first()
   },
+
+  findById: async (client_id) => {
+    return knex('clients')
+      .select()
+      .where({ id: client_id })
+      .first()
+      // .then(result =>{
+      //   return new clientModel(result)
+      // })
+  },
+
   createUsingGoogleStrategy: (profile) => {
     return knex('clients')
       .insert({

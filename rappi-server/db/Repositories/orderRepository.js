@@ -1,4 +1,5 @@
 const knex = require('../knex')
+const OrderModel = require('../Models/orderModel')
 
 module.exports = {
   createOrder: async (user, cart) => {
@@ -19,5 +20,15 @@ module.exports = {
 
       })
     })
+  },
+
+  getOrdersForAssign: async () =>{
+    var orders = await knex('orders').select()
+                .where('status_id', 1)
+    let OrdersForAssign = []
+    orders.forEach(order => {
+      OrdersForAssign.push(new OrderModel(order))
+    })
+    return OrdersForAssign
   }
 }
