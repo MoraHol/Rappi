@@ -67,7 +67,7 @@ passport.use('facebookRT',
 )
 
 passport.use('admin', new LocalStrategy(async (username, password, done) => {
-  await db.admin.findOne(username).then((admin) => {
+  await db.adminRepository.findOne(username).then((admin) => {
     if (admin) {
       if (admin.password === password) {
         return done(null, admin)

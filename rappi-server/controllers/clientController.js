@@ -79,6 +79,28 @@ module.exports = {
       req.session.user = user
     })
     res.redirect('/stores')
+  },
+  logout: (req, res) => {
+    req.session.regenerate((err) => {
+      if (err) throw err
+      res.json({
+        sucess: true
+      })
+    })
+  },
+  changeAddress: (req, res) => {
+    res.render('pages/form-client', {
+      user: req.user
+    })
+  },
+  updateAddress: async (req, res) => {
+    if (req.session.user) {
+      req.session.user.address = req.body.address
+      req.session.user.address_details = req.body.address_details
+      req.session.user.latitude = req.body.lat
+      req.session.user.longitude = req.body.lng
+      await db.clientRepository.updateAddress(req.session.user)   
+    }
+    res.redirect('/')
   }
-
 }

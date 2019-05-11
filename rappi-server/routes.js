@@ -10,27 +10,38 @@ const orderController = require('./controllers/orderController')
 
 router.get('/login', (req, res) => {
   if (req.statusCode === 303) {
-    res.render('pages/loginClient', { message: 'Por favor inicie sesion' })
+    res.render('pages/loginClient', {
+      message: 'Por favor inicie sesion'
+    })
   } else {
     res.type('html')
     res.render('pages/loginClient')
   }
 })
 
-router.get('/soyrappi', (req, res) => {
-  res.type('html')
-  res.render('pages/login-rt')
-})
+router.get('/soyrappi', deliveryPersonController.getIndexPage)
+router.delete('/soyrappi', deliveryPersonController.logout)
+
 router.get('/formClient', (req, res) => {
-  res.type('html')
-  res.render('pages/form-client')
+  if (req.session.user) {
+    res.type('html')
+    res.render('pages/form-client', {
+      user: req.session.user
+    })
+  } else {
+    res.redirect('/login')
+  }
 })
+router.post('/post', clientController.updateAddress)
 router.get('/formRT', (req, res) => {
   res.type('html')
   res.render('pages/form-rt')
 })
+router.delete('/', clientController.logout)
 router.get('/', (req, res) => {
-  res.render('pages/index-page', { user: req.session.user })
+  res.render('pages/index-page', {
+    user: req.session.user
+  })
 })
 
 // TEST
@@ -40,24 +51,30 @@ router.get('/stores/:id', storesController.getStore)
 
 // Clients
 router.get('/login/auth/google',
-  passport.authenticate('googleClient', { scope: ['profile', 'email'] }),
-  () => {
-  }
+  passport.authenticate('googleClient', {
+    scope: ['profile', 'email']
+  }),
+  () => {}
 )
 
 router.get('/login/auth/google/callback',
-  passport.authenticate('googleClient', { failureRedirect: '/login' }),
+  passport.authenticate('googleClient', {
+    failureRedirect: '/login'
+  }),
   clientController.loginRedirectGoogleStrategy
 )
 
 router.get('/login/auth/facebook',
-  passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages', 'email'] }),
-  () => {
-  }
+  passport.authenticate('facebookClient', {
+    scope: ['user_friends', 'manage_pages', 'email']
+  }),
+  () => {}
 )
 
 router.get('/login/auth/facebook/callback',
-  passport.authenticate('facebookClient', { failureRedirect: '/login' }),
+  passport.authenticate('facebookClient', {
+    failureRedirect: '/login'
+  }),
   clientController.loginRedirectFacebookStrategy
 )
 
@@ -71,24 +88,30 @@ router.post('/login/auth/facebook/post',
 
 // Delivery persons
 router.get('/soyrappi/auth/google',
-  passport.authenticate('googleSoyRappi', { scope: ['profile', 'email'] }),
-  () => {
-  }
+  passport.authenticate('googleSoyRappi', {
+    scope: ['profile', 'email']
+  }),
+  () => {}
 )
 
 router.get('/soyrappi/auth/google/callback',
-  passport.authenticate('googleSoyRappi', { failureRedirect: '/soyrappi' }),
+  passport.authenticate('googleSoyRappi', {
+    failureRedirect: '/soyrappi'
+  }),
   deliveryPersonController.loginRedirectGoogleStrategy
 )
 
 router.get('/soyrappi/auth/facebook',
-  passport.authenticate('facebookRT', { scope: ['user_friends', 'manage_pages', 'email'] }),
-  () => {
-  }
+  passport.authenticate('facebookRT', {
+    scope: ['user_friends', 'manage_pages', 'email']
+  }),
+  () => {}
 )
 
 router.get('/soyrappi/auth/facebook/callback',
-  passport.authenticate('facebookRT', { failureRedirect: '/soyrappi' }),
+  passport.authenticate('facebookRT', {
+    failureRedirect: '/soyrappi'
+  }),
   deliveryPersonController.loginRedirectFacebookStrategy
 )
 
@@ -106,7 +129,9 @@ router.get('/admin', (req, res) => {
 })
 
 router.post('/admin/home',
-  passport.authenticate('admin', { failureFlash: true }),
+  passport.authenticate('admin', {
+    failureFlash: true
+  }),
   (req, res) => {
     res.send('hola administrador ' + req.user.user_name)
   }

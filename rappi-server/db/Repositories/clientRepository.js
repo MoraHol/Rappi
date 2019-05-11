@@ -5,7 +5,9 @@ module.exports = {
   findByIdGoogleStrategy: (profile) => {
     return knex('clients')
       .select()
-      .where({ googleid: profile._json.sub })
+      .where({
+        googleid: profile._json.sub
+      })
       .first()
   },
   createUsingGoogleStrategy: (profile) => {
@@ -31,7 +33,9 @@ module.exports = {
   findByIdFacebookStrategy: (profile) => {
     return knex('clients')
       .select()
-      .where({ facebookid: profile.id })
+      .where({
+        facebookid: profile.id
+      })
       .first()
   },
   registerAdressUsingFacebookStrategy: (profile) => {
@@ -56,5 +60,23 @@ module.exports = {
         last_name: familyName,
         photo: profile._json.picture.data.url
       })
+  },
+  findById: (id) => {
+    return knex('clients')
+      .select()
+      .where({
+        id: id
+      })
+      .first()
+  },
+  updateAddress: (client) => {
+    return knex('clients').where({
+      id: client.id
+    }).update({
+      address: client.address,
+      address_details: client.address_details,
+      latitude: client.latitude,
+      longitude: client.longitude
+    })
   }
 }

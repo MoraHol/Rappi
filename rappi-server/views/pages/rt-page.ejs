@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>asalsk</title>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/img/soyrappi.webp" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/lib/fontawesome.css">
+    <script src="/js/lib/popper.min.js"></script>
+    <script src="/js/lib/jquery-3.4.1.min.js"></script>
+    <script src="/js/lib/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+</head>
+
+<body>
+    <% include ../partials/header-simple%>
+    <div class="container-fluid bg-light">
+        <div class="row align-items-center">
+            <div class="col"></div>
+            <div class="col col-md-auto">Actívate:</div>
+            <div class="col col-lg-1"> <input id="toggle-one" checked type="checkbox" data-style="android"></div>
+        </div>
+
+    </div>
+
+    <script>
+        $(function () {
+            $('#toggle-one').bootstrapToggle('off');
+        })
+        $(function () {
+            $('#toggle-one').change(function () {
+                $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+            })
+            $('#nav-rappi').append(`<div class="dropdown">
+        <a id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src='<%= user.photo%>' alt="" style="width:30px; height: 30px; border-radius: 18px;">
+        </a>
+        <div class="dropdown-menu">
+            <h6 class="dropdown-header">Mi cuenta</h6>
+            <a class="dropdown-item disabled" href="#"><span class="glyphicon glyphicon-user"></span> <%=user.first_name%></a>
+            <a class="dropdown-item" id="logout"><span class="glyphicon glyphicon-log-out"></span> Cerrar Session</a>
+        </div>`)
+            $('#logout').click(() => {
+                $.ajax({
+                    url: '/soyrappi',
+                    type: 'DELETE',
+                    success: function (result) {
+                        // Do something with the result
+                        location.reload()
+                    }
+                })
+            })
+        })
+    </script>
+
+    <script>
+        let state = false
+        $('.onoffswitch').on('click', () => {
+            if (state) {
+                state = false
+            } else {
+                state = true
+            }
+            console.log(state)
+        })
+    </script>
+</body>
+
+</html>
