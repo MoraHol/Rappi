@@ -75,13 +75,13 @@ module.exports = {
     res.redirect('/soyrappi')
   },
   getIndexPage: (req, res) => {
-    res.type('html')
     if (req.session.rappiTendero) {
       res.render('pages/rt-page', {
         user: req.session.rappiTendero
       })
+    } else {
+      res.render('pages/login-rt')
     }
-    res.render('pages/login-rt')
   },
   logout: (req, res) => {
     req.session.regenerate((err) => {
