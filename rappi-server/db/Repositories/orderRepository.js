@@ -7,7 +7,7 @@ module.exports = {
         client_id: user.id
       })
       .returning('id')
-      id = id[0]
+    id = id[0]
     cart.basket.forEach(product => {
       console.log(product)
       knex('products_in_orders').insert({

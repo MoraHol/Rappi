@@ -31,7 +31,9 @@ module.exports = {
 
   loginRedirectGoogleStrategy: async (req, res) => {
     if (req.session.newuser) {
-      res.render('pages/form-rt', { user: req.user })
+      res.render('pages/form-rt', {
+        user: req.user
+      })
     } else {
       await db.deliveryPersonRepository.findByIdGoogleStrategy(req.user).then((row) => {
         req.session.user = row
@@ -42,7 +44,9 @@ module.exports = {
 
   loginRedirectFacebookStrategy: async (req, res) => {
     if (req.session.newuser) {
-      res.render('pages/form-rt', { user: req.user })
+      res.render('pages/form-rt', {
+        user: req.user
+      })
     } else {
       await db.deliveryPersonRepository.findByIdFacebookStrategy(req.user).then((row) => {
         req.session.user = row

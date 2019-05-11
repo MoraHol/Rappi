@@ -6,6 +6,7 @@ const passport = require('./passport-config')
 const clientController = require('./controllers/clientController')
 const deliveryPersonController = require('./controllers/deliveryPersonController')
 const storesController = require('./controllers/storeController')
+const orderController = require('./controllers/orderController')
 
 router.get('/login', (req, res) => {
   if (req.statusCode === 303) {
@@ -110,6 +111,6 @@ router.post('/admin/home',
     res.send('hola administrador ' + req.user.user_name)
   }
 )
-router.post('/api/createOrder', clientController.createOrder)
+router.post('/api/createOrder', orderController.createOrder)
 
 module.exports = router
