@@ -47,8 +47,6 @@ router.get('/', (req, res) => {
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
 router.get('/stores/:id', storesController.getStore)
-router.get('/delivery', deliveryController.checkIfValidPerson)
-router.get('/goforproducts', deliveryController.getUnassignedOrders)
 //
 
 // Clients
