@@ -9,7 +9,7 @@ module.exports = {
         status_id: 1
       })
       .returning('id')
-      id = id[0]
+    id = id[0]
     cart.basket.forEach(product => {
       console.log(product)
       knex('products_in_orders').insert({

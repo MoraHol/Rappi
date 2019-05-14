@@ -31,23 +31,27 @@ module.exports = {
 
   loginRedirectGoogleStrategy: async (req, res) => {
     if (req.session.newuser) {
-      res.render('pages/form-rt', { user: req.user })
+      res.render('pages/form-rt', {
+        user: req.user
+      })
     } else {
       await db.deliveryPersonRepository.findByIdGoogleStrategy(req.user).then((row) => {
-        req.session.user = row
+        req.session.rappiTendero = row
       })
-      res.redirect('/delivery')
+      res.redirect('/soyrappi')
     }
   },
 
   loginRedirectFacebookStrategy: async (req, res) => {
     if (req.session.newuser) {
-      res.render('pages/form-rt', { user: req.user })
+      res.render('pages/form-rt', {
+        user: req.user
+      })
     } else {
       await db.deliveryPersonRepository.findByIdFacebookStrategy(req.user).then((row) => {
-        req.session.user = row
+        req.session.rappiTendero = row
       })
-      res.redirect('/delivery')
+      res.redirect('/soyrappi')
     }
   },
 
@@ -56,9 +60,9 @@ module.exports = {
     req.user.phone_number = req.body.phone_number
     await db.deliveryPersonRepository.registerAdditionalDataUsingGoogleStrategy(req.user).then()
     await db.deliveryPersonRepository.findByIdGoogleStrategy(req.user).then((rappiTendero) => {
-      req.session.user = rappiTendero
+      req.session.rappiTendero = rappiTendero
     })
-    res.redirect('/delivery')
+    res.redirect('/soyrappi')
   },
 
   setAdditionalDataFacebookStrategy: async (req, res) => {
@@ -66,8 +70,25 @@ module.exports = {
     req.user.pclientshone_number = req.body.phone_number
     await db.deliveryPersonRepository.registerAdditionalDataUsingFacebookStrategy(req.user).then()
     await db.deliveryPersonRepository.findByIdFacebookStrategy(req.user).then((user) => {
-      req.session.user = user
+      req.session.rappiTendero = user
     })
-    res.redirect('/delivery')
+    res.redirect('/soyrappi')
+  },
+  getIndexPage: (req, res) => {
+    if (req.session.rappiTendero) {
+      res.render('pages/rt-page', {
+        user: req.session.rappiTendero
+      })
+    } else {
+      res.render('pages/login-rt')
+    }
+  },
+  logout: (req, res) => {
+    req.session.regenerate((err) => {
+      if (err) throw err
+      res.json({
+        sucess: true
+      })
+    })
   }
 }

@@ -12,31 +12,39 @@
   <link rel="stylesheet" type="text/css" href="/css/products-basket.css">
   <link rel="stylesheet" type="text/css" href="/css/products.css">
   <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 </head>
 
 <body>
-  <div class="header-login">
+  <div class="header-login align-content-center">
     <nav class="navbar navbar-light bg-bg-2">
       <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
           src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
-          <%
+      <%
     try{
     if(user){%>
-  <a class="btn">
-    <span><%= user.first_name%>   </span>
-    <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
-  </a>
-  <%}else{%>
-    <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
-  <%}
+      <div class="dropdown">
+        <a id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src='<%= user.photo%>' alt="" style="width:30px; height: 30px; border-radius: 18px;">
+        </a>
+        <div class="dropdown-menu">
+          <h6 class="dropdown-header">Mi cuenta</h6>
+          <a class="dropdown-item disabled" href="#"><span class="glyphicon glyphicon-user"></span>
+            <%=user.first_name%></a>
+          <a class="dropdown-item" href="/formClient" id="change-address"><span class="fas fa-map-marker-alt"></span> Cambiar Direccion</a>
+          <a class="dropdown-item" id="logout"><span class="fas fa-sign-out-alt"></span> Cerrar Session</a>
+        </div>
+      </div>
+      <%}else{%>
+      <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
+      <%}
 }catch(e){
   console.log(e)
 }%>
       <a href="/soyrappi" class="btn btn-outline-danger">Quiero ser Rappi</a>
-      
+
       <a href="/admin" class="btn btn-outline-danger">Administrador</a>
-      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png"
-          alt=""></a>
+      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""></a>
       <hr>
     </nav>
   </div>
@@ -105,6 +113,18 @@
     </div>
   </div>
   <% include ../partials/basket-empty%>
+    <script>
+        $('#logout').click(() => {
+          $.ajax({
+            url: '/',
+            type: 'DELETE',
+            success: function (result) {
+              // Do something with the result
+              location.reload()
+            }
+          })
+        })
+      </script>
 </body>
 
 </html>

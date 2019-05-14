@@ -13,6 +13,7 @@
   <link rel="stylesheet" type="text/css" href="/css/products.css">
   <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
   <link rel="stylesheet" type="text/css" href="/css/stores.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -23,16 +24,24 @@
       <%
         try{
         if(user){%>
-      <a class="btn">
-        <span><%= user.first_name%> </span>
-        <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
-      </a>
+      <div class="dropdown">
+        <a id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src='<%= user.photo%>' alt="" style="width:30px; height: 30px; border-radius: 18px;">
+        </a>
+        <div class="dropdown-menu">
+          <h6 class="dropdown-header">Mi cuenta</h6>
+          <a class="dropdown-item disabled" href="#"><span class="glyphicon glyphicon-user"></span>
+            <%=user.first_name%></a>
+          <a class="dropdown-item" href="/formClient"><span class="fas fa-map-marker-alt"></span> Cambiar Direccion</a>
+          <a class="dropdown-item" id="logout"><span class="fas fa-sign-out-alt"></span> Cerrar Session</a>
+        </div>
+      </div>
       <% }else{ %>
       <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
       <% }
     }catch(e){
     } %>
-      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""><img id="news" src="/img/checked_77955.png" width="12px" height="12px"></a>
+    <div class="basket-header ng-star-inserted"><app-header-basket><div class="view-basket"><button class="basket-icon" id="btn-basket"><i class="iconf-car-2-icon"></i><!----><small class="ng-star-inserted" id="counter-cart">1</small></button><!----><button class="coupon-icon ng-star-inserted"><i class="iconf-coupon-icon"></i></button></div></app-header-basket></div>
       <hr>
     </nav>
   </div>
@@ -128,6 +137,7 @@
                     <p>Te invitamos a volver a nuestras tiendas y agregar productos a tu canasta</p>
                 </div>
             </div>`
+           
       store = findStoreLocalStorage()
       if (!$.isEmptyObject(store)) {
         $('.price-description .currency').text(calculateTotal())
@@ -198,6 +208,7 @@
         $('span.delete').click(function () {
           deleteAllStockProduct($(this).attr('id'))
         })
+        $('#counter-cart').html(store.basket.length)
       }
     }
 
@@ -279,6 +290,19 @@
       $('#news').fadeOut()
     }
   </script>
+  <script>
+    $('#logout').click(() => {
+      $.ajax({
+        url: '/',
+        type: 'DELETE',
+        success: function (result) {
+          // Do something with the result
+          location.reload()
+        }
+      })
+    })
+  </script>
+
 </body>
 
 </html>
