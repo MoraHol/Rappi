@@ -1,6 +1,8 @@
 'use strict'
 
 const knex = require('../knex')
+const ProductModel = require('../Models/productModel')
+
 module.exports =
   class {
     constructor (storeKnex) {
@@ -14,8 +16,8 @@ module.exports =
       this.longitude = storeKnex.longitude
       this.workingHours = storeKnex.working_hours
     }
-    getProducts () {
-      return knex('products_in_stores')
+    async getProducts () {
+      var dbproducts = await knex('products_in_stores')
         .where({ store_id: this.id })
         .join('products', { 'products_in_stores.product_id': 'products.id' })
         .columns({ products_in_stores_id: 'products_in_stores.id' },
@@ -23,7 +25,13 @@ module.exports =
           { product_id: 'products.id' },
           'products.name', 'products.photo',
           'products.price',
-          'products_in_stores.quantity')
+          {quantity_available: 'products_in_stores.quantity'})
+        
+      let products = []
+      for (let i = 0; i < dbproducts.length; i++) {
+        products.push(new ProductModel(dbproducts[i]))
+      }
+      return products
     }
     isOpened () {
       const today = new Date()

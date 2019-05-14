@@ -34,6 +34,9 @@ module.exports = {
     try {
       let store = await db.storeRepository.findStoreById(req.params.id)
       let products = await store.getProducts()
+      console.log(products)
+      console.log(products[0].canSupply(10))
+      console.log(products[0].canSupply(102))
       res.render('pages/store', {
         user: req.session.user,
         products,
