@@ -47,6 +47,7 @@ router.get('/', (req, res) => {
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
 router.get('/stores/:id', storesController.getStore)
+// router.get('/testorder', orderController.testorder)
 //
 
 // Clients

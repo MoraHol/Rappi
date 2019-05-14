@@ -25,4 +25,16 @@ module.exports = {
     }
     res.json(response)
   }
+
+  // testorder: async (req, res) =>{
+  //   var lat =  4.7007205
+  //   var long = -74.0358761
+    
+  //   //let test =  await db.orderRepository.getCloserOrderToLocation(lat,long)
+    
+  //   await db.orderRepository.assignOrderToDeliveryPerson(1,1)
+  //   let test =  await db.orderRepository.getOrder(1)
+  //   console.log(await test.getTotalPrice())
+  //   res.json(test)
+  // }
 }

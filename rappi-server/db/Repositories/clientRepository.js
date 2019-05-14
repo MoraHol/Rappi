@@ -12,16 +12,6 @@ module.exports = {
       .first()
   },
 
-  findById: async (client_id) => {
-    return knex('clients')
-      .select()
-      .where({ id: client_id })
-      .first()
-      // .then(result =>{
-      //   return new clientModel(result)
-      // })
-  },
-
   createUsingGoogleStrategy: (profile) => {
     return knex('clients')
       .insert({
@@ -73,14 +63,7 @@ module.exports = {
         photo: profile._json.picture.data.url
       })
   },
-  findById: (id) => {
-    return knex('clients')
-      .select()
-      .where({
-        id: id
-      })
-      .first()
-  },
+
   updateAddress: (client) => {
     return knex('clients').where({
       id: client.id
