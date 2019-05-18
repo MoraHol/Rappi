@@ -149,6 +149,19 @@ module.exports = {
       {delivery_person_id: deliveryPersonID}
     )
     .then(module.exports.changeOrderStatus(orderID,2))
+  },
+
+  moveOrderToNextStatus: async (order) => {
+    if (order.generalInfo.statusId === 4) {
+      return
+    }
+    else
+    {
+      let newStatus = (order.generalInfo.statusId + 1)
+      await module.exports.changeOrderStatus(order.generalInfo.ID, newStatus)
+    }
   }
+
+
 
 }

@@ -24,17 +24,19 @@ module.exports = {
       response.message = 'Por favor inicia sesion para comprar'
     }
     res.json(response)
-  }
+  },
 
-  // testorder: async (req, res) =>{
-  //   var lat =  4.7007205
-  //   var long = -74.0358761
+  testorder: async (req, res) =>{
+    var lat =  4.7007205
+    var long = -74.0358761
     
-  //   //let test =  await db.orderRepository.getCloserOrderToLocation(lat,long)
+    //let test =  await db.orderRepository.getCloserOrderToLocation(lat,long)
     
-  //   await db.orderRepository.assignOrderToDeliveryPerson(1,1)
-  //   let test =  await db.orderRepository.getOrder(1)
-  //   console.log(await test.getTotalPrice())
-  //   res.json(test)
-  // }
+    //await db.orderRepository.assignOrderToDeliveryPerson(1,1)
+    
+    let test =  await db.orderRepository.getOrder(1)
+    await db.orderRepository.moveOrderToNextStatus(test)
+    test =  await db.orderRepository.getOrder(1)
+    res.json(test)
+  }
 }
