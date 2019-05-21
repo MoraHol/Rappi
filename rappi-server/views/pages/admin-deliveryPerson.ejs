@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Rappi | Admmistradores</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <% include ../partials/head-boostrap%>
+        <link rel="icon" href="/img/rappi_favicon.png">
+        <link rel="stylesheet" href="/css/admin.css">
+    </head>
+    <body>
+      <div class="header-login">
+        <nav class="navbar navbar-light bg-light">
+          <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
+              src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
+          <form class="form-inline my-2 my-lg-0" action="/">
+            <button class="btn btn-outline-danger my-2 my-sm-0"
+              type="submit">Volver</button>
+          </form>
+        </nav>
+      </div>
+
+      <div class="container-fluid bg-light">
+        <% delivery_persons.forEach(function(delivery_person) { %>
+        <div class="row align-items-center">
+          <div class="col"><%= delivery_person.first_name %> - <%= delivery_person.last_name %></div>
+          <div class="col"></div>
+          <div class="col col-md-auto">Actívate:</div>
+          <div class="col col-lg-1"> <input id="toggle-one" checked type="checkbox" data-style="android"></div>
+        </div>
+        <% }); %>
+        <div class="row">
+          <div class="col" id="console"></div>
+        </div>
+
+      </div>
+
+	<script>
+      $(function () {
+        $('#toggle-one').bootstrapToggle('off');
+      })
+      $(function(){
+        $('#toggle-one').click(() => {
+            $.ajax({
+              url: '/admin/deliveryPersons',
+              type: 'POST',
+              success: function (result) {
+                // Do something with the result
+                console.log('hubo success del post')
+              }
+            })
+          })
+      })
+      $(function () {
+        $('#toggle-one').change(function () {
+          $('#console').html('Toggle: ' + $(this).prop('checked'))
+          // if ($(this).prop('checked')) {
+          //   if (navigatorrrr.geolocation) {
+          //     navigatorrrr.geolocation.getCurrentPosition(function (position) {
+          //       console.log(position)
+          //     })
+          //   }
+          // } else {
+
+          // }
+          if ($(this).prop('checked')) {
+            console.log('esta checked')
+          }
+
+        })
+
+
+
+
+
+
+
+
+        
+      })
+    </script>
+
+
+    </body>
+    </html>

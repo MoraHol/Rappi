@@ -5,8 +5,8 @@ module.exports = {
     client: 'pg',
     connection: {
       database: 'RappiApp',
-      user: 'NodeTest',
-      password: 'JSBC1807'
+      user: 'postgres',
+      password: 'P4ssword.db_admin'
     }
   }
 }
