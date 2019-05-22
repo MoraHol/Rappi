@@ -47,7 +47,14 @@ router.get('/', (req, res) => {
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
 router.get('/stores/:id', storesController.getStore)
-router.get('/testorder', orderController.testorder)
+
+// api de ordenes
+
+router.get('/api/order/:id', orderController.getOrderById)
+router.put('/api/order/:id/nextstep', orderController.nextStep)
+router.get('/api/order/unassigned/:lat/:lng', orderController.getOrderUnassigned)
+router.post('/api/order/:id_order/assign/delivery-person/:id_delivery_person', orderController.assignOrder)
+
 //
 
 // Clients

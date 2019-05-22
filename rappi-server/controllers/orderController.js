@@ -25,18 +25,28 @@ module.exports = {
     }
     res.json(response)
   },
+  getOrderById: async (req, res) => {
+    let order = await db.orderRepository.getOrder(req.params.id)
+    res.json(order)
+  },
+  nextStep: async (req, res) => {
+    let order = await db.orderRepository.getOrder(req.params.id)
+    await db.orderRepository.moveOrderToNextStatus(order)
+    order = await db.orderRepository.getOrder(req.params.id)
+    res.json(order)
+  },
+  getOrderUnassigned: async (req, res) => {
+    var lat = req.params.lat
+    var long = req.params.lng
 
-  testorder: async (req, res) =>{
-    var lat =  4.7007205
-    var long = -74.0358761
-    
-    //let test =  await db.orderRepository.getCloserOrderToLocation(lat,long)
-    
-    //await db.orderRepository.assignOrderToDeliveryPerson(1,1)
-    
-    let test =  await db.orderRepository.getOrder(1)
-    await db.orderRepository.moveOrderToNextStatus(test)
-    test =  await db.orderRepository.getOrder(1)
+    let test = await db.orderRepository.getCloserOrderToLocation(lat, long)
     res.json(test)
+  },
+  assignOrder: async (req, res) => {
+    let idDeliveryPerson = req.params.id_delivery_person
+    let idOrder = req.params.id_order
+    await db.orderRepository.assignOrderToDeliveryPerson(idOrder, idDeliveryPerson)
+    let order = await db.orderRepository.getOrder(idOrder)
+    res.json(order)
   }
 }
