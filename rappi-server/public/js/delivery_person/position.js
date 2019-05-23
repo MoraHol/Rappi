@@ -1,7 +1,8 @@
 function getPosition(position) {
-  console.log(window.localStorage.getItem('orderAssingned'))
+  if (JSON.parse(window.localStorage.getItem('orderAssingned')) === null){
+    window.localStorage.setItem('orderAssingned', false)
+  }
   if (JSON.parse(window.localStorage.getItem('orderAssingned')) === false) {
-    console.log(position)
     $.ajax({
       url: `/api/order/unassigned/${position.coords.latitude}/${position.coords.longitude}`,
       type: 'get',
