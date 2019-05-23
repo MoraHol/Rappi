@@ -16,6 +16,12 @@
 <body class="page">
   <div class="page__container">
     <% include ../partials/header-simple%>
+    <%try{
+      if(message){%>
+        <div class="alert alert-primary" role="alert">
+    <%= message%>
+    </div>
+    <%}}catch(e){}%>
     <div class="Home">
       <div class="page__signup signup" style="padding-bottom: 20px;">
         <div class="title  title--theme-alt">
@@ -28,10 +34,8 @@
               <p class="text-center">Ingresar con</p>
             </div>
             <p>
-              <a href="/soyrappi/auth/google" class="btn btn-block btn-outline-info"> <i class="fab fa-twitter"></i><img
-                  src="img/google_PNG19635.png" style="width: 30px; height: 30px;"> Login via Google</a>
-              <a href="/soyrappi/auth/facebook" class="btn btn-block btn-outline-primary"> <i class="fab fa-facebook-f"></i><img
-                  src="img/5a35528ea43144.6338074215134439826725.png" style="width: 30px; height: 30px;"> Login via facebook</a>
+              <a href="/soyrappi/auth/google" class="btn btn-block btn-outline-info"> <i class="fab fa-google"></i> Login via Google</a>
+              <a href="/soyrappi/auth/facebook" class="btn btn-block btn-outline-primary"> <i class="fab fa-facebook-f"></i> Login via facebook</a>
             </p>
             <div class="login-division"></div>
           </div>
@@ -50,6 +54,7 @@
           </p>
         </form>
       </div>
+
 
       <section class="section section--slideshow">
         <div class="section__container">

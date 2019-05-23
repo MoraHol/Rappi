@@ -1,12 +1,17 @@
-var knex = require('./knex')
+'use strict'
+const knex = require('../knex')
+const clientModel = require('../Models/clientModel')
 
 module.exports = {
   findByIdGoogleStrategy: (profile) => {
     return knex('clients')
       .select()
-      .where({ googleid: profile._json.sub })
+      .where({
+        googleid: profile._json.sub
+      })
       .first()
   },
+
   createUsingGoogleStrategy: (profile) => {
     return knex('clients')
       .insert({
@@ -30,7 +35,9 @@ module.exports = {
   findByIdFacebookStrategy: (profile) => {
     return knex('clients')
       .select()
-      .where({ facebookid: profile.id })
+      .where({
+        facebookid: profile.id
+      })
       .first()
   },
   registerAdressUsingFacebookStrategy: (profile) => {
@@ -57,18 +64,14 @@ module.exports = {
       })
   },
 
-  createOrder: async (user, cart) => {
-    const id = await knex('orders')
-      .insert({
-        client_id: user.id
-      })
-      .returning('id')
-    cart.products.forEach(product => {
-      knex('products_in_orders').insert({
-        order_id: id,
-        products_in_stores_id: product.products_in_stores_id
-      })
+  updateAddress: (client) => {
+    return knex('clients').where({
+      id: client.id
+    }).update({
+      address: client.address,
+      address_details: client.address_details,
+      latitude: client.latitude,
+      longitude: client.longitude
     })
   }
-
 }

@@ -3,56 +3,91 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('./passport-config')
-const clientController = require('./controllers/clients')
-const deliveryPersonController = require('./controllers/delivery_person')
-const storesController = require('./controllers/stores')
+const clientController = require('./controllers/clientController')
+const deliveryPersonController = require('./controllers/deliveryPersonController')
+const storesController = require('./controllers/storeController')
+const orderController = require('./controllers/orderController')
 
 router.get('/login', (req, res) => {
-  res.type('html')
-  res.render('pages/loginClient')
+  if (req.statusCode === 303) {
+    res.render('pages/loginClient', {
+      message: 'Por favor inicie sesion'
+    })
+  } else {
+    res.type('html')
+    res.render('pages/loginClient')
+  }
 })
 
-router.get('/soyrappi', (req, res) => {
-  res.type('html')
-  res.render('pages/login-rt')
-})
+router.get('/soyrappi', deliveryPersonController.getIndexPage)
+router.delete('/soyrappi', deliveryPersonController.logout)
+
 router.get('/formClient', (req, res) => {
-  res.type('html')
-  res.render('pages/form-client')
+  if (req.session.user) {
+    res.type('html')
+    res.render('pages/form-client', {
+      user: req.session.user
+    })
+  } else {
+    res.redirect('/login')
+  }
 })
+router.post('/post', clientController.updateAddress)
 router.get('/formRT', (req, res) => {
   res.type('html')
   res.render('pages/form-rt')
 })
+router.delete('/', clientController.logout)
 router.get('/', (req, res) => {
-  res.render('pages/index-page', { user: req.session.user })
+  res.render('pages/index-page', {
+    user: req.session.user
+  })
 })
 
 // TEST
 router.get('/stores', storesController.getOpenByDistance)
 router.get('/stores/:id', storesController.getStore)
+
+// api de ordenes
+
+router.get('/api/order/:id', orderController.getOrderById)
+router.put('/api/order/:id/nextstep', orderController.nextStep)
+router.get('/api/order/unassigned/:lat/:lng', orderController.getOrderUnassigned)
+router.post('/api/order/:id_order/assign/delivery-person/:id_delivery_person', orderController.assignOrder)
+router.get('/api/order/active/user/:id', orderController.useractiveOrders)
+router.post('/api/createOrder', orderController.createOrder)
+
 //
 
 // Clients
+
+router.get('/myOrder', clientController.showOrder)
+
 router.get('/login/auth/google',
-  passport.authenticate('googleClient', { scope: ['profile', 'email'] }),
-  () => {
-  }
+  passport.authenticate('googleClient', {
+    scope: ['profile', 'email']
+  }),
+  () => {}
 )
 
 router.get('/login/auth/google/callback',
-  passport.authenticate('googleClient', { failureRedirect: '/login' }),
+  passport.authenticate('googleClient', {
+    failureRedirect: '/login'
+  }),
   clientController.loginRedirectGoogleStrategy
 )
 
 router.get('/login/auth/facebook',
-  passport.authenticate('facebookClient', { scope: ['user_friends', 'manage_pages', 'email'] }),
-  () => {
-  }
+  passport.authenticate('facebookClient', {
+    scope: ['user_friends', 'manage_pages', 'email']
+  }),
+  () => {}
 )
 
 router.get('/login/auth/facebook/callback',
-  passport.authenticate('facebookClient', { failureRedirect: '/login' }),
+  passport.authenticate('facebookClient', {
+    failureRedirect: '/login'
+  }),
   clientController.loginRedirectFacebookStrategy
 )
 
@@ -66,24 +101,30 @@ router.post('/login/auth/facebook/post',
 
 // Delivery persons
 router.get('/soyrappi/auth/google',
-  passport.authenticate('googleSoyRappi', { scope: ['profile', 'email'] }),
-  () => {
-  }
+  passport.authenticate('googleSoyRappi', {
+    scope: ['profile', 'email']
+  }),
+  () => {}
 )
 
 router.get('/soyrappi/auth/google/callback',
-  passport.authenticate('googleSoyRappi', { failureRedirect: '/soyrappi' }),
+  passport.authenticate('googleSoyRappi', {
+    failureRedirect: '/soyrappi'
+  }),
   deliveryPersonController.loginRedirectGoogleStrategy
 )
 
 router.get('/soyrappi/auth/facebook',
-  passport.authenticate('facebookRT', { scope: ['user_friends', 'manage_pages', 'email'] }),
-  () => {
-  }
+  passport.authenticate('facebookRT', {
+    scope: ['user_friends', 'manage_pages', 'email']
+  }),
+  () => {}
 )
 
 router.get('/soyrappi/auth/facebook/callback',
-  passport.authenticate('facebookRT', { failureRedirect: '/soyrappi' }),
+  passport.authenticate('facebookRT', {
+    failureRedirect: '/soyrappi'
+  }),
   deliveryPersonController.loginRedirectFacebookStrategy
 )
 
@@ -101,7 +142,9 @@ router.get('/admin', (req, res) => {
 })
 
 router.post('/admin/home',
-  passport.authenticate('admin', { failureFlash: true }),
+  passport.authenticate('admin', {
+    failureFlash: true
+  }),
   (req, res) => {
     res.send('hola administrador ' + req.user.user_name)
   }
