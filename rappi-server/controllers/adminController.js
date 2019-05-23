@@ -2,13 +2,11 @@
 const db = require('../db')
 
 module.exports = {
-  
+
   loginRedirectAdmin: async (req, res) => {
     res.redirect('/admin/deliveryPersons')
   },
 
-
-    
   getDeliveryPersons: async (req, res) => {
     try {
       let delivery_persons = await db.deliveryPersonRepository.getDeliveryPersons()
@@ -19,9 +17,6 @@ module.exports = {
     } catch (error) {
       res.redirect('/')
     }
-  },
-
-  
-  //admin-deliveryPerson
+  }
 
 }

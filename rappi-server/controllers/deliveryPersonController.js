@@ -4,12 +4,9 @@ module.exports = {
 
   getIndexPage: async (req, res) => {
     if (req.session.rappiTendero) {
-      if (req.session.rappiTendero.is_valid_for_work === true)
-      {
+      if (req.session.rappiTendero.is_valid_for_work === true) {
         res.render('pages/rt-page', { user: req.session.rappiTendero })
-      }
-      else
-      {
+      } else {
         res.render('pages/login-rt', { message: 'Usted no esta habilitado para trabajar, por favor acerquese a una de nuestras oficinas a validar sus datos' })
       }
     } else {
@@ -17,24 +14,10 @@ module.exports = {
     }
   },
 
-  testorder: async (req, res) =>{
-    var lat =  4.7007205
-    var long = -74.0358761
-    
-    //let test =  await db.orderRepository.getCloserOrderToLocation(lat,long)
-    
-    //await db.orderRepository.assignOrderToDeliveryPerson(1,1)
-    
-    let test =  await db.orderRepository.getOrder(1)
-    await db.orderRepository.moveOrderToNextStatus(test)
-    test =  await db.orderRepository.getOrder(1)
-    res.json(test)
-  },
-
   changeDeliveryPersonStatus: async (req, res) => {
     let id = JSON.parse(req.body.id)
     try {
-      await db.deliveryPersonRepository.changeDeliveryPersonStatus(id)//cambiar el 1 por el id que traigo desde el html en el post que se evia
+      await db.deliveryPersonRepository.changeDeliveryPersonStatus(id)// cambiar el 1 por el id que traigo desde el html en el post que se evia
 
       let delivery_persons = await db.deliveryPersonRepository.getDeliveryPersons()
       res.render('pages/admin-deliveryPerson', {

@@ -1,5 +1,5 @@
-function getPosition(position) {
-  if (JSON.parse(window.localStorage.getItem('orderAssingned')) === null){
+function getPosition (position) {
+  if (JSON.parse(window.localStorage.getItem('orderAssingned')) === null) {
     window.localStorage.setItem('orderAssingned', false)
   }
   if (JSON.parse(window.localStorage.getItem('orderAssingned')) === false) {
@@ -14,7 +14,7 @@ function getPosition(position) {
   }
 }
 
-function errorHandlerPosition(error) {
+function errorHandlerPosition (error) {
   switch (error.code) {
     case error.PERMISSION_DENIED:
       alert('No podras activarte se denegó el permiso para la Geolocalización.')

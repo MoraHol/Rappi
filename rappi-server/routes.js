@@ -142,20 +142,7 @@ router.get('/admin', (req, res) => {
   res.render('pages/admin')
 })
 
-// original router.post admin/home comentado
-// router.post('/admin/home',
-//   passport.authenticate('admin', {
-//     failureFlash: true
-//   }),
-//   (req, res) => {
-//     res.send('hola administrador ' + req.user.user_name)
-//   }
-// )
-
-
-
-
-/////
+/// //
 router.post('/admin/home',
   passport.authenticate('admin', {
     failureRedirect: '/'
@@ -174,8 +161,6 @@ router.post('/admin/deliveryPersons',
 )
 
 // pages/admin-home
-
-
 
 router.post('/api/createOrder', orderController.createOrder)
 

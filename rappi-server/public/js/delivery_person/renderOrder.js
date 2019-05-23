@@ -1,4 +1,4 @@
-function assignOrder(orderId) {
+function assignOrder (orderId) {
   $.ajax({
     url: `/api/order/${orderId}/assign/delivery-person/${deliveryPersonId}`,
     type: 'POST',
@@ -10,7 +10,7 @@ function assignOrder(orderId) {
   })
 }
 
-function nextStep(orderId) {
+function nextStep (orderId) {
   $.ajax({
     url: `/api/order/${orderId}/nextstep`,
     type: 'PUT',
@@ -22,7 +22,7 @@ function nextStep(orderId) {
   })
 }
 
-function renderOrderAssigned(order) {
+function renderOrderAssigned (order) {
   if (order == null) {
     $('#order').append(`<div class="spinner-border text-danger" role="status">
     <span class="sr-only">Loading...</span>
@@ -79,7 +79,6 @@ function renderOrderAssigned(order) {
   }
   if (order.generalInfo.statusId == 2) {
     $('#order').append(buttonOnDelivery)
-    
   }
   if (order.generalInfo.statusId == 3) {
     renderProducts(order)
@@ -97,7 +96,7 @@ function renderOrderAssigned(order) {
   $('#order').fadeIn()
 }
 
-function renderOrder(order, position) {
+function renderOrder (order, position) {
   let orderHtml = `
   <div class="row">
     <div class="col-sm-12">

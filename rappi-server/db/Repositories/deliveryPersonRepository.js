@@ -1,38 +1,19 @@
 'use strict'
 const knex = require('../knex')
 module.exports = {
+
   getDeliveryPersons: () => {
     return knex('delivery_persons')
       .select()
   },
 
-  // findById:(id)=>{
-  //   return knex('delivery-persons')
-  //   .select()
-  //   .where({ id: id })    
-  // },
-
-  changeDeliveryPersonStatus:(id)=>{
+  changeDeliveryPersonStatus: (id) => {
     return knex.raw(
       `UPDATE delivery_persons SET is_valid_for_work = NOT is_valid_for_work WHERE id = ?`, id)
       .then(result => {
-        return 
+
       })
-    
   },
-
-
-  // findStoreById: async (id) => {
-  //   return knex.raw(
-  //     `SELECT id, name, phone_number, address, address_details, latitude, longitude, photo,
-  //           (SELECT array_to_json(array_agg(row_to_json(working_hours_table)))  
-  //               FROM (SELECT day_id, time_open, time_closed FROM stores_working_hours WHERE store_id = stores.id) AS working_hours_table
-  //           ) AS working_hours
-  //       FROM stores WHERE id = ?`, id).then(result => {
-  //     return new StoreModel(result.rows[0])
-  //   })
-  // },
-
 
   findByIdGoogleStrategy: (profile) => {
     return knex('delivery_persons')
