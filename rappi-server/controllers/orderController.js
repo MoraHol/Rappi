@@ -14,11 +14,9 @@ module.exports = {
       res.json(response)
       return
     }
-    console.log(cart)
     if (req.session.user) {
       let flag = await db.orderRepository.UserActiveOrders(req.session.user.id)
       if (flag) {
-        console.log(flag)
         response.sucess = false
         response.message = 'Ya tienes una orden creada'
       } else {

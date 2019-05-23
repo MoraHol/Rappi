@@ -2,6 +2,20 @@
 const db = require('../db')
 module.exports = {
 
+  getIndexPage: async (req, res) => {
+    if (req.session.rappiTendero) {
+      if (req.session.rappiTendero.is_valid_for_work === true)
+      {
+        res.render('pages/rt-page', { user: req.session.rappiTendero })
+      }
+      else
+      {
+        res.render('pages/login-rt', { message: 'Usted no esta habilitado para trabajar, por favor acerquese a una de nuestras oficinas a validar sus datos' })
+      }
+    } else {
+      res.render('pages/login-rt')
+    }
+  },
 
   testorder: async (req, res) =>{
     var lat =  4.7007205
@@ -105,15 +119,7 @@ module.exports = {
     })
     res.redirect('/soyrappi')
   },
-  getIndexPage: (req, res) => {
-    if (req.session.rappiTendero) {
-      res.render('pages/rt-page', {
-        user: req.session.rappiTendero
-      })
-    } else {
-      res.render('pages/login-rt')
-    }
-  },
+
   logout: (req, res) => {
     req.session.regenerate((err) => {
       if (err) throw err
