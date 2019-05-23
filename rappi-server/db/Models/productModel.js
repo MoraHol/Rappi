@@ -15,9 +15,8 @@ module.exports =
     canSupply (units) {
       if (this.quantity_available < units) {
         return false
-      }
-      else{
+      } else {
         return true
       }
-    }    
-}
+    }
+  }

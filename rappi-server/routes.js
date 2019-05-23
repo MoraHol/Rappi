@@ -54,10 +54,15 @@ router.get('/api/order/:id', orderController.getOrderById)
 router.put('/api/order/:id/nextstep', orderController.nextStep)
 router.get('/api/order/unassigned/:lat/:lng', orderController.getOrderUnassigned)
 router.post('/api/order/:id_order/assign/delivery-person/:id_delivery_person', orderController.assignOrder)
+router.get('/api/order/active/user/:id', orderController.useractiveOrders)
+router.post('/api/createOrder', orderController.createOrder)
 
 //
 
 // Clients
+
+router.get('/myOrder', clientController.showOrder)
+
 router.get('/login/auth/google',
   passport.authenticate('googleClient', {
     scope: ['profile', 'email']
@@ -144,6 +149,5 @@ router.post('/admin/home',
     res.send('hola administrador ' + req.user.user_name)
   }
 )
-router.post('/api/createOrder', orderController.createOrder)
 
 module.exports = router

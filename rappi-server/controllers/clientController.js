@@ -99,8 +99,14 @@ module.exports = {
       req.session.user.address_details = req.body.address_details
       req.session.user.latitude = req.body.lat
       req.session.user.longitude = req.body.lng
-      await db.clientRepository.updateAddress(req.session.user)   
+      await db.clientRepository.updateAddress(req.session.user)
     }
     res.redirect('/')
+  },
+  showOrder: async (req, res) => {
+    const orderId = await db.orderRepository.findOrderIdActiveUser(req.session.user.id)
+    res.render('pages/myorder', {
+      orderId
+    })
   }
 }

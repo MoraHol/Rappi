@@ -16,9 +16,16 @@ module.exports = {
     }
     console.log(cart)
     if (req.session.user) {
-      await db.orderRepository.createOrder(req.session.user, cart)
-      response.sucess = true
-      response.message = 'El producto se ha creado satisfactoriamete'
+      let flag = await db.orderRepository.UserActiveOrders(req.session.user.id)
+      if (flag) {
+        console.log(flag)
+        response.sucess = false
+        response.message = 'Ya tienes una orden creada'
+      } else {
+        await db.orderRepository.createOrder(req.session.user, cart)
+        response.sucess = true
+        response.message = 'El producto se ha creado satisfactoriamente'
+      }
     } else {
       response.sucess = false
       response.message = 'Por favor inicia sesion para comprar'
@@ -48,5 +55,10 @@ module.exports = {
     await db.orderRepository.assignOrderToDeliveryPerson(idOrder, idDeliveryPerson)
     let order = await db.orderRepository.getOrder(idOrder)
     res.json(order)
+  },
+  useractiveOrders: async (req, res) => {
+    let response = {}
+    response.flag = await db.orderRepository.UserActiveOrders(req.params.id)
+    res.json(response)
   }
 }

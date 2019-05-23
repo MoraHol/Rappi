@@ -18,7 +18,7 @@
 
 <body>
   <div class="header-login">
-    <nav class="navbar navbar-light bg-bg-2">
+    <nav class="navbar navbar-light bg-bg-2" id="nav-rappi">
       <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
           src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
       <%
@@ -301,8 +301,21 @@
         }
       })
     })
+    <% try {
+      if(user){%>
+        const userId = <%= user.id %>
+      <%}
+    } catch (error) {
+      
+    }%>
   </script>
-
+<% try {
+      if(user){%>
+        <script src="/js/user/verifyOrders.js"></script>
+      <%}
+    } catch (error) {
+      
+    }%>
 </body>
 
 </html>

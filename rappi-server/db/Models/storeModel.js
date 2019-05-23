@@ -25,8 +25,8 @@ module.exports =
           { product_id: 'products.id' },
           'products.name', 'products.photo',
           'products.price',
-          {quantity_available: 'products_in_stores.quantity'})
-        
+          { quantity_available: 'products_in_stores.quantity' })
+
       let products = []
       for (let i = 0; i < dbproducts.length; i++) {
         products.push(new ProductModel(dbproducts[i]))

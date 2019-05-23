@@ -1,4 +1,4 @@
-function assignOrder(orderId) {
+function assignOrder (orderId) {
   $.ajax({
     url: `/api/order/${orderId}/assign/delivery-person/${deliveryPersonId}`,
     type: 'POST',
@@ -81,7 +81,7 @@ function renderOrderAssigned (order) {
   if (order.generalInfo.statusId == 4) {
     $('#order').fadeOut()
     $('#order').html('')
-    alert("Has completado la orden con exito")
+    alert('Has completado la orden con exito')
     window.localStorage.removeItem('orderAssingned')
     window.localStorage.removeItem('orderAssingnedId')
     navigator.geolocation.getCurrentPosition(getPosition, errorHandlerPosition)
@@ -90,7 +90,7 @@ function renderOrderAssigned (order) {
   $('#order').fadeIn()
 }
 
-function renderOrder(order, position) {
+function renderOrder (order, position) {
   let orderHtml = `
   <div class="row">
     <div class="col-sm-12">

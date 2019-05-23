@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Rappi | Ver mi orden</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="https://images.rappi.com/web/rappi_favicon.png">
+	<style>
+		.fas {
+			color: #ff7176;
+		}
+
+		.center {
+			text-align: center;
+		}
+
+		.image-rt {
+			height: 200px;
+			width: 200px;
+			border-radius: 100px!important;
+		}
+
+		.cont-products-basket ul {
+			height: 100%;
+			overflow-y: auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+	</style>
+	<%include ../partials/head-boostrap%>
+	<link rel="stylesheet" type="text/css" href="/css/shopping_car.css">
+	<link rel="stylesheet" type="text/css" href="/css/products-basket.css">
+	<link rel="stylesheet" type="text/css" href="/css/products.css">
+	<link rel="stylesheet" type="text/css" href="/css/index-page.css">
+	<script src="/js/lib/jquery.formatCurrency-1.4.0.min.js"></script>
+</head>
+
+<body class="bg-light">
+	<%include ../partials/header-simple%>
+	<div class="container-fluid bg-light" id="order" style="width: 60%">
+
+		<div class="row">
+			<div class="col">
+				<h1 class="center">Mi orden</h1>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	// añadir boton para regresar
+	$('#nav-rappi').append(`<form class="form-inline my-2 my-lg-0" action="/stores">
+          <button class="btn btn-outline-danger my-2 my-sm-0"
+            type="submit">Volver</button>
+				</form>`)
+				
+</script>
+<script>
+	function requestLoad() {
+		$.ajax({
+		url: `/api/order/<%= orderId%>`,
+		type: 'GET',
+		success: (result) => {
+			renderOrder(result)
+		}
+	})
+	}
+	
+
+	function renderOrder(order) {
+		$('#order').html('')
+		let orderHtml = `<div class="row">
+					<div class="col-6"><i class="fas fa-store-alt"></i> <strong>${order.generalInfo.storeName}</strong></div>
+					<div class="col"></div>
+					<div class="col-3">${order.generalInfo.ID}</div>
+				</div>
+				<div class="row">
+					<div class="col-1"></div>
+					<div class="col"><i class="fas fa-map-marked-alt"></i> ${order.generalInfo.storeAddress}</div>
+				</div>`
+		let orderUnassigned = `<br><br><br><div class="row">
+			<div class="spinner-grow text-danger" role="status">
+				<span class="sr-only">Loading...</span>
+			</div>
+			<div class="col">Su orden esta a la espera de ser asignada</div>
+		</div>`
+		let orderAssigned = `<hr>
+		<div class="row">
+			<div class="col"><i class="fas fa-motorcycle"></i> RappiTendero</div>
+		</div>
+		<div class="row">
+			<div class="col center-image center"><img class="image-rt" src="${order.generalInfo.delivPersPhoto}" alt="RappiTendero" ></div>
+		</div>
+		<div class="row">
+			<div class="col center">${order.generalInfo.delivPersFirstName}  ${order.generalInfo.delivPersLastName}</div>
+		</div>
+		<div class="row">
+			<div class="col center"> <i class="fas fa-phone"></i> ${order.generalInfo.delivPersPhoneNumber}</div>
+		</div>
+		<hr>
+		<br>
+		`
+
+		$('#order').append(orderHtml)
+		if (order.generalInfo.statusId == 1) {
+			$('#order').append(orderUnassigned)
+		}
+		if (order.generalInfo.statusId == 2) {
+			$('#order').append(orderAssigned)
+			$('#order').append(`<div class="row">
+			<div class="col center">El rappitendero va hacia la tienda</div>
+		</div><br>
+		<hr>
+		<br>`)
+			renderProducts(order)
+		}
+		if (order.generalInfo.statusId == 3) {
+			$('#order').append(orderAssigned)
+			$('#order').append(`<div class="row">
+			<div class="col center">El rappitendero va hacia tu casa</div>
+		</div><br>
+		<hr>
+		<br>`)
+		renderProducts(order)
+		}
+		if(order.generalInfo.statusId == 4){
+			$('#order').append(orderAssigned)
+			$('#order').append(`<div class="row">
+			<div class="col center">La orden ha sido entregada</div>
+		</div><br>
+		<hr>
+		<br>`)
+		renderProducts(order)
+		}
+
+	}
+
+	function renderProducts(order) {
+		let basketHtml = `<div class="basket-body">
+		<div class="cont-products-basket center">
+			<ul>
+				<li class="ng-star-inserted">
+					<div class="cont-product-header ng-star-inserted">
+						<div class="store-basket-header">
+							<!---->
+							<div class="cont-img ng-star-inserted"><img src="${order.generalInfo.storePhoto}?d=100x100&amp;e=webp"
+									alt="${order.generalInfo.storeName}"></div>
+							<div class="cont-info">
+								<p><b>${order.generalInfo.storeName}</b><strong>$&nbsp;<span class="currency subtotal" >15.000</span></strong></p>
+							</div>
+						</div>
+						<app-higher-purchases>
+							<!---->
+							<!---->
+						</app-higher-purchases>
+						<div class="store-basket-products">
+
+
+						</div>
+					</div>
+					<div class="border-space"></div>
+				</li>
+			</ul>
+		</div>
+
+	</div>`
+			let subtotal = 0
+			$('#order').append(basketHtml)
+
+			order.products.forEach(product => {
+				let productHtml = `<div class="ng-star-inserted">
+								<app-product-basket>
+									<div class="item-basket hover-calculator">
+										<div class="cont-img">
+											<div class="width-img"><img
+													src="${product.photo}?d=200x200&amp;e=webp">
+											</div>
+										</div>
+										<div class="product-basket-stores">
+											<div class="align-content">
+												<div class="cont-info-item ng-star-inserted"><strong>${product.name}</strong>
+												</div>
+												<div class="cont-calculator ng-star-inserted">
+													<app-counter-product>
+														<div class="calculator">
+															<div>${product.quantity}</div>
+														</div>
+													</app-counter-product>
+												</div>
+											</div>
+										</div>
+										<div class="price-item"><span>$&nbsp;</span><span class="currency">${product.quantity * product.unitPrice}</span></div>
+									</div>
+								</app-product-basket>
+							</div>`
+				$('div.store-basket-products').append(productHtml)
+				subtotal += product.quantity * product.unitPrice
+			})
+			$('.subtotal').html(subtotal)
+			$('.currency').toNumber({
+				decimalSymbol: ','
+			}).formatCurrency({
+				roundToDecimalPlace: 0,
+				symbol: '',
+				digitGroupSymbol: '.'
+			})
+	}
+	requestLoad()
+	setInterval(requestLoad,30000)
+</script>
+
+</html>
