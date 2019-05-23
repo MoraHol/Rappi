@@ -13,13 +13,12 @@ module.exports = {
   // },
 
   changeDeliveryPersonStatus:(id)=>{
-    console.log('esta en el delivery person repository antes del update')
     return knex.raw(
-      `UPDATE delivery_persons SET is_valid_for_work = NOT is_valid_for_work WHERE id = ?`, id).then(result => {
-        console.log('esta en el .then del delivery person repository en el result del update')
-        return //new StoreModel(result.rows[0])
-      }),
-    console.log('el id fue: ' + id + 'y esta en el delivery person repository despues del update')
+      `UPDATE delivery_persons SET is_valid_for_work = NOT is_valid_for_work WHERE id = ?`, id)
+      .then(result => {
+        return 
+      })
+    
   },
 
 

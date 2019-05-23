@@ -55,10 +55,9 @@
 	<script>
     $(function() {
         $('[class*="_toggle-event"]').change(function() {
-          // console.log("inicia evento change")
           var id=this.id
           $.post('/admin/deliveryPersons',{ id: JSON.stringify(id)}, (data, status) => {        
-          if(data.success){
+          if(status === 'success'){
             console.log("success")
           }else{
             console.log("NO success")
