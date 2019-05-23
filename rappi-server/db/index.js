@@ -1,12 +1,16 @@
 'use strict'
 
-const client = require('./client')
-const deliveryPerson = require('./delivery_person')
-const admin = require('./admin')
-const stores = require('./stores')
+const clientRepository = require('./Repositories/clientRepository')
+const deliveryPersonRepository = require('./Repositories/deliveryPersonRepository')
+const adminRepository = require('./Repositories/adminRepository')
+const storeRepository = require('./Repositories/storeRepository')
+const orderRepository = require('./Repositories/orderRepository')
+const addressRepository = require('./Repositories/addressRepository')
 module.exports = {
-  client,
-  deliveryPerson,
-  admin,
-  stores
+  clientRepository,
+  deliveryPersonRepository,
+  adminRepository,
+  storeRepository,
+  orderRepository,
+  addressRepository
 }

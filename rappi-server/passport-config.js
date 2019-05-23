@@ -3,8 +3,8 @@ var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy
 var FacebokStrategy = require('passport-facebook').Strategy
 var LocalStrategy = require('passport-local').Strategy
-var clientController = require('./controllers/clients')
-var deliveryPersonController = require('./controllers/delivery_person')
+var clientController = require('./controllers/clientController')
+var deliveryPersonController = require('./controllers/deliveryPersonController')
 
 passport.serializeUser(function (user, done) {
   done(null, user)
@@ -67,7 +67,7 @@ passport.use('facebookRT',
 )
 
 passport.use('admin', new LocalStrategy(async (username, password, done) => {
-  await db.admin.findOne(username).then((admin) => {
+  await db.adminRepository.findOne(username).then((admin) => {
     if (admin) {
       if (admin.password === password) {
         return done(null, admin)

@@ -13,26 +13,35 @@
   <link rel="stylesheet" type="text/css" href="/css/products.css">
   <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
   <link rel="stylesheet" type="text/css" href="/css/stores.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 </head>
 
 <body>
   <div class="header-login">
-    <nav class="navbar navbar-light bg-bg-2">
+    <nav class="navbar navbar-light bg-bg-2" id="nav-rappi">
       <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
           src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
       <%
         try{
         if(user){%>
-      <a class="btn">
-        <span><%= user.first_name%> </span>
-        <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
-      </a>
+      <div class="dropdown">
+        <a id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src='<%= user.photo%>' alt="" style="width:30px; height: 30px; border-radius: 18px;">
+        </a>
+        <div class="dropdown-menu">
+          <h6 class="dropdown-header">Mi cuenta</h6>
+          <a class="dropdown-item disabled" href="#"><span class="glyphicon glyphicon-user"></span>
+            <%=user.first_name%></a>
+          <a class="dropdown-item" href="/formClient"><span class="fas fa-map-marker-alt"></span> Cambiar Direccion</a>
+          <a class="dropdown-item" id="logout"><span class="fas fa-sign-out-alt"></span> Cerrar Session</a>
+        </div>
+      </div>
       <% }else{ %>
       <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
       <% }
     }catch(e){
     } %>
-      <a class="btn" id="btn-basket"><img id="shooping" src="/img/shoppingcart_77968.png" alt=""></a>
+    <div class="basket-header ng-star-inserted"><app-header-basket><div class="view-basket"><button class="basket-icon" id="btn-basket"><i class="iconf-car-2-icon"></i><!----><small class="ng-star-inserted" id="counter-cart">1</small></button><!----><button class="coupon-icon ng-star-inserted"><i class="iconf-coupon-icon"></i></button></div></app-header-basket></div>
       <hr>
     </nav>
   </div>
@@ -44,14 +53,16 @@
   <div id="products_object" hidden><%= JSON.stringify(products)%></div>
   <% include ../partials/basket-empty%>
   <script>
-    let storeId = <%= store.id%>
+    let storeId = <%= store.id %>
     let products = JSON.parse($('#products_object').html())
 
     let stores
     let store
     $("document").ready(() => {
+      $('#news').hide()
       $(".btn-buy").click(function () {
         addProduct($(this).attr('id'))
+        notify()
       })
       renderShoppingCar()
     })
@@ -126,6 +137,7 @@
                     <p>Te invitamos a volver a nuestras tiendas y agregar productos a tu canasta</p>
                 </div>
             </div>`
+           
       store = findStoreLocalStorage()
       if (!$.isEmptyObject(store)) {
         $('.price-description .currency').text(calculateTotal())
@@ -133,6 +145,7 @@
         $('div.basket-body').empty()
         if (store.basket.length === 0) {
           $('div.basket-body').append(basketEmpty)
+          $('.btn-go-checkout button').attr('disabled', true)
           return
         }
         $('div').remove('.content-basket-empty')
@@ -195,6 +208,7 @@
         $('span.delete').click(function () {
           deleteAllStockProduct($(this).attr('id'))
         })
+        $('#counter-cart').html(store.basket.length)
       }
     }
 
@@ -255,7 +269,53 @@
       })
       return store
     }
+    $('#submit-order').click(() => {
+      $.post('/api/createOrder',{ cart: JSON.stringify(findStoreLocalStorage())}, (data, status) => {        
+        if(data.success){
+          alert(data.message)
+        }else{
+          alert(data.message)
+        }
+      }).done(()=>{
+        let store = findStoreLocalStorage()
+          store.basket= []
+          saveLocalStorage(store)
+      })
+    })
+    function notify() {
+      for (let i = 0; i < 10; i++) {
+        $('#news').fadeOut()
+        $('#news').fadeIn()
+      }
+      $('#news').fadeOut()
+    }
   </script>
+  <script>
+    $('#logout').click(() => {
+      $.ajax({
+        url: '/',
+        type: 'DELETE',
+        success: function (result) {
+          // Do something with the result
+          location.reload()
+        }
+      })
+    })
+    <% try {
+      if(user){%>
+        const userId = <%= user.id %>
+      <%}
+    } catch (error) {
+      
+    }%>
+  </script>
+<% try {
+      if(user){%>
+        <script src="/js/user/verifyOrders.js"></script>
+      <%}
+    } catch (error) {
+      
+    }%>
 </body>
 
 </html>

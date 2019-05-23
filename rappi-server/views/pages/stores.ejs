@@ -13,20 +13,29 @@
   <link rel="stylesheet" type="text/css" href="/css/products.css">
   <link rel="stylesheet" type="text/css" href="/css/carousel-stores.css">
   <link rel="stylesheet" type="text/css" href="/css/stores.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 </head>
 
 <body>
   <div class="header-login">
-    <nav class="navbar navbar-light bg-bg-2">
+    <nav class="navbar navbar-light bg-bg-2" id="nav-rappi">
       <a class="navbar-brand" href=""><img alt="Rappi Logo" title="Rappi"
           src="https://images.rappi.com/web/logo-rappi-new.svg?e=webp"></a>
       <%
     try{
     if(user){%>
-      <a class="btn">
-        <span><%= user.first_name%> </span>
-        <img src='<%= user.photo%>' alt="" style="width:20px; height: 20px; border-radius: 10px;">
-      </a>
+      <div class="dropdown">
+        <a id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <img src='<%= user.photo%>' alt="" style="width:30px; height: 30px; border-radius: 18px;">
+        </a>
+        <div class="dropdown-menu">
+          <h6 class="dropdown-header">Mi cuenta</h6>
+          <a class="dropdown-item disabled"><span class="glyphicon glyphicon-user"></span>
+            <%=user.first_name%></a>
+          <a class="dropdown-item" href="/formClient"><span class="fas fa-map-marker-alt"></span> Cambiar Direccion</a>
+          <a class="dropdown-item" id="logout"><span class="fas fa-sign-out-alt"></span> Cerrar Session</a>
+        </div>
+      </div>
       <%}else{%>
       <a href="/login" class="btn btn-outline-danger">Iniciar Sesión</a>
       <%}
@@ -116,8 +125,6 @@
         </div>
       </app-store-list>
     </div>
-    <%}else{%>
-
     <%}
       }catch(e){
     }%>
@@ -145,6 +152,35 @@
   </div>
   <% include ../partials/basket-empty%>
 
+  <script>
+    <% try {
+      if(user){%>
+        const userId = <%= user.id %>
+      <%}
+    } catch (error) {
+      
+    }%>
+
+
+    $('#logout').click(() => {
+      $.ajax({
+        url: '/',
+        type: 'DELETE',
+        success: function (result) {
+          // Do something with the result
+          location.reload()
+        }
+      })
+    })
+  </script>
+  <% try {
+      if(user){%>
+        <script src="/js/user/verifyOrders.js"></script>
+      <%}
+    } catch (error) {
+      
+    }%>
+  
 </body>
 
 </html>
