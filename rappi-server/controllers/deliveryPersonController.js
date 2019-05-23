@@ -18,15 +18,16 @@ module.exports = {
   },
 
   changeDeliveryPersonStatus: async (req, res) => {
-    console.log('esta en el controller de deliveryPerson Controller en ChangeDeliveryPersonStatus')
+    let id = JSON.parse(req.body.id)
+    // console.log('esta en el controller de deliveryPerson Controller en ChangeDeliveryPersonStatus')
+    // console.log(id)
     try {
-      console.log('entro al try del changedeliverypersonstats contrller de deliverypersoncontroller')
-      await db.deliveryPersonRepository.changeDeliveryPersonStatus(1)//cambiar el 1 por el id que traigo desde el html en el post que se evia
-      // let delivery_person = await db.deliveryPersonRepository.changeDeliveryPersonStatus(1)//cambiar el 1 por el id que traigo desde el html en el post que se evia
-      console.log('ya hizo el update')
+      // console.log('entro al try del changedeliverypersonstats contrller de deliverypersoncontroller')
+      await db.deliveryPersonRepository.changeDeliveryPersonStatus(id)//cambiar el 1 por el id que traigo desde el html en el post que se evia
+      // console.log('ya hizo el update')
 
       let delivery_persons = await db.deliveryPersonRepository.getDeliveryPersons()
-      console.log(delivery_persons)
+      // console.log(delivery_persons)
       res.render('pages/admin-deliveryPerson', {
         delivery_persons: delivery_persons
       }
