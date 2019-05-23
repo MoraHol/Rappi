@@ -1,9 +1,11 @@
-function getPosition (position) {
-  console.log(position)
-  if (!window.localStorage.orderAssingned) {
+function getPosition(position) {
+  console.log(window.localStorage.getItem('orderAssingned'))
+  if (JSON.parse(window.localStorage.getItem('orderAssingned')) === false) {
+    console.log(position)
     $.ajax({
       url: `/api/order/unassigned/${position.coords.latitude}/${position.coords.longitude}`,
       type: 'get',
+
       success: (result) => {
         renderOrder(result, position)
       }
@@ -11,7 +13,7 @@ function getPosition (position) {
   }
 }
 
-function errorHandlerPosition (error) {
+function errorHandlerPosition(error) {
   switch (error.code) {
     case error.PERMISSION_DENIED:
       alert('No podras activarte se denegó el permiso para la Geolocalización.')
@@ -29,7 +31,7 @@ function errorHandlerPosition (error) {
   $('#toggle-one').bootstrapToggle('off')
 }
 $(function () {
-  if (window.localStorage.orderAssingned) {
+  if (JSON.parse(window.localStorage.getItem('orderAssingned')) == true) {
     $('#toggle-one').bootstrapToggle('on')
   } else {
     $('#toggle-one').bootstrapToggle('off')
@@ -37,13 +39,12 @@ $(function () {
 })
 $(function () {
   $('#toggle-one').change(function () {
-    $('#console').html('Toggle: ' + $(this).prop('checked'))
     if ($(this).prop('checked')) {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(getPosition, errorHandlerPosition)
       }
     } else {
-      if (window.localStorage.orderAssingned) {
+      if (JSON.parse(window.localStorage.getItem('orderAssingned')) == true) {
         alert('No puedes desactivarte hasta no terminar esta orden')
         $('#toggle-one').bootstrapToggle('on')
       } else {

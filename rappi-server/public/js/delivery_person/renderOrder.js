@@ -1,4 +1,4 @@
-function assignOrder (orderId) {
+function assignOrder(orderId) {
   $.ajax({
     url: `/api/order/${orderId}/assign/delivery-person/${deliveryPersonId}`,
     type: 'POST',
@@ -10,7 +10,7 @@ function assignOrder (orderId) {
   })
 }
 
-function nextStep (orderId) {
+function nextStep(orderId) {
   $.ajax({
     url: `/api/order/${orderId}/nextstep`,
     type: 'PUT',
@@ -22,7 +22,13 @@ function nextStep (orderId) {
   })
 }
 
-function renderOrderAssigned (order) {
+function renderOrderAssigned(order) {
+  console.log(order)
+  if (order == null) {
+    $('#order').append(`<div class="spinner-border text-danger" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>`)
+  }
   let orderHtml = `
   <div class="row">
     <div class="col-11">
@@ -38,7 +44,7 @@ function renderOrderAssigned (order) {
   <div class="row">
     <div class="col-sm-1"></div>
     <div class="col-sm"><i class="fas fa-long-arrow-alt-right"></i> <span>${order.generalInfo.storeAddress}</span> </div>
-  </div>
+  </div><hr><br>
   <div class="row">
   <div class="col"><i class="fas fa-home"></i> <span> Entrega al cliente</span></div>
 </div>
@@ -56,8 +62,7 @@ function renderOrderAssigned (order) {
   <div class="col-sm-1"></div>
   <div class="col-sm"><i class="fas fa-angle-double-right"></i> <span>${order.generalInfo.clientAddressDetails}</span>
   </div>`
-  let buttonOnDelivery = `</div>
-  <div class="row">
+  let buttonOnDelivery = `<div class="row">
   <div class="col">
     <button class="btn btn-primary btn-lg" onclick="nextStep(${order.generalInfo.ID})">Ya estoy en la tienda</button>
   </div>
@@ -71,18 +76,21 @@ function renderOrderAssigned (order) {
   $('#order').html(orderHtml)
   if (order.generalInfo.addressDatails != '') {
     $('#order').append(addressDatails)
+    $('#order').append('<hr><br>')
   }
   if (order.generalInfo.statusId == 2) {
     $('#order').append(buttonOnDelivery)
+    
   }
   if (order.generalInfo.statusId == 3) {
+    renderProducts(order)
     $('#order').append(ButttonFinished)
   }
   if (order.generalInfo.statusId == 4) {
     $('#order').fadeOut()
     $('#order').html('')
     alert('Has completado la orden con exito')
-    window.localStorage.removeItem('orderAssingned')
+    window.localStorage.setItem('orderAssingned', false)
     window.localStorage.removeItem('orderAssingnedId')
     navigator.geolocation.getCurrentPosition(getPosition, errorHandlerPosition)
   }
@@ -90,7 +98,7 @@ function renderOrderAssigned (order) {
   $('#order').fadeIn()
 }
 
-function renderOrder (order, position) {
+function renderOrder(order, position) {
   let orderHtml = `
   <div class="row">
     <div class="col-sm-12">

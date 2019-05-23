@@ -14,6 +14,12 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
     integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/lib/bootstrap.min.css">
+
+  <link rel="stylesheet" type="text/css" href="/css/shopping_car.css">
+  <link rel="stylesheet" type="text/css" href="/css/products-basket.css">
+  <link rel="stylesheet" type="text/css" href="/css/products.css">
+  <link rel="stylesheet" type="text/css" href="/css/index-page.css">
+  <script src="/js/lib/jquery.formatCurrency-1.4.0.min.js"></script>
   <style>
     .center {
       text-align: center;
@@ -27,21 +33,29 @@
     .fas {
       color: #ff7176;
     }
+
+    .cont-products-basket ul {
+      height: 100%;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   </style>
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
   <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </head>
 
-<body>
+<body class="bg-light">
   <% include ../partials/header-simple%>
-  <div class="container-fluid bg-light">
+  <div class="container-fluid bg-light" style="width: 60%">
     <div class="row align-items-center">
       <div class="col"></div>
       <div class="col col-md-auto">Actívate:</div>
       <div class="col col-lg-1"> <input id="toggle-one" checked type="checkbox" data-style="android"></div>
     </div>
   </div>
-  <div id="order" class="container-fluid bg-light order">
+  <div id="order" class="container-fluid bg-light order" style="width: 60%">
 
   </div>
 
@@ -50,34 +64,33 @@
   </script>
   <script src="/js/delivery_person/position.js"></script>
   <script>
-    $(document).ready(() => {
-      $('#logout').click(() => {
-        if (window.localStorage.orderAssingned) {
-          alert("No puedes cerrarSesion hasta no terminar esta orden")
-          $('#toggle-one').bootstrapToggle('on')
-        } else {
-          $.ajax({
-            url: '/soyrappi',
-            type: 'DELETE',
-            success: function (result) {
-              // Do something with the result
-              location.reload()
-            }
-          })
-        }
-      })
-      $('#nav-rappi').append(`<div class="dropdown">
+    function logout() {
+      if (JSON.parse(window.localStorage.getItem('orderAssingned')) == true) {
+        alert("No puedes cerrar Sesion hasta no terminar esta orden")
+        $('#toggle-one').bootstrapToggle('on')
+      } else {
+        $.ajax({
+          url: '/soyrappi',
+          type: 'DELETE',
+          success: function (result) {
+            // Do something with the result
+            location.reload()
+          }
+        })
+      }
+    }
+    $('#nav-rappi').append(`<div class="dropdown">
     <a id="dLabel" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <img src='<%= user.photo%>' alt="" style="width:30px; height: 30px; border-radius: 18px;">
     </a>
     <div class="dropdown-menu">
         <h6 class="dropdown-header">Mi cuenta</h6>
         <a class="dropdown-item disabled" href="#"><span class="glyphicon glyphicon-user"></span> <%=user.first_name%></a>
-        <a class="dropdown-item" id="logout"><span class="glyphicon glyphicon-log-out"></span> Cerrar Session</a>
+        <a class="dropdown-item" id="logout" onclick="logout()"><span class="glyphicon glyphicon-log-out"></span> Cerrar Session</a>
     </div>`)
-    })
+
     $(function () {
-      if (window.localStorage.orderAssingned) {
+      if (JSON.parse(window.localStorage.getItem('orderAssingned')) == true) {
         $.ajax({
           url: `/api/order/${window.localStorage.orderAssingnedId}`,
           type: 'GET',
@@ -86,11 +99,85 @@
           }
         })
       }
+
     })
+  </script>
+  <script>
+    function renderProducts(order) {
+      let basketHtml = `<div class="basket-body">
+		<div class="cont-products-basket center">
+			<ul>
+				<li class="ng-star-inserted">
+					<div class="cont-product-header ng-star-inserted">
+						<div class="store-basket-header">
+							<!---->
+							<div class="cont-img ng-star-inserted"><img src="${order.generalInfo.storePhoto}?d=100x100&amp;e=webp"
+									alt="${order.generalInfo.storeName}"></div>
+							<div class="cont-info">
+								<p><b>${order.generalInfo.storeName}</b><strong>$&nbsp;<span class="currency subtotal" >15.000</span></strong></p>
+							</div>
+						</div>
+						<app-higher-purchases>
+							<!---->
+							<!---->
+						</app-higher-purchases>
+						<div class="store-basket-products">
+
+
+						</div>
+					</div>
+					<div class="border-space"></div>
+				</li>
+			</ul>
+		</div>
+
+	</div>`
+      let subtotal = 0
+      $('#order').append(basketHtml)
+
+      order.products.forEach(product => {
+        let productHtml = `<div class="ng-star-inserted">
+								<app-product-basket>
+									<div class="item-basket hover-calculator">
+										<div class="cont-img">
+											<div class="width-img"><img
+													src="${product.photo}?d=200x200&amp;e=webp">
+											</div>
+										</div>
+										<div class="product-basket-stores">
+											<div class="align-content">
+												<div class="cont-info-item ng-star-inserted"><strong>${product.name}</strong>
+												</div>
+												<div class="cont-calculator ng-star-inserted">
+													<app-counter-product>
+														<div class="calculator">
+															<div>${product.quantity}</div>
+														</div>
+													</app-counter-product>
+												</div>
+											</div>
+										</div>
+										<div class="price-item"><span>$&nbsp;</span><span class="currency">${product.quantity * product.unitPrice}</span></div>
+									</div>
+								</app-product-basket>
+							</div>`
+        $('div.store-basket-products').append(productHtml)
+        subtotal += product.quantity * product.unitPrice
+      })
+      $('.subtotal').html(subtotal)
+      $('.currency').toNumber({
+        decimalSymbol: ','
+      }).formatCurrency({
+        roundToDecimalPlace: 0,
+        symbol: '',
+        digitGroupSymbol: '.'
+      })
+    }
   </script>
   <script src="/js/delivery_person/renderOrder.js">
 
   </script>
+
 </body>
 
 </html>
