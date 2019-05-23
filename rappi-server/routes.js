@@ -7,6 +7,7 @@ const clientController = require('./controllers/clientController')
 const deliveryPersonController = require('./controllers/deliveryPersonController')
 const storesController = require('./controllers/storeController')
 const orderController = require('./controllers/orderController')
+const adminController = require('./controllers/adminController')
 
 router.get('/login', (req, res) => {
   if (req.statusCode === 303) {
@@ -141,13 +142,41 @@ router.get('/admin', (req, res) => {
   res.render('pages/admin')
 })
 
+// original router.post admin/home comentado
+// router.post('/admin/home',
+//   passport.authenticate('admin', {
+//     failureFlash: true
+//   }),
+//   (req, res) => {
+//     res.send('hola administrador ' + req.user.user_name)
+//   }
+// )
+
+
+
+
+/////
 router.post('/admin/home',
   passport.authenticate('admin', {
-    failureFlash: true
+    failureRedirect: '/'
   }),
-  (req, res) => {
-    res.send('hola administrador ' + req.user.user_name)
-  }
+  adminController.loginRedirectAdmin
 )
+
+router.get('/admin/deliveryPersons',
+  // console.log('esta en el router.get admin/deliveryPerson')
+  adminController.getDeliveryPersons
+)
+
+router.post('/admin/deliveryPersons',
+  // console.log('esta en el router.get admin/deliveryPerson')
+  deliveryPersonController.changeDeliveryPersonStatus
+)
+
+// pages/admin-home
+
+
+
+router.post('/api/createOrder', orderController.createOrder)
 
 module.exports = router

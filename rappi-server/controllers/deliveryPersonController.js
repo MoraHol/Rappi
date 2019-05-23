@@ -1,6 +1,37 @@
 'use strict'
 const db = require('../db')
 module.exports = {
+
+
+  testorder: async (req, res) =>{
+    var lat =  4.7007205
+    var long = -74.0358761
+    
+    //let test =  await db.orderRepository.getCloserOrderToLocation(lat,long)
+    
+    //await db.orderRepository.assignOrderToDeliveryPerson(1,1)
+    
+    let test =  await db.orderRepository.getOrder(1)
+    await db.orderRepository.moveOrderToNextStatus(test)
+    test =  await db.orderRepository.getOrder(1)
+    res.json(test)
+  },
+
+  changeDeliveryPersonStatus: async (req, res) => {
+    let id = JSON.parse(req.body.id)
+    try {
+      await db.deliveryPersonRepository.changeDeliveryPersonStatus(id)//cambiar el 1 por el id que traigo desde el html en el post que se evia
+
+      let delivery_persons = await db.deliveryPersonRepository.getDeliveryPersons()
+      res.render('pages/admin-deliveryPerson', {
+        delivery_persons: delivery_persons
+      }
+      )
+    } catch (error) {
+      res.redirect('/')
+    }
+  },
+
   authenticateByGoogleStrategy: (req, accessToken, refreshToken, profile, done) => {
     db.deliveryPersonRepository.findByIdGoogleStrategy(profile).then((id) => {
       if (id) {
