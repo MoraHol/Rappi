@@ -80,6 +80,7 @@ module.exports = {
     })
     res.redirect('/stores')
   },
+
   logout: (req, res) => {
     req.session.regenerate((err) => {
       if (err) throw err
@@ -88,11 +89,13 @@ module.exports = {
       })
     })
   },
+
   changeAddress: (req, res) => {
     res.render('pages/form-client', {
       user: req.user
     })
   },
+
   updateAddress: async (req, res) => {
     if (req.session.user) {
       req.session.user.address = req.body.address
@@ -103,6 +106,7 @@ module.exports = {
     }
     res.redirect('/')
   },
+
   showOrder: async (req, res) => {
     const orderId = await db.orderRepository.findOrderIdActiveUser(req.session.user.id)
     res.render('pages/myorder', {
