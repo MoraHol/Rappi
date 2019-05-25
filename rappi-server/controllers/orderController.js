@@ -8,44 +8,13 @@ module.exports = {
       message: ''
     }
     try {
-      let store = await db.storeRepository.findStoreById(cart.id)
-      if (!store.isOpened()) {
-        response.sucess = false
-        response.message = 'Lo sentimos la tienda se encuentra cerrada'
-        return
-      }
-
-      let products = await store.getProducts()
-      for (let index = 0; index < cart.basket.length; index++) {
-        let productInCart = cart.basket[index];
-        let productInInventory = products.find(product => product.products_in_stores_id === productInCart.id_product);
-        if (!await productInInventory.canSupply(productInCart.quantity)) {
-          response.sucess = false
-          response.message = 'Lo sentimos no hay la cantidad solicitada de ' + productInInventory.name
-          return
-        }
-      }
-
-      if (req.session.user) {
-        let flag = await db.orderRepository.UserActiveOrders(req.session.user.id)
-        if (flag) {
-          response.sucess = false
-          response.message = 'Ya tienes una orden creada'
-          return
-        } else {
-          await db.orderRepository.createOrder(req.session.user, cart)
-          response.sucess = true
-          response.message = 'El producto se ha creado satisfactoriamente'
-          return
-        }
-      } else {
-        response.sucess = false
-        response.message = 'Por favor inicia sesion para comprar'
-        return
-      }
+      await db.orderValidityChecker.isValidOrder(req.session.user, cart)
+      await db.orderBuilder.createOrderOnDB(req.session.user, cart)
+      response.sucess = true
+      response.message = 'El producto se ha creado satisfactoriamente'
+      return
     } catch (error) {
-      response.sucess = false
-      response.message = 'La orden no pudo ser creada, intente de nuevo'
+      response = error
     } finally {
       res.json(response)
     }

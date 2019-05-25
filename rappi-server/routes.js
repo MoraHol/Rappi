@@ -9,7 +9,7 @@ const storesController = require('./controllers/storeController')
 const orderController = require('./controllers/orderController')
 const adminController = require('./controllers/adminController')
 
-//Cliente
+// Cliente
 
 router.get('/login', (req, res) => {
   if (req.statusCode === 303) {
@@ -85,7 +85,7 @@ router.post('/login/auth/facebook/post',
   clientController.setAddressFacebookStrategy
 )
 
-//Rappitendero
+// Rappitendero
 router.get('/soyrappi', deliveryPersonController.getIndexPage)
 
 router.delete('/soyrappi', deliveryPersonController.logout)
@@ -140,7 +140,6 @@ router.post('/api/order/:id_order/assign/delivery-person/:id_delivery_person', o
 router.get('/api/order/active/user/:id', orderController.useractiveOrders)
 router.post('/api/createOrder', orderController.createOrder)
 
-
 // Admins
 router.get('/admin', (req, res) => {
   res.render('pages/admin')
@@ -160,6 +159,5 @@ router.get('/admin/deliveryPersons',
 router.post('/admin/deliveryPersons',
   deliveryPersonController.changeDeliveryPersonStatus
 )
-
 
 module.exports = router
