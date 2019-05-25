@@ -1,4 +1,4 @@
-function assignOrder(orderId) {
+function assignOrder (orderId) {
   $.ajax({
     url: `/api/order/${orderId}/assign/delivery-person/${deliveryPersonId}`,
     type: 'POST',
@@ -10,7 +10,7 @@ function assignOrder(orderId) {
   })
 }
 
-function nextStep(orderId) {
+function nextStep (orderId) {
   $.ajax({
     url: `/api/order/${orderId}/nextstep`,
     type: 'PUT',
@@ -22,8 +22,7 @@ function nextStep(orderId) {
   })
 }
 
-function renderOrderAssigned(order) {
-  console.log(order)
+function renderOrderAssigned (order) {
   if (order == null) {
     $('#order').append(`<div class="spinner-border text-danger" role="status">
     <span class="sr-only">Loading...</span>
@@ -38,7 +37,7 @@ function renderOrderAssigned(order) {
   </div>
   <div class="row">
     <div class="col">
-      <i class="fas fa-map-marker-alt"></i> <span>Reconge en ${order.generalInfo.storeName}</span>
+      <i class="fas fa-map-marker-alt"></i> <span>Recoge en ${order.generalInfo.storeName}</span>
     </div>
   </div>
   <div class="row">
@@ -70,7 +69,7 @@ function renderOrderAssigned(order) {
   let ButttonFinished = `</div>
   <div class="row">
   <div class="col">
-    <button class="btn btn-primary btn-lg" onclick="nextStep(${order.generalInfo.ID})">Ya entrege al cliente</button>
+    <button class="btn btn-primary btn-lg" onclick="nextStep(${order.generalInfo.ID})">Ya entregue al cliente</button>
   </div>
 </div>`
   $('#order').html(orderHtml)
@@ -80,7 +79,6 @@ function renderOrderAssigned(order) {
   }
   if (order.generalInfo.statusId == 2) {
     $('#order').append(buttonOnDelivery)
-    
   }
   if (order.generalInfo.statusId == 3) {
     renderProducts(order)
@@ -98,7 +96,7 @@ function renderOrderAssigned(order) {
   $('#order').fadeIn()
 }
 
-function renderOrder(order, position) {
+function renderOrder (order, position) {
   let orderHtml = `
   <div class="row">
     <div class="col-sm-12">
@@ -113,13 +111,13 @@ function renderOrder(order, position) {
   </div>
   <div class="row">
     <div class="col"></div>
-    <div class="col-5">Direcion:</div>
+    <div class="col-5">Dirección:</div>
     <div class="col-6" id="address-store">${order.generalInfo.storeAddress}</div>
   </div>
   <hr>
   <div class="row">
     <div class="col"></div>
-    <div class="col-5">Direcion de cliente:</div>
+    <div class="col-5">Dirección de cliente:</div>
     <div class="col-6" id="">${order.generalInfo.clientAddress}</div>
   </div>
   <hr>

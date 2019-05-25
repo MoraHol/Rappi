@@ -1,7 +1,8 @@
-function getPosition(position) {
-  console.log(window.localStorage.getItem('orderAssingned'))
+function getPosition (position) {
+  if (JSON.parse(window.localStorage.getItem('orderAssingned')) === null) {
+    window.localStorage.setItem('orderAssingned', false)
+  }
   if (JSON.parse(window.localStorage.getItem('orderAssingned')) === false) {
-    console.log(position)
     $.ajax({
       url: `/api/order/unassigned/${position.coords.latitude}/${position.coords.longitude}`,
       type: 'get',
@@ -13,7 +14,7 @@ function getPosition(position) {
   }
 }
 
-function errorHandlerPosition(error) {
+function errorHandlerPosition (error) {
   switch (error.code) {
     case error.PERMISSION_DENIED:
       alert('No podras activarte se denegó el permiso para la Geolocalización.')

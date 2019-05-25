@@ -1,6 +1,34 @@
 'use strict'
 const db = require('../db')
 module.exports = {
+
+  getIndexPage: async (req, res) => {
+    if (req.session.rappiTendero) {
+      if (req.session.rappiTendero.is_valid_for_work === true) {
+        res.render('pages/rt-page', { user: req.session.rappiTendero })
+      } else {
+        res.render('pages/login-rt', { message: 'Usted no esta habilitado para trabajar, por favor acerquese a una de nuestras oficinas a validar sus datos' })
+      }
+    } else {
+      res.render('pages/login-rt')
+    }
+  },
+
+  changeDeliveryPersonStatus: async (req, res) => {
+    let id = JSON.parse(req.body.id)
+    try {
+      await db.deliveryPersonRepository.changeDeliveryPersonStatus(id)// cambiar el 1 por el id que traigo desde el html en el post que se evia
+
+      let delivery_persons = await db.deliveryPersonRepository.getDeliveryPersons()
+      res.render('pages/admin-deliveryPerson', {
+        delivery_persons: delivery_persons
+      }
+      )
+    } catch (error) {
+      res.redirect('/')
+    }
+  },
+
   authenticateByGoogleStrategy: (req, accessToken, refreshToken, profile, done) => {
     db.deliveryPersonRepository.findByIdGoogleStrategy(profile).then((id) => {
       if (id) {
@@ -74,15 +102,7 @@ module.exports = {
     })
     res.redirect('/soyrappi')
   },
-  getIndexPage: (req, res) => {
-    if (req.session.rappiTendero) {
-      res.render('pages/rt-page', {
-        user: req.session.rappiTendero
-      })
-    } else {
-      res.render('pages/login-rt')
-    }
-  },
+
   logout: (req, res) => {
     req.session.regenerate((err) => {
       if (err) throw err

@@ -1,6 +1,20 @@
 'use strict'
 const knex = require('../knex')
 module.exports = {
+
+  getDeliveryPersons: () => {
+    return knex('delivery_persons')
+      .select()
+  },
+
+  changeDeliveryPersonStatus: (id) => {
+    return knex.raw(
+      `UPDATE delivery_persons SET is_valid_for_work = NOT is_valid_for_work WHERE id = ?`, id)
+      .then(result => {
+
+      })
+  },
+
   findByIdGoogleStrategy: (profile) => {
     return knex('delivery_persons')
       .select()

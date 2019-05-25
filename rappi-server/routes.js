@@ -7,6 +7,9 @@ const clientController = require('./controllers/clientController')
 const deliveryPersonController = require('./controllers/deliveryPersonController')
 const storesController = require('./controllers/storeController')
 const orderController = require('./controllers/orderController')
+const adminController = require('./controllers/adminController')
+
+// Cliente
 
 router.get('/login', (req, res) => {
   if (req.statusCode === 303) {
@@ -19,9 +22,6 @@ router.get('/login', (req, res) => {
   }
 })
 
-router.get('/soyrappi', deliveryPersonController.getIndexPage)
-router.delete('/soyrappi', deliveryPersonController.logout)
-
 router.get('/formClient', (req, res) => {
   if (req.session.user) {
     res.type('html')
@@ -32,34 +32,20 @@ router.get('/formClient', (req, res) => {
     res.redirect('/login')
   }
 })
+
 router.post('/post', clientController.updateAddress)
-router.get('/formRT', (req, res) => {
-  res.type('html')
-  res.render('pages/form-rt')
-})
+
+router.get('/stores', storesController.getOpenByDistance)
+
+router.get('/stores/:id', storesController.getStore)
+
 router.delete('/', clientController.logout)
+
 router.get('/', (req, res) => {
   res.render('pages/index-page', {
     user: req.session.user
   })
 })
-
-// TEST
-router.get('/stores', storesController.getOpenByDistance)
-router.get('/stores/:id', storesController.getStore)
-
-// api de ordenes
-
-router.get('/api/order/:id', orderController.getOrderById)
-router.put('/api/order/:id/nextstep', orderController.nextStep)
-router.get('/api/order/unassigned/:lat/:lng', orderController.getOrderUnassigned)
-router.post('/api/order/:id_order/assign/delivery-person/:id_delivery_person', orderController.assignOrder)
-router.get('/api/order/active/user/:id', orderController.useractiveOrders)
-router.post('/api/createOrder', orderController.createOrder)
-
-//
-
-// Clients
 
 router.get('/myOrder', clientController.showOrder)
 
@@ -99,7 +85,16 @@ router.post('/login/auth/facebook/post',
   clientController.setAddressFacebookStrategy
 )
 
-// Delivery persons
+// Rappitendero
+router.get('/soyrappi', deliveryPersonController.getIndexPage)
+
+router.delete('/soyrappi', deliveryPersonController.logout)
+
+router.get('/formRT', (req, res) => {
+  res.type('html')
+  res.render('pages/form-rt')
+})
+
 router.get('/soyrappi/auth/google',
   passport.authenticate('googleSoyRappi', {
     scope: ['profile', 'email']
@@ -136,6 +131,15 @@ router.post('/soyrappi/auth/facebook/post',
   deliveryPersonController.setAdditionalDataFacebookStrategy
 )
 
+// API de ordenes
+
+router.get('/api/order/:id', orderController.getOrderById)
+router.put('/api/order/:id/nextstep', orderController.nextStep)
+router.get('/api/order/unassigned/:lat/:lng', orderController.getOrderUnassigned)
+router.post('/api/order/:id_order/assign/delivery-person/:id_delivery_person', orderController.assignOrder)
+router.get('/api/order/active/user/:id', orderController.useractiveOrders)
+router.post('/api/createOrder', orderController.createOrder)
+
 // Admins
 router.get('/admin', (req, res) => {
   res.render('pages/admin')
@@ -143,11 +147,17 @@ router.get('/admin', (req, res) => {
 
 router.post('/admin/home',
   passport.authenticate('admin', {
-    failureFlash: true
+    failureRedirect: '/'
   }),
-  (req, res) => {
-    res.send('hola administrador ' + req.user.user_name)
-  }
+  adminController.loginRedirectAdmin
+)
+
+router.get('/admin/deliveryPersons',
+  adminController.getDeliveryPersons
+)
+
+router.post('/admin/deliveryPersons',
+  deliveryPersonController.changeDeliveryPersonStatus
 )
 
 module.exports = router
